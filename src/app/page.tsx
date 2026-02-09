@@ -1,66 +1,127 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Banner from "../components/Banner";
+import Essentials from "../components/Essentials";
+import Footer from "../components/Footer";
+import Hero from "../components/Hero";
+import Nav from "../components/Nav";
+import Neighbourhoods from "../components/Neighbourhoods";
+import Newsletter from "../components/Newsletter";
+import PlaceGrid from "../components/PlaceGrid";
+import PlacePanel from "../components/PlacePanel";
+import SearchBar from "../components/SearchBar";
+import Tabs from "../components/Tabs";
+import VibeFilter from "../components/VibeFilter";
+import { places, vibeList } from "../lib/data";
+import { Place } from "../lib/types";
 
 export default function Home() {
+  const [activeVibe, setActiveVibe] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+
+  const filteredPlaces = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return places.filter((place) => {
+      if (activeVibe !== "all" && !place.vibes.includes(activeVibe)) {
+        return false;
+      }
+      if (!query) {
+        return true;
+      }
+      const hay = [
+        place.name,
+        place.cat,
+        place.area,
+        place.desc,
+        place.tip || "",
+        ...(place.cuisine || []),
+        ...place.vibes,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(query);
+    });
+  }, [activeVibe, searchQuery]);
+
+  const hasFilters = activeVibe !== "all" || Boolean(searchQuery);
+
+  const scrollToResults = () => {
+    requestAnimationFrame(() => {
+      const el = document.getElementById("resultsInfo");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("v");
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+
+    const nodes = document.querySelectorAll(".r:not(.v)");
+    nodes.forEach((node) => observer.observe(node));
+
+    return () => observer.disconnect();
+  }, [filteredPlaces.length]);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <Nav />
+      <Hero />
+      <SearchBar
+        value={searchQuery}
+        onChange={(value) => setSearchQuery(value)}
+        onClear={() => setSearchQuery("")}
+      />
+      <Tabs />
+      <VibeFilter
+        vibes={vibeList}
+        activeVibe={activeVibe}
+        onSelect={(vibe) => {
+          setActiveVibe(vibe);
+          scrollToResults();
+        }}
+      />
+      <PlaceGrid
+        places={filteredPlaces}
+        hasFilters={hasFilters}
+        onClearFilters={() => {
+          setActiveVibe("all");
+          setSearchQuery("");
+        }}
+        onSelectPlace={(place) => setSelectedPlace(place)}
+      />
+      <Neighbourhoods
+        places={places}
+        onSelectArea={(area) => {
+          setSearchQuery(area);
+          scrollToResults();
+        }}
+      />
+      <Essentials />
+      <Banner />
+      <Newsletter />
+      <PlacePanel place={selectedPlace} onClose={() => setSelectedPlace(null)} />
+      <Footer
+        onSearch={(query) => {
+          setSearchQuery(query);
+          scrollToResults();
+        }}
+        onSetVibe={(vibe) => {
+          setActiveVibe(vibe);
+          scrollToResults();
+        }}
+      />
+    </>
   );
 }
