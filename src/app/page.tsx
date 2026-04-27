@@ -1,4 +1,4 @@
-const INSTAGRAM_URL = "[INSERT URL]";
+const INSTAGRAM_URL = "https://www.instagram.com/salt.guide/";
 const SUBSTACK_URL = "[INSERT URL]";
 
 export default function Home() {
@@ -15,7 +15,6 @@ export default function Home() {
         >
           <source src="/gentle_ocean.mp4" type="video/mp4" />
         </video>
-        <div className="background-fallback" />
         <div className="background-overlay" />
       </div>
 
@@ -27,9 +26,9 @@ export default function Home() {
           <span>guide</span>
         </h1>
 
-        <p className="location">St Leonards &amp; Hastings</p>
+        <p className="location">Hastings &amp; St Leonards</p>
 
-        <div className="wave-divider" aria-hidden="true" />
+        <div className="location-wave" aria-hidden="true" />
 
         <p className="description">
           Your pocket guide
@@ -40,14 +39,6 @@ export default function Home() {
         </p>
 
         <div className="cta-group">
-          <a
-            className="button button-secondary"
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Follow on Instagram
-          </a>
           <a
             className="button button-primary"
             href={SUBSTACK_URL}
@@ -63,6 +54,18 @@ export default function Home() {
           <br />
           then every Sunday after so you can plan your weekend.
         </p>
+
+        <a
+          className="instagram-link"
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Follow Saltguide on Instagram"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7.25 3h9.5A4.25 4.25 0 0 1 21 7.25v9.5A4.25 4.25 0 0 1 16.75 21h-9.5A4.25 4.25 0 0 1 3 16.75v-9.5A4.25 4.25 0 0 1 7.25 3Zm0 1.5A2.75 2.75 0 0 0 4.5 7.25v9.5a2.75 2.75 0 0 0 2.75 2.75h9.5a2.75 2.75 0 0 0 2.75-2.75v-9.5a2.75 2.75 0 0 0-2.75-2.75h-9.5Zm9.75 1.62a.88.88 0 1 1 0 1.76.88.88 0 0 1 0-1.76ZM12 7.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 1.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+          </svg>
+        </a>
       </section>
     </main>
   );
