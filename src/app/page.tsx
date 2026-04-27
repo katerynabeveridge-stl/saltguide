@@ -1,127 +1,69 @@
-"use client";
-
-import { useEffect, useMemo, useState } from "react";
-import Banner from "../components/Banner";
-import Essentials from "../components/Essentials";
-import Footer from "../components/Footer";
-import Hero from "../components/Hero";
-import Nav from "../components/Nav";
-import Neighbourhoods from "../components/Neighbourhoods";
-import Newsletter from "../components/Newsletter";
-import PlaceGrid from "../components/PlaceGrid";
-import PlacePanel from "../components/PlacePanel";
-import SearchBar from "../components/SearchBar";
-import Tabs from "../components/Tabs";
-import VibeFilter from "../components/VibeFilter";
-import { places, vibeList } from "../lib/data";
-import { Place } from "../lib/types";
+const INSTAGRAM_URL = "[INSERT URL]";
+const SUBSTACK_URL = "[INSERT URL]";
 
 export default function Home() {
-  const [activeVibe, setActiveVibe] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
-
-  const filteredPlaces = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    return places.filter((place) => {
-      if (activeVibe !== "all" && !place.vibes.includes(activeVibe)) {
-        return false;
-      }
-      if (!query) {
-        return true;
-      }
-      const hay = [
-        place.name,
-        place.cat,
-        place.area,
-        place.desc,
-        place.tip || "",
-        ...(place.cuisine || []),
-        ...place.vibes,
-      ]
-        .join(" ")
-        .toLowerCase();
-      return hay.includes(query);
-    });
-  }, [activeVibe, searchQuery]);
-
-  const hasFilters = activeVibe !== "all" || Boolean(searchQuery);
-
-  const scrollToResults = () => {
-    requestAnimationFrame(() => {
-      const el = document.getElementById("resultsInfo");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("v");
-          }
-        });
-      },
-      { threshold: 0.08 }
-    );
-
-    const nodes = document.querySelectorAll(".r:not(.v)");
-    nodes.forEach((node) => observer.observe(node));
-
-    return () => observer.disconnect();
-  }, [filteredPlaces.length]);
-
   return (
-    <>
-      <Nav />
-      <Hero />
-      <SearchBar
-        value={searchQuery}
-        onChange={(value) => setSearchQuery(value)}
-        onClear={() => setSearchQuery("")}
-      />
-      <Tabs />
-      <VibeFilter
-        vibes={vibeList}
-        activeVibe={activeVibe}
-        onSelect={(vibe) => {
-          setActiveVibe(vibe);
-          scrollToResults();
-        }}
-      />
-      <PlaceGrid
-        places={filteredPlaces}
-        hasFilters={hasFilters}
-        onClearFilters={() => {
-          setActiveVibe("all");
-          setSearchQuery("");
-        }}
-        onSelectPlace={(place) => setSelectedPlace(place)}
-      />
-      <Neighbourhoods
-        places={places}
-        onSelectArea={(area) => {
-          setSearchQuery(area);
-          scrollToResults();
-        }}
-      />
-      <Essentials />
-      <Banner />
-      <Newsletter />
-      <PlacePanel place={selectedPlace} onClose={() => setSelectedPlace(null)} />
-      <Footer
-        onSearch={(query) => {
-          setSearchQuery(query);
-          scrollToResults();
-        }}
-        onSetVibe={(vibe) => {
-          setActiveVibe(vibe);
-          scrollToResults();
-        }}
-      />
-    </>
+    <main className="coming-soon-page">
+      <div className="background-media" aria-hidden="true">
+        <video
+          className="background-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/ocean-fallback.png"
+        >
+          <source src="/ocean.mp4" type="video/mp4" />
+        </video>
+        <div className="background-fallback" />
+        <div className="background-overlay" />
+      </div>
+
+      <section className="coming-soon-content">
+        <p className="small-label">Coming Soon</p>
+
+        <h1 className="wordmark" aria-label="saltguide">
+          <span>salt</span>
+          <span>guide</span>
+        </h1>
+
+        <p className="location">St Leonards &amp; Hastings</p>
+
+        <div className="wave-divider" aria-hidden="true" />
+
+        <p className="description">
+          Your pocket guide
+          <br />
+          to what&apos;s on, where to eat,
+          <br />
+          and where to go by the sea.
+        </p>
+
+        <div className="cta-group">
+          <a
+            className="button button-secondary"
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Follow on Instagram
+          </a>
+          <a
+            className="button button-primary"
+            href={SUBSTACK_URL}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Subscribe to Substack
+          </a>
+        </div>
+
+        <p className="footer-copy">
+          New newsletter coming soon on 10th May
+          <br />
+          then every Sunday after so you can plan your weekend.
+        </p>
+      </section>
+    </main>
   );
 }
