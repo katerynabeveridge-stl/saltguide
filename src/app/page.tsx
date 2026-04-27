@@ -13,7 +13,7 @@ export default function Home() {
           playsInline
           poster="/ocean-fallback.png"
         >
-          <source src="/ocean.mp4" type="video/mp4" />
+          <source src="/gentle_ocean.mp4" type="video/mp4" />
         </video>
         <div className="background-fallback" />
         <div className="background-overlay" />
