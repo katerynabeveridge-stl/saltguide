@@ -176,7 +176,7 @@ a {
   display: inline-flex;
   width: 0.92rem;
   height: 0.92rem;
-  color: var(--lime);
+  color: currentColor;
 }
 
 .button-icon svg {
