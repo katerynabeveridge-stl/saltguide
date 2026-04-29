@@ -66,7 +66,7 @@ a {
   justify-content: center;
   min-height: 100vh;
   max-width: 40rem;
-  padding: 2.9rem 1.5rem 2.6rem;
+  padding: 2.9rem 1.75rem 2.6rem;
   gap: 1.15rem;
 }
 
@@ -160,6 +160,12 @@ a {
     0 0 18px rgba(214, 255, 31, 0.16);
 }
 
+.button-primary:hover {
+  background: var(--lime);
+  color: var(--navy);
+  box-shadow: 0 0 0 1px var(--lime);
+}
+
 .button:active {
   transform: translateY(1px);
   opacity: 0.96;
@@ -202,12 +208,34 @@ a {
 }
 
 @media (min-width: 768px) {
+  .coming-soon-page {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .background-media {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 50vw;
+    height: 100vh;
+    z-index: 0;
+  }
+
+  .background-video,
+  .background-overlay {
+    inset: 0;
+  }
+
   .coming-soon-content {
-    padding-left: clamp(3rem, 8vw, 7rem);
-    padding-right: 2rem;
-    padding-top: 3.2rem;
-    padding-bottom: 2.8rem;
+    position: relative;
+    width: 50%;
+    max-width: none;
+    min-height: 100vh;
+    padding: 80px 60px;
     gap: 1.35rem;
+    z-index: 1;
   }
 
   .wordmark {

@@ -5,16 +5,11 @@ export default function Home() {
   return (
     <main className="coming-soon-page">
       <div className="background-media" aria-hidden="true">
-        <video
+        <img
           className="background-video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/ocean-fallback.png"
-        >
-          <source src="/gentle_ocean.mp4" type="video/mp4" />
-        </video>
+          src="/salt-background.png"
+          alt=""
+        />
         <div className="background-overlay" />
       </div>
 
@@ -47,10 +42,10 @@ export default function Home() {
           >
             <span className="button-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
-                <path d="M4 6.75A2.75 2.75 0 0 1 6.75 4h10.5A2.75 2.75 0 0 1 20 6.75v10.5A2.75 2.75 0 0 1 17.25 20H6.75A2.75 2.75 0 0 1 4 17.25V6.75Zm2.75-1.25c-.69 0-1.25.56-1.25 1.25v.2l6.5 4.05 6.5-4.05v-.2c0-.69-.56-1.25-1.25-1.25H6.75Zm11.25 3.22-5.6 3.49a.75.75 0 0 1-.79 0L6 8.72v8.53c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25V8.72Z" />
+                <path d="M4.5 5h15v1.9h-15V5Zm1.8 3.6h11.4v1.9H6.3V8.6Zm0 3.6h11.4v1.9H6.3v-1.9ZM4.5 15.8h15V19h-15v-3.2Z" />
               </svg>
             </span>
-            <span>Subscribe to Substack</span>
+            <span>Subscribe to Newsletter</span>
           </a>
         </div>
 
