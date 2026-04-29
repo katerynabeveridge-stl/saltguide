@@ -26,11 +26,8 @@ export default function Home() {
         <div className="location-wave" aria-hidden="true" />
 
         <p className="description">
-          Your pocket guide
-          <br />
-          to what&apos;s on, where to eat,
-          <br />
-          and where to go by the sea.
+          Your pocket guide to what&apos;s on, where to eat, and where to go by
+          the sea. In your inbox each week.
         </p>
 
         <div className="cta-group">
@@ -41,18 +38,16 @@ export default function Home() {
             rel="noreferrer"
           >
             <span className="button-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M4.5 5h15v1.9h-15V5Zm1.8 3.6h11.4v1.9H6.3V8.6Zm0 3.6h11.4v1.9H6.3v-1.9ZM4.5 15.8h15V19h-15v-3.2Z" />
+              <svg viewBox="0 0 64 64">
+                <path d="M8 6h48v7H8V6Zm0 14h48v7H8v-7Zm0 13h48v25.5L32 44 8 58.5V33Z" />
               </svg>
             </span>
-            <span>Subscribe to Newsletter</span>
+            <span>Get the Newsletter</span>
           </a>
         </div>
 
         <p className="footer-copy">
-          New newsletter coming soon on 10th May
-          <br />
-          then every Sunday after so you can plan your weekend.
+          Every Sunday from 10th May.
         </p>
 
         <a
