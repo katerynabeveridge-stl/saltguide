@@ -47,7 +47,7 @@ export default function Home() {
         </div>
 
         <p className="footer-copy">
-          Every Sunday from 10th May.
+          &copy; 2026 Salt Guide. Made in Hastings.
         </p>
 
         <a

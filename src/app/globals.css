@@ -250,7 +250,7 @@ a {
   }
 
   .wordmark {
-    font-size: clamp(8rem, 17vw, 13rem);
+    font-size: clamp(5.8rem, 11vw, 8.6rem);
   }
 
   .cta-group {
