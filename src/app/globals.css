@@ -194,12 +194,13 @@ a {
 }
 
 .footer-legal {
-  margin-top: 0.45rem;
-  font-size: 0.64rem;
+  margin-top: auto;
+  padding-top: 1.1rem;
+  font-size: 0.56rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(214, 255, 31, 0.75);
+  color: rgba(214, 255, 31, 0.54);
 }
 
 .instagram-link {
