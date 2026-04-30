@@ -46,6 +46,8 @@ export default function Home() {
           </a>
         </div>
 
+        <p className="footer-copy">Every Sunday from 10th May.</p>
+
         <a
           className="instagram-link"
           href={INSTAGRAM_URL}
@@ -58,9 +60,6 @@ export default function Home() {
           </svg>
         </a>
 
-        <p className="footer-legal">
-          &copy; 2026 Salt Guide. Made in Hastings.
-        </p>
       </section>
     </main>
   );
