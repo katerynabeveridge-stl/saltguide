@@ -258,3 +258,35 @@ a {
     min-width: 20.25rem;
   }
 }
+
+@media (min-width: 1024px) {
+  .coming-soon-content {
+    min-height: 100vh;
+    justify-content: flex-start;
+    gap: 1rem;
+    overflow-y: auto;
+  }
+
+  .wordmark {
+    font-size: clamp(5rem, 9vw, 9rem);
+    line-height: 0.82;
+    margin-top: 0.05rem;
+  }
+
+  .location {
+    margin-top: 0.35rem;
+  }
+
+  .description {
+    margin-top: 0.72rem;
+  }
+
+  .cta-group {
+    margin-top: auto;
+    padding-top: 0.55rem;
+  }
+
+  .footer-copy {
+    margin-top: 0.45rem;
+  }
+}
