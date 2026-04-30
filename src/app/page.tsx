@@ -1,5 +1,5 @@
 const INSTAGRAM_URL = "https://www.instagram.com/salt.guide/";
-const SUBSTACK_URL = "https://saltguide.substack.com/";
+const SUBSTACK_URL = "https://saltguide.substack.com/about";
 
 export default function Home() {
   return (
