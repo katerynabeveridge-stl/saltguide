@@ -46,10 +46,6 @@ export default function Home() {
           </a>
         </div>
 
-        <p className="footer-copy">
-          &copy; 2026 Salt Guide. Made in Hastings.
-        </p>
-
         <a
           className="instagram-link"
           href={INSTAGRAM_URL}
@@ -61,6 +57,10 @@ export default function Home() {
             <path d="M7.25 3h9.5A4.25 4.25 0 0 1 21 7.25v9.5A4.25 4.25 0 0 1 16.75 21h-9.5A4.25 4.25 0 0 1 3 16.75v-9.5A4.25 4.25 0 0 1 7.25 3Zm0 1.5A2.75 2.75 0 0 0 4.5 7.25v9.5a2.75 2.75 0 0 0 2.75 2.75h9.5a2.75 2.75 0 0 0 2.75-2.75v-9.5a2.75 2.75 0 0 0-2.75-2.75h-9.5Zm9.75 1.62a.88.88 0 1 1 0 1.76.88.88 0 0 1 0-1.76ZM12 7.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 1.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
           </svg>
         </a>
+
+        <p className="footer-legal">
+          &copy; 2026 Salt Guide. Made in Hastings.
+        </p>
       </section>
     </main>
   );
