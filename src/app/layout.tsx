@@ -9,9 +9,17 @@ const inter = Inter({
   weight: ["400", "500", "700", "800", "900"],
 });
 
+/** Production: www.saltguide.co.uk (main). Override on staging with NEXT_PUBLIC_SITE_URL. */
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.saltguide.co.uk";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Saltguide",
   description: "Saltguide",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
