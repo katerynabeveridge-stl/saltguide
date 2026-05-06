@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Saltguide",
   description: "Saltguide",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
   alternates: {
     canonical: "/",
   },
