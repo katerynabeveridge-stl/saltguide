@@ -106,7 +106,6 @@ a {
   width: min(16.8rem, 72vw);
   height: 0.56rem;
   margin-top: 0.45rem;
-  margin-left: -0.18rem;
   background: no-repeat left center / 100% 100%
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='10' viewBox='0 0 300 10'%3E%3Cpath d='M0 5 C18 1,36 9,54 5 S90 1,108 5 S144 9,162 5 S198 1,216 5 S252 9,270 5 S288 3,300 5' fill='none' stroke='%23D6FF1F' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
   opacity: 0.95;
@@ -254,6 +253,7 @@ a {
 
   .location-wave {
     width: 300px;
+    margin-left: 0;
   }
 
   .wordmark {
