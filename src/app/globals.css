@@ -271,6 +271,7 @@ a {
     gap: 1.15rem;
     padding-top: 80px;
     padding-bottom: 80px;
+    transform: translateY(12px);
   }
 
   .wordmark {
@@ -298,10 +299,10 @@ a {
   }
 
   .footer-copy {
-    margin-top: 0.9rem;
+    margin-top: 1rem;
   }
 
   .instagram-link {
-    margin-top: 0.15rem;
+    margin-top: 0.25rem;
   }
 }
