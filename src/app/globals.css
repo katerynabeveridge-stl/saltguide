@@ -242,12 +242,13 @@ a {
     flex-direction: column;
     width: 50%;
     max-width: none;
-    min-height: 100vh;
     height: 100vh;
     padding: 80px;
     justify-content: center;
-    gap: 1.35rem;
+    align-items: flex-start;
+    gap: 1.15rem;
     z-index: 1;
+    overflow: hidden;
   }
 
   .location-wave {
