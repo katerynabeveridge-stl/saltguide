@@ -268,7 +268,7 @@ a {
 @media (min-width: 1024px) {
   .coming-soon-content {
     justify-content: center;
-    gap: 0.9rem;
+    gap: 1.15rem;
     padding-top: 80px;
     padding-bottom: 80px;
   }
@@ -276,20 +276,20 @@ a {
   .wordmark {
     font-size: clamp(5.4rem, 9.6vw, 9.6rem);
     line-height: 0.79;
-    margin-top: 0.02rem;
+    margin-top: 0.18rem;
   }
 
   .location {
-    margin-top: 0.6rem;
+    margin-top: 1rem;
   }
 
   .location-wave {
-    margin-top: 0.35rem;
+    margin-top: 0.45rem;
   }
 
   .description {
     max-width: 29rem;
-    margin-top: 0.4rem;
+    margin-top: 0.5rem;
   }
 
   .cta-group {
@@ -298,10 +298,10 @@ a {
   }
 
   .footer-copy {
-    margin-top: 0.16rem;
+    margin-top: 0.9rem;
   }
 
   .instagram-link {
-    margin-top: 0.22rem;
+    margin-top: 0.15rem;
   }
 }
