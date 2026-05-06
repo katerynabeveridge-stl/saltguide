@@ -99,7 +99,7 @@ a {
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--lime-soft);
-  margin-top: 1rem;
+  margin-top: 1.8rem;
 }
 
 .location-wave {
@@ -107,7 +107,7 @@ a {
   height: 0.56rem;
   margin-top: 0.45rem;
   background: no-repeat left center / 100% 100%
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='10' viewBox='0 0 300 10'%3E%3Cpath d='M2 5 C20 1,40 9,58 5 S96 1,114 5 S152 9,170 5 S208 1,226 5 S264 9,282 5 S294 3,298 5' fill='none' stroke='%23D6FF1F' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='10' viewBox='0 0 300 10'%3E%3Cpath d='M0 5 C18 1,36 9,54 5 S90 1,108 5 S144 9,162 5 S198 1,216 5 S252 9,270 5 S288 3,300 5' fill='none' stroke='%23D6FF1F' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
   opacity: 0.95;
 }
 
