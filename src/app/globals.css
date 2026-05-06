@@ -213,6 +213,8 @@ a {
   .coming-soon-page {
     display: flex;
     flex-direction: row;
+    min-height: 100vh;
+    height: 100vh;
   }
 
   .background-media {
@@ -236,9 +238,12 @@ a {
 
   .coming-soon-content {
     position: relative;
+    display: flex;
+    flex-direction: column;
     width: 50%;
     max-width: none;
     min-height: 100vh;
+    height: 100vh;
     padding: 80px;
     justify-content: center;
     gap: 1.35rem;
@@ -261,7 +266,6 @@ a {
 
 @media (min-width: 1024px) {
   .coming-soon-content {
-    min-height: 100vh;
     justify-content: center;
     gap: 0.9rem;
     padding-top: 80px;
