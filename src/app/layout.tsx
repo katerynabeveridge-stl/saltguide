@@ -18,9 +18,12 @@ export const metadata: Metadata = {
   title: "Saltguide",
   description: "Saltguide",
   icons: {
-    icon: "/favicon.png?v=2",
-    shortcut: "/favicon.png?v=2",
-    apple: "/favicon.png?v=2",
+    icon: [
+      { url: "/favicon.ico?v=3" },
+      { url: "/favicon.png?v=3", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico?v=3",
+    apple: "/favicon.png?v=3",
   },
   alternates: {
     canonical: "/",

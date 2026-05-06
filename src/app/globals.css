@@ -253,7 +253,7 @@ a {
 
   .location-wave {
     width: 300px;
-    margin-left: 0;
+    margin-left: -0.22rem;
   }
 
   .wordmark {
