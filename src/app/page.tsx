@@ -14,8 +14,7 @@ export default function Home() {
       </div>
 
       <section className="coming-soon-content">
-        <p className="small-label">Coming Soon</p>
-
+        <div className="content-top-spacer" aria-hidden="true" />
         <h1 className="wordmark" aria-label="saltguide">
           <span>salt</span>
           <span>guide</span>
@@ -46,7 +45,7 @@ export default function Home() {
           </a>
         </div>
 
-        <p className="footer-copy">Every Sunday from 10th May.</p>
+        <p className="footer-copy">Every Sunday at 7pm.</p>
 
         <a
           className="instagram-link"

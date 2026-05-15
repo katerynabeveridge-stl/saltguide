@@ -84,6 +84,12 @@ a {
   letter-spacing: 0.22em;
 }
 
+.content-top-spacer {
+  flex-shrink: 0;
+  height: 0.8rem;
+  width: 0;
+}
+
 .wordmark {
   display: flex;
   flex-direction: column;
@@ -103,6 +109,7 @@ a {
 }
 
 .location-wave {
+  flex-shrink: 0;
   width: min(16.8rem, 72vw);
   height: 0.56rem;
   margin-top: 0.45rem;
