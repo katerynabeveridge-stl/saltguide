@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:staging": "NEXT_PUBLIC_SITE_URL=https://staging.saltguide.co.uk NEXT_PUBLIC_APP_ENV=staging next dev",
     "build": "next build",
+    "build:staging": "NEXT_PUBLIC_SITE_URL=https://staging.saltguide.co.uk NEXT_PUBLIC_APP_ENV=staging next build",
     "start": "next start",
     "lint": "eslint"
   },

@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main, staging]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ (github.ref == 'refs/heads/staging' || github.base_ref == 'staging') && 'https://staging.saltguide.co.uk' || 'https://www.saltguide.co.uk' }}
+          NEXT_PUBLIC_APP_ENV: ${{ (github.ref == 'refs/heads/staging' || github.base_ref == 'staging') && 'staging' || 'production' }}

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import StagingBanner from "../components/StagingBanner";
+import { isStaging, siteUrl } from "../lib/env";
 import "./globals.css";
 
 const inter = Inter({
@@ -9,14 +11,11 @@ const inter = Inter({
   weight: ["400", "500", "700", "800", "900"],
 });
 
-/** Production: www.saltguide.co.uk (main). Override on staging with NEXT_PUBLIC_SITE_URL. */
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.saltguide.co.uk";
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Saltguide",
+  title: isStaging ? "Saltguide (Staging)" : "Saltguide",
   description: "Saltguide",
+  robots: isStaging ? { index: false, follow: false } : undefined,
   icons: {
     icon: [
       { url: "/favicon.ico?v=3" },
@@ -37,7 +36,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.variable}>{children}</body>
+      <body className={inter.variable}>
+        {isStaging ? <StagingBanner /> : null}
+        {children}
+      </body>
     </html>
   );
 }

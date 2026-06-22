@@ -29,6 +29,23 @@ a {
   text-decoration: none;
 }
 
+.staging-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0.45rem 1rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--navy);
+  background: var(--lime);
+  border-bottom: 1px solid rgba(10, 22, 40, 0.12);
+}
+
 .coming-soon-page {
   position: relative;
   min-height: 100vh;
