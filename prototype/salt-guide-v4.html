@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salt Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..900&family=Poppins:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1EBDE;
+    --paper-2:#E8E0D0;
+    --ink:#15222c;
+    --ink-soft:rgba(21,34,44,0.78);
+    --ink-faint:rgba(21,34,44,0.55);
+    --navy:#0c1620;
+    --neon:#C8F135;
+    --line:rgba(21,34,44,0.16);
+    --shadow:4px 4px 0 var(--ink);
+    --shadow-sm:3px 3px 0 var(--ink);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--navy);}
+  body{font-family:'Poppins',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+  .app{max-width:430px;margin:0 auto;background:var(--paper);min-height:100vh;position:relative;overflow-x:clip;}
+  ::selection{background:var(--neon);color:var(--ink);}
+  .mono{font-family:'Space Mono',monospace;}
+
+  /* ---------- TOP BAR ---------- */
+  .top{
+    position:sticky;top:0;z-index:30;background:var(--navy);
+    padding:15px 20px;display:flex;align-items:center;justify-content:space-between;
+    border-bottom:2px solid var(--neon);
+  }
+  .wm{font-family:'Poppins';font-weight:800;font-size:19px;letter-spacing:-0.03em;color:var(--neon);}
+  .top .sub-link{font-family:'Space Mono';font-weight:700;font-size:10px;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--navy);background:var(--neon);padding:6px 11px;
+    border:1.5px solid var(--neon);cursor:pointer;}
+
+  /* ---------- HERO (navy) ---------- */
+  .hero{background:var(--navy);color:var(--paper);padding:34px 20px 64px;position:relative;}
+  .hero .eye{font-family:'Space Mono';font-weight:700;font-size:10.5px;letter-spacing:0.16em;
+    text-transform:uppercase;color:var(--neon);margin-bottom:16px;}
+  .hero .wave{width:160px;height:14px;display:block;margin:0 0 22px;}
+  .hero h1{font-family:'Fraunces';font-weight:800;font-size:39px;line-height:1.02;letter-spacing:-0.03em;margin-bottom:16px;}
+  .hero h1 em{font-style:normal;color:var(--neon);}
+  .hero p{font-size:14px;color:rgba(241,235,222,0.62);line-height:1.5;max-width:32ch;margin-bottom:24px;}
+  .ask label{display:block;font-family:'Space Mono';font-size:10.5px;letter-spacing:0.08em;
+    text-transform:uppercase;color:rgba(241,235,222,0.55);margin-bottom:9px;}
+  .ask .field{position:relative;}
+  .ask input{width:100%;background:#172430;border:2px solid var(--neon);color:var(--paper);
+    font-family:'Poppins';font-size:15px;padding:14px 16px 14px 42px;outline:none;}
+  .ask input::placeholder{color:rgba(241,235,222,0.4);}
+  .ask .ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--neon);font-size:16px;pointer-events:none;}
+  .tear{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:40px;display:block;}
+
+  /* ---------- SECTIONS (paper) ---------- */
+  section{padding:30px 20px 6px;}
+  .eyebrow{font-family:'Space Mono';font-weight:700;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--ink);margin-bottom:18px;display:inline-block;background:var(--neon);padding:4px 10px;
+    border:1.5px solid var(--ink);box-shadow:var(--shadow-sm);}
+  h2.sec{font-family:'Fraunces';font-weight:800;font-size:25px;letter-spacing:-0.03em;line-height:1.05;margin-bottom:18px;}
+
+  /* ---------- DIRECTORY (brutalist index) ---------- */
+  .idx{border-top:2px solid var(--ink);}
+  .idx-row{
+    display:flex;align-items:center;gap:14px;padding:18px 2px;border-bottom:2px solid var(--ink);
+    cursor:pointer;width:100%;background:none;text-align:left;color:var(--ink);font-family:'Poppins';
+    transition:padding-left .15s ease, background .15s ease;
+  }
+  .idx-row:hover{padding-left:10px;background:rgba(200,241,53,0.18);}
+  .idx-row .col{flex:1;min-width:0;}
+  .idx-row .nm{font-family:'Fraunces';font-weight:800;font-size:27px;letter-spacing:-0.035em;line-height:1;}
+  .idx-row .feat{font-family:'Space Mono';font-size:11px;color:var(--ink-soft);margin-top:9px;line-height:1.4;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.01em;}
+  .idx-row .feat b{color:var(--ink);font-weight:700;}
+  .idx-row .arrow{font-size:21px;color:var(--ink);flex:0 0 auto;transition:transform .15s ease;}
+  .idx-row:hover .arrow{transform:translateX(4px);}
+  .idx-row.soon .nm{color:var(--ink-soft);}
+  .idx-row.soon .feat{color:var(--ink-faint);}
+  .idx-row.soon .arrow{color:var(--ink-faint);}
+  .soon-badge{font-family:'Space Mono';font-weight:700;font-size:8px;letter-spacing:0.08em;text-transform:uppercase;
+    background:var(--ink);color:var(--paper);padding:2px 6px;margin-left:7px;}
+
+  /* ---------- SALT RECOMMENDS (photo cards) ---------- */
+  .shot{position:relative;border:2px solid var(--ink);overflow:hidden;background:var(--navy);
+    box-shadow:var(--shadow);display:block;width:100%;cursor:pointer;}
+  .shot img{width:100%;height:100%;object-fit:cover;display:block;}
+  .shot .cap{position:absolute;left:0;right:0;bottom:0;padding:30px 14px 12px 14px;
+    background:linear-gradient(to top, rgba(12,22,32,0.92), transparent);color:var(--paper);}
+  .shot .cn{font-family:'Fraunces';font-weight:800;font-size:18px;letter-spacing:-0.02em;line-height:1.05;}
+  .shot .ca{font-family:'Space Mono';font-size:10px;text-transform:uppercase;letter-spacing:0.06em;
+    color:rgba(241,235,222,0.7);margin-top:4px;}
+  .shot .tag{position:absolute;top:10px;left:10px;font-family:'Space Mono';font-weight:700;font-size:9px;
+    letter-spacing:0.08em;text-transform:uppercase;background:var(--neon);color:var(--ink);
+    padding:4px 8px;border:1.5px solid var(--ink);}
+  .feat-shot{height:230px;border-radius:20px 7px 22px 8px;transform:rotate(-0.8deg);margin-bottom:18px;}
+  .feat-shot .cn{font-size:24px;}
+  .pick-blurb{font-size:13px;color:var(--ink-soft);line-height:1.45;margin:0 0 24px;padding:0 2px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .grid2 .shot{height:150px;}
+  .grid2 .shot:nth-child(1){border-radius:18px 6px 16px 8px;transform:rotate(0.9deg);}
+  .grid2 .shot:nth-child(2){border-radius:7px 19px 8px 17px;transform:rotate(-1deg);}
+  .grid2 .shot:nth-child(3){border-radius:8px 17px 7px 20px;transform:rotate(-0.7deg);}
+  .grid2 .shot:nth-child(4){border-radius:19px 8px 18px 6px;transform:rotate(1deg);}
+
+  /* ---------- WHAT'S ON ---------- */
+  .week{background:var(--navy);color:var(--paper);border:2px solid var(--ink);
+    box-shadow:var(--shadow);padding:22px 20px;border-radius:18px 7px 20px 8px;}
+  .week-count{font-family:'Space Mono';font-size:10px;font-weight:700;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--neon);margin-bottom:10px;}
+  .week h3{font-family:'Fraunces';font-weight:800;font-size:23px;line-height:1.12;letter-spacing:-0.02em;margin-bottom:18px;}
+  .week h3 em{font-style:normal;color:var(--neon);}
+  .tz{display:flex;gap:13px;padding:14px 0;border-top:1px solid rgba(241,235,222,0.16);align-items:flex-start;}
+  .tz:first-of-type{border-top:none;}
+  .tz .d{font-family:'Space Mono';font-weight:700;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;
+    color:var(--neon);width:34px;flex:0 0 auto;padding-top:2px;}
+  .tz .body{flex:1;min-width:0;}
+  .tz .t{font-size:14px;color:var(--paper);line-height:1.4;}
+  .tz .t b{font-weight:600;}
+  .tz .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+  .tz .chip{font-family:'Space Mono';font-size:8px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+    padding:2px 6px;border:1px solid rgba(241,235,222,0.3);color:rgba(241,235,222,0.7);}
+  .tz .chip.hot{background:var(--neon);color:var(--ink);border-color:var(--neon);}
+  .week-note{font-size:13px;color:rgba(241,235,222,0.62);line-height:1.5;margin:18px 0 14px;}
+  .week-btn{display:block;background:var(--neon);color:var(--ink);font-family:'Space Mono';
+    font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;
+    padding:14px 20px;text-align:center;text-decoration:none;border:2px solid var(--neon);
+    transition:background .15s ease,color .15s ease;}
+  .week-btn:hover{background:transparent;color:var(--neon);}
+  /* Coming up strip */
+  .soon-strip{margin-top:14px;border:2px solid var(--ink);background:var(--paper);box-shadow:var(--shadow-sm);padding:16px 18px;}
+  .soon-strip .lbl{font-family:'Space Mono';font-size:10px;font-weight:700;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px;}
+  .soon-row{display:flex;gap:12px;padding:9px 0;align-items:baseline;border-top:1px dashed var(--line);}
+  .soon-row:first-of-type{border-top:none;}
+  .soon-row .mo{font-family:'Space Mono';font-weight:700;font-size:10px;letter-spacing:0.05em;text-transform:uppercase;
+    color:var(--accent-ink,#7c8a2e);width:52px;flex:0 0 auto;}
+  .soon-row .tx{font-size:13px;color:var(--ink-soft);line-height:1.4;}
+  .soon-row .tx b{color:var(--ink);font-weight:600;}
+
+  /* ---------- GUIDES ---------- */
+  .guide{border:2px solid var(--ink);margin-bottom:14px;background:var(--paper);box-shadow:var(--shadow-sm);}
+  .guide:nth-child(even){border-radius:16px 5px 14px 7px;}
+  .guide:nth-child(odd){border-radius:6px 15px 7px 16px;}
+  .guide-head{padding:15px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+  .guide-head .t{font-family:'Fraunces';font-weight:700;font-size:16px;letter-spacing:-0.02em;}
+  .guide-head .c{font-family:'Space Mono';font-size:10px;color:var(--ink-soft);margin-top:4px;letter-spacing:0.02em;}
+  .guide-head .arr{font-family:'Space Mono';font-weight:700;color:var(--ink);font-size:18px;}
+  .guide.open .guide-head .arr{color:var(--neon);text-shadow:0 0 0 var(--ink);}
+  .guide-body{display:none;padding:0 16px 8px;}
+  .guide.open .guide-body{display:block;}
+  .gv{padding:10px 0;border-top:1px solid var(--line);}
+  .gv .gn{font-size:13.5px;font-weight:500;}
+  .gv .gm{font-family:'Space Mono';font-size:10px;color:var(--ink-faint);margin-top:2px;text-transform:uppercase;letter-spacing:0.04em;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--navy);color:var(--paper);margin-top:34px;padding:32px 20px 44px;text-align:center;}
+  footer .fm{font-family:'Poppins';font-weight:800;font-size:16px;color:var(--neon);letter-spacing:-0.02em;}
+  footer p{font-family:'Space Mono';font-size:10px;color:rgba(241,235,222,0.5);margin-top:8px;line-height:1.7;letter-spacing:0.03em;}
+
+  /* ---------- OVERLAY ---------- */
+  .overlay{position:fixed;inset:0;z-index:50;background:var(--paper);max-width:430px;margin:0 auto;display:none;flex-direction:column;}
+  .overlay.show{display:flex;}
+  .ov-head{padding:16px 20px 14px;border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:2;}
+  .ov-top{display:flex;align-items:center;gap:12px;}
+  .ov-top .back{background:var(--neon);border:2px solid var(--ink);color:var(--ink);width:38px;height:38px;
+    font-size:17px;cursor:pointer;flex:0 0 auto;box-shadow:var(--shadow-sm);}
+  .ov-top .title{font-family:'Fraunces';font-weight:800;font-size:19px;letter-spacing:-0.02em;}
+  .ov-top .title span{display:block;font-family:'Space Mono';font-weight:400;font-size:10px;
+    color:var(--ink-soft);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em;}
+  .goodfor{margin-top:15px;}
+  .goodfor .lbl{font-family:'Space Mono';font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:9px;}
+  .gf-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+  .gf-row::-webkit-scrollbar{display:none;}
+  .gf{flex:0 0 auto;background:var(--paper);border:2px solid var(--ink);color:var(--ink);
+    font-family:'Space Mono';font-size:11px;font-weight:700;padding:7px 13px;cursor:pointer;white-space:nowrap;
+    text-transform:uppercase;letter-spacing:0.03em;}
+  .gf.on{background:var(--neon);box-shadow:var(--shadow-sm);}
+  /* segmented Type control — visually distinct from Good for chips */
+  .seg{display:flex;border:2px solid var(--ink);box-shadow:var(--shadow-sm);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .seg::-webkit-scrollbar{display:none;}
+  .seg button{flex:1 0 auto;font-family:'Space Mono';font-weight:700;font-size:11px;text-transform:uppercase;
+    letter-spacing:0.02em;padding:10px 13px;background:var(--paper);border:none;border-right:2px solid var(--ink);
+    color:var(--ink);cursor:pointer;white-space:nowrap;}
+  .seg button:last-child{border-right:none;}
+  .seg button.on{background:var(--neon);}
+  .ov-list{overflow-y:auto;padding:8px 20px 44px;}
+  .rv{padding:18px 0;border-bottom:1px solid var(--line);}
+  /* Salt pick cards get a distinct paper + neon edge so they stand out */
+  .rv.pick{background:linear-gradient(90deg,rgba(200,241,53,0.13),transparent 70%);
+    border-left:3px solid var(--neon);padding-left:14px;margin-left:-3px;}
+  .rv .rv-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .rv .rv-kind{font-family:'Space Mono';font-size:9px;font-weight:700;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--ink);background:var(--paper-2);padding:3px 8px;border:1px solid var(--line);}
+  .rv .rv-pick{font-family:'Space Mono';font-size:9px;font-weight:700;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--ink);background:var(--neon);padding:3px 8px 3px 7px;
+    border:1.5px solid var(--ink);display:inline-flex;align-items:center;gap:4px;box-shadow:1.5px 1.5px 0 var(--ink);}
+  .rv .rn{font-family:'Fraunces';font-weight:700;font-size:18px;letter-spacing:-0.02em;line-height:1.15;}
+  .rv .rm{font-family:'Space Mono';font-size:10px;color:var(--ink-faint);margin:4px 0 9px;
+    text-transform:uppercase;letter-spacing:0.05em;}
+  .rv .rb{font-size:13.5px;color:var(--ink-soft);line-height:1.5;}
+  .rv .links{display:flex;gap:16px;margin-top:13px;flex-wrap:wrap;align-items:center;}
+  .rv .links a{font-family:'Space Mono';font-size:10px;font-weight:700;text-transform:uppercase;
+    letter-spacing:0.05em;color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--ink);
+    padding-bottom:1px;white-space:nowrap;}
+  .rv .links a:hover{color:var(--neon);border-color:var(--neon);}
+  .rv .links .ig{color:var(--ink-soft);border-color:var(--line);}
+  .rv .links .dir{color:var(--ink-soft);border-color:var(--line);}
+  .empty{padding:54px 20px;text-align:center;}
+  .empty h4{font-family:'Fraunces';font-weight:800;font-size:18px;margin-bottom:10px;}
+  .empty p{font-size:13.5px;color:var(--ink-soft);line-height:1.5;max-width:30ch;margin:0 auto;}
+  .empty .bar{width:36px;height:4px;background:var(--neon);border:1.5px solid var(--ink);margin:0 auto 20px;}
+
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--neon);
+    color:var(--ink);font-family:'Space Mono';font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;
+    padding:12px 20px;border:2px solid var(--ink);box-shadow:var(--shadow);opacity:0;transition:all .25s ease;z-index:80;pointer-events:none;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  /* ---------- FREE BADGE ---------- */
+  .free-badge{font-family:"Space Mono";font-weight:700;font-size:8.5px;letter-spacing:0.07em;
+    text-transform:uppercase;background:var(--neon);color:var(--ink);border:1.5px solid var(--ink);
+    padding:2px 7px;display:inline-block;vertical-align:middle;margin-left:7px;}
+
+  /* ---------- PEBBLES LIST CTA ---------- */
+  .pebbles-cta{background:var(--ink);color:var(--paper);padding:16px;margin:0 0 2px;
+    border-bottom:2px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:14px;}
+  .pebbles-cta .txt .kicker{font-family:"Space Mono";font-size:9px;font-weight:700;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--neon);margin-bottom:5px;}
+  .pebbles-cta .txt p{font-size:12.5px;color:rgba(241,235,222,0.75);line-height:1.4;}
+  .pebbles-cta a{flex:0 0 auto;font-family:"Space Mono";font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:0.04em;background:var(--neon);color:var(--ink);
+    border:1.5px solid var(--neon);padding:8px 13px;text-decoration:none;white-space:nowrap;}
+
+  
+  .idx-count{color:var(--accent);font-family:'Space Mono';font-size:10px;font-weight:700;margin-left:6px;}
+
+  /* ============================================================
+     DESKTOP  (≥ 768px)
+     ============================================================ */
+  @media (min-width:768px){
+    html,body{background:#06100d;}
+    .app{
+      max-width:960px;
+      margin:0 auto;
+      box-shadow:0 0 80px rgba(0,0,0,0.5);
+    }
+    /* Top bar */
+    .top{padding:18px 60px;}
+    .wm{font-size:23px;}
+    /* Hero */
+    .hero{padding:60px 60px 100px;}
+    .hero h1{font-size:58px;max-width:16ch;}
+    .hero p{font-size:15px;max-width:44ch;margin-bottom:28px;}
+    .ask input{font-size:16px;padding:16px 18px 16px 48px;}
+    /* Sections */
+    section{padding:48px 60px 8px;}
+    /* Directory — two columns on desktop */
+    .idx{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--ink);}
+    .idx-row{border-top:none;border-bottom:2px solid var(--ink);border-right:none;}
+    .idx-row:nth-child(odd){border-right:2px solid var(--ink);}
+    .idx-row .nm{font-size:30px;}
+    .idx-row{padding:22px 18px;}
+    /* What's on */
+    .week{padding:32px 36px;}
+    .week h3{font-size:27px;}
+    /* Guides — two columns */
+    #guides{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    /* Overlay — centered panel with backdrop, not full bleed */
+    .overlay{
+      max-width:640px;
+      top:0; left:50%; right:auto; bottom:0;
+      transform:translateX(-50%);
+      inset:auto;
+      position:fixed;
+      width:100%;
+      height:100vh;
+      border-left:2px solid var(--ink);
+      border-right:2px solid var(--ink);
+      box-shadow:0 0 60px rgba(0,0,0,0.5);
+    }
+    .ov-head{padding:22px 32px 18px;}
+    .ov-list{padding:8px 32px 60px;}
+    /* Footer */
+    footer{padding:48px 60px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}.feat-shot,.grid2 .shot{transform:none!important;}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="top">
+    <span class="wm">salt guide</span>
+    <button class="sub-link" onclick="document.getElementById('email').focus()">Subscribe</button>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Your pocket guide to <em>Hastings &amp; St Leonards.</em></h1>
+    <p>What's on, where to eat and where to go by the sea.</p>
+    <div class="ask">
+      <label for="search">What are you after?</label>
+      <div class="field">
+        <span class="ico">⌕</span>
+        <input id="search" type="text" placeholder="A coffee, a roast, somewhere for date night…" autocomplete="off">
+      </div>
+    </div>
+    <svg class="tear" viewBox="0 0 430 40" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 40 L0 18 Q 26 4 54 16 T 108 16 T 162 14 T 216 18 T 270 12 T 324 18 T 378 14 T 430 18 L430 40 Z" fill="#F1EBDE"/>
+    </svg>
+  </div>
+
+  <!-- DIRECTORY -->
+  <section>
+    <div class="eyebrow">Where to go</div>
+    <div class="idx" id="idx"></div>
+  </section>
+
+  <!-- WHAT'S ON -->
+  <section>
+    <div class="eyebrow">What's on</div>
+    <div class="week">
+      <div class="week-count" id="weekCount"></div>
+      <h3>A few things<br><em>worth knowing about.</em></h3>
+      <div id="teasers"></div>
+      <p class="week-note">And that's just the half of it — the full list lands every Sunday evening. Free, and written by someone who actually goes to these things.</p>
+      <a href="https://saltguide.substack.com" target="_blank" rel="noopener" class="week-btn">Get the Sunday edit →</a>
+      <div class="soon-strip">
+        <div class="lbl">Coming up</div>
+        <div id="soonList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUIDES -->
+  <section>
+    <div class="eyebrow">Edited lists</div>
+    <div id="guides"></div>
+  </section>
+
+  <footer>
+    <div class="fm">salt guide</div>
+    <p>PART OF SALT &amp; PEBBLES<br>HASTINGS &amp; ST LEONARDS-ON-SEA<br>PROTOTYPE · PHOTOS ARE PLACEHOLDERS</p>
+  </footer>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="ov-head">
+    <div class="ov-top">
+      <button class="back" onclick="closeOverlay()">←</button>
+      <div class="title" id="ovTitle">Results<span id="ovSub"></span></div>
+    </div>
+    <div class="goodfor" id="subWrap" style="display:none;">
+      <div class="lbl">Type</div>
+      <div class="seg" id="subRow"></div>
+    </div>
+    <div class="goodfor" id="goodfor" style="display:none;">
+      <div class="lbl" id="gfLabel">Good for</div>
+      <div class="gf-row" id="gfRow"></div>
+    </div>
+  </div>
+  <div class="ov-list" id="ovList"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+/* =============================================================
+   SALT GUIDE — v4 data layer
+   Mirrors Supabase schema:
+     types[]  → places.types   (closed list)
+     tags[]   → place_tags     (controlled vocabulary)
+     isFree   → maps to "free-entry" tag + badge
+     sp       → is_salty_pick
+     isNew    → is_new
+   Section logic mirrors type_sections table.
+   ============================================================= */
+
+/* --- type → section map (mirrors type_sections table) --- */
+const TYPE_SECTION = {
+  restaurant:["eatdrink"], cafe:["eatdrink"], bar:["eatdrink"],
+  pub:["eatdrink"], bakery:["eatdrink"], takeaway:["eatdrink"],
+  museum:["culture"], gallery:["culture","family"], theatre:["culture"],
+  music_venue:["culture"], cinema:["culture","family"], workshop:["culture"],
+  gym:["wellness"], yoga_studio:["wellness"], sauna:["wellness"],
+  swim_spot:["wellness","family"], beach:["wellness","family"],
+  park:["family"], garden:["wellness"],
+  playground:["family"], soft_play:["family"], play_cafe:["family","eatdrink"],
+  farm:["family"],
+  shop:["shops"], market:["shops","eatdrink"], holiday_let:["stay"],
+};
+
+/* --- Good-for tag labels (vibe | amenity | audience group only — no cuisine) --- */
+const GOOD_FOR = {
+  "date-night":    "Date night",
+  "night-out":     "Night out",
+  "roast":         "Sunday roast",
+  "breakfast":     "Brunch",
+  "coffee-cake":   "Coffee & cake",
+  "sea-views":     "Sea views",
+  "dog-friendly":  "Dog friendly",
+  "child-friendly":"Family friendly",
+  "vegan-friendly":"Vegan options",
+  "wine":          "Natural wine",
+  "free-entry":    "Free entry",
+  "send":          "SEND friendly",
+};
+
+/* =============================================================
+   VENUES
+   ============================================================= */
+const V = [
+
+  /* ── EAT ───────────────────────────────────────────────── */
+  {slug:"farmyard",n:"Farmyard",types:["restaurant"],a:"St Leonards",
+   tags:["date-night","roast","dog-friendly","child-friendly","vegan-friendly"],
+   b:"Steak, bone marrow, crevettes and oysters washed down with natty wine. Seasonal, farm-to-table at its best.",
+   tip:"Ask for a natural wine pairing.",booking:"book-ahead",sp:true,isNew:false,isFree:false},
+
+  {slug:"lury",n:"Lury",types:["restaurant"],a:"Hastings, New Town",
+   tags:["date-night"],
+   b:"A spectacular Sri Lankan-inspired 12–14 course tasting menu. Nothing else like it on the coast.",
+   tip:"Book well in advance — this is the one for a big occasion.",booking:"book-ahead",sp:false,isNew:false,isFree:false},
+
+  {slug:"coquina",n:"Coquina",types:["restaurant"],a:"Hastings, Old Town",
+   tags:["date-night","sea-views","child-friendly"],
+   b:"Beautiful views and gorgeous plates — good for a quick bite or a more considered meal.",
+   tip:"Try the polenta and the asparagus.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"bayte",n:"Bayte",types:["restaurant"],a:"St Leonards",
+   tags:["date-night","vegan-friendly","dog-friendly","child-friendly"],
+   b:"From the Petersham Nurseries family. Contemporary Italian with a real focus on seafood.",
+   tip:"Any pasta dish is always a good shout.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"three-faces",n:"Three Faces of Del Parc",types:["restaurant"],a:"St Leonards",
+   tags:["date-night"],
+   b:"No à la carte — you get what you get, and it's always brilliant. Balearic house, loudish. Leave the kids at home.",
+   tip:"You must try the cheesecake. Seriously.",booking:"book-ahead",sp:false,isNew:false,isFree:false},
+
+  {slug:"st-clements",n:"St Clements",types:["restaurant"],a:"St Leonards",
+   tags:["date-night","child-friendly"],
+   b:"A perfect bistro for a cosy date night. Great front of house, honest cooking — the kind of place you keep coming back to.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"crown",n:"The Crown",types:["restaurant","pub"],a:"Hastings, Old Town",
+   tags:["child-friendly","vegan-friendly","dog-friendly"],
+   b:"Really good gastropub food, big on seasonality and plant-based options. One of the few reliably open Monday and Tuesday.",
+   tip:"Check their events calendar — something interesting is usually on.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"porters",n:"Porters",types:["restaurant"],a:"Hastings, Old Town",
+   tags:["child-friendly","roast"],
+   b:"Traditional fayre done well in a family-friendly setting. Sunday roasts are a strong move.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"liban-coast",n:"Liban Coast",types:["restaurant"],a:"St Leonards, Marina",
+   tags:["child-friendly","vegan-friendly","sea-views"],
+   b:"You can taste the love here. The falafels are beautiful, the mezze generous.",
+   tip:"Get the chicken main — it's a transcendental experience.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"sumisu",n:"Sumisu Ramen",types:["restaurant"],a:"Hastings, New Town",
+   tags:["vegan-friendly"],
+   b:"The best ramen, with meat from Beak & Tail. Warming and filling — exactly what you want on a grey day.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"kassa",n:"Kassa",types:["restaurant"],a:"St Leonards",
+   tags:["child-friendly"],
+   b:"Stick to the traditional Afghani dishes and you won't be disappointed.",
+   tip:"Try the chicken zerensk — a beautiful berry-jewelled rice dish.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"tonka",n:"Tonka",types:["restaurant","cafe"],a:"Hastings, Old Town",
+   tags:["coffee-cake","child-friendly"],
+   b:"Mauritian-inspired fusion with delicious iced coffees, matcha and really fun cakes.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"winifreds",n:"Winifred's",types:["restaurant"],a:"Hastings, Source Park",
+   tags:["date-night"],
+   b:"Strong early reviews at Source Park. An eclectic menu of fresh, seasonal ingredients.",
+   tip:"Go for the wine, stay for the small plates.",booking:"walk-in",sp:false,isNew:true,isFree:false},
+
+  {slug:"shiosai",n:"Shiosai Sushi",types:["restaurant"],a:"Hastings, Source Park",
+   tags:["date-night"],
+   b:"Andrew Wong of The Seadog serving the most beautiful sushi and sake.",
+   tip:null,booking:"walk-in",sp:false,isNew:true,isFree:false},
+
+  {slug:"albo",n:"Albo",types:["restaurant"],a:"St Leonards",
+   tags:["date-night","night-out"],
+   b:"Formerly Wavey Bar, now on the high street. European-style small plates packed with goodness.",
+   tip:null,booking:"walk-in",sp:false,isNew:true,isFree:false},
+
+  {slug:"boatyard",n:"Boatyard at Heist",types:["restaurant"],a:"St Leonards",
+   tags:["date-night","sea-views"],
+   b:"Inventive seafood from across all cuisines, delicious wines and brilliant front of house.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"arigato",n:"Arigato",types:["restaurant"],a:"St Leonards",
+   tags:["vegan-friendly"],
+   b:"Salmon teriyaki don, sashimi, gyoza and sake. Reliable and always good.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"beacon",n:"The Beacon",types:["restaurant"],a:"Hastings, West Hill",
+   tags:["child-friendly","dog-friendly","sea-views","roast"],
+   b:"Very child-friendly with an enclosed garden and gorgeous views. Sunday roasts are a highlight.",
+   tip:"Parking is challenging — taxi or walk.",booking:"walk-in",sp:true,isNew:false,isFree:false},
+
+  {slug:"royal",n:"The Royal",types:["restaurant","pub"],a:"St Leonards",
+   tags:["date-night","vegan-friendly","dog-friendly","child-friendly","roast"],
+   b:"Seasonally themed with plant-based and à la carte options. High-end gastropub.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"bella-vista",n:"Bella Vista",types:["restaurant"],a:"St Leonards",
+   tags:["date-night"],
+   b:"Lovingly prepared food — all the classics plus some unique seafood offerings.",
+   tip:"Order a cocktail.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"laya",n:"Laya",types:["restaurant"],a:"St Leonards",
+   tags:["child-friendly","vegan-friendly"],
+   b:"Sri Lankan on the St Leonards strip. Good range of curries and rice dishes.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"seadog",n:"The Seadog",types:["restaurant"],a:"Hastings, New Town",
+   tags:["date-night","roast","night-out"],
+   b:"Well-regarded New Town spot serving Asian fusion and a great Sunday roast.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"heist",n:"Heist",types:["restaurant","bar","takeaway"],a:"St Leonards",
+   tags:["date-night","night-out","vegan-friendly","coffee-cake","breakfast","dog-friendly","child-friendly"],
+   b:"Indoor street-food market, café, bar and four vendors — pizza, burgers, Chinese/Nepalese, Mexican. Open every day.",
+   tip:null,booking:"walk-in",sp:true,isNew:false,isFree:false},
+
+  {slug:"gurkha-chef",n:"Gurkha Chef",types:["restaurant","takeaway"],a:"St Leonards",
+   tags:["vegan-friendly"],
+   b:"Authentic Nepalese restaurant and takeaway. Order online via their website.",
+   tip:"Try the momo dumplings — worth the wait.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"imperial",n:"Imperial",types:["pub"],a:"Hastings, New Town",
+   tags:["date-night"],
+   b:"Amazing beer and pizza.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"creperie",n:"Creperie by the Sea",types:["restaurant"],a:"Hastings, New Town",
+   tags:["child-friendly"],
+   b:"French crêperie by the sea.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  /* ── BARS ───────────────────────────────────────────────── */
+  {slug:"rituals",n:"Rituals",types:["bar"],a:"St Leonards, Marina",
+   tags:["night-out","sea-views","date-night"],
+   b:"Newly opened with beautiful interiors and a sea vista at the Marina. Cocktails with a view.",
+   tip:null,booking:"walk-in",sp:false,isNew:true,isFree:false},
+
+  {slug:"cactus-hound",n:"Cactus Hound",types:["bar"],a:"St Leonards",
+   tags:["night-out","date-night"],
+   b:"Spicy margs with an eclectic crowd, loud music and dancing. The kind of place where anything can happen.",
+   tip:"Order a clementine margarita.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"collected-fictions",n:"Collected Fictions",types:["bar"],a:"St Leonards",
+   tags:["date-night","wine"],
+   b:"Natural wine bar. Intimate, knowledgeable, always pouring something interesting.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"graze",n:"Graze on The Grand",types:["bar"],a:"St Leonards",
+   tags:["date-night","child-friendly","wine"],
+   b:"Wine, meats, cheese, pickles and bigger plates too. What's not to love.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"bar40",n:"Bar40",types:["bar"],a:"St Leonards",
+   tags:["night-out","date-night"],
+   b:"Great cocktails and small plates. A relaxed vibe that can go either way — quiet drink or big night.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"seed",n:"Seed",types:["bar"],a:"Hastings, Old Town",
+   tags:["night-out","vegan-friendly"],
+   b:"A tapas bar in the Old Town. Good drinks, shareable plates, buzzy atmosphere.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"noahs-goat",n:"Noah's Goat",types:["bar","cafe"],a:"Hastings, Old Town",
+   tags:["date-night","coffee-cake","child-friendly","wine"],
+   b:"Wine shop and café-bar. Browse the shelves, pick a bottle, drink it there.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  /* ── CAFÉS ──────────────────────────────────────────────── */
+  {slug:"sleeper",n:"Sleeper",types:["cafe","bakery"],a:"St Leonards",
+   tags:["breakfast","coffee-cake","dog-friendly","child-friendly","vegan-friendly"],
+   b:"Great bagels, coffee and lovely artisan goods. Open until they sell out.",
+   tip:null,booking:"walk-in",sp:true,isNew:false,isFree:false},
+
+  {slug:"sonnys",n:"Sonny's",types:["cafe"],a:"St Leonards",
+   tags:["breakfast","child-friendly"],
+   b:"A fishmonger with excellent breakfast and brunch. The food more than makes up for the basic filter coffee.",
+   tip:"The kedgeree is insanely good.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"folks",n:"Folks",types:["cafe"],a:"St Leonards",
+   tags:["coffee-cake","breakfast","child-friendly"],
+   b:"Great coffee and pastries.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"fika",n:"Fika",types:["cafe"],a:"St Leonards",
+   tags:["coffee-cake","vegan-friendly","child-friendly"],
+   b:"Matcha, golden lattes, gorgeous cakes, soups and salads.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"dark-circles",n:"Dark Circles",types:["cafe"],a:"St Leonards, Marina",
+   tags:["coffee-cake","child-friendly"],
+   b:"Dig and sift through records while you sip. Coffee and vinyl — what more do you need.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"forage-fleur",n:"Forage & Fleur",types:["cafe"],a:"St Leonards, Bohemia",
+   tags:["breakfast","coffee-cake","child-friendly"],
+   b:"Also a florist and hairdresser with a secret garden. Unexpected and lovely.",
+   tip:"Keep an eye on the workshops.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"sturdee",n:"Sturdee On The Rocks",types:["cafe"],a:"Hastings, Old Town",
+   tags:["breakfast","child-friendly"],
+   b:"When only a fry-up will do. No frills, proper breakfast, job done.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"bonjour",n:"Bonjour",types:["cafe"],a:"St Leonards",
+   tags:["breakfast","child-friendly"],
+   b:"Take the kids for pancakes. The bubble and squeak's good too.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"good-bean",n:"Good Bean at Goodmans",types:["cafe"],a:"St Leonards",
+   tags:["coffee-cake","child-friendly"],
+   b:"Get a haircut, grab a coffee. An unlikely combo that somehow works.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"stooges",n:"Stooges",types:["cafe"],a:"Hastings, New Town",
+   tags:["coffee-cake"],
+   b:"Speciality tea and coffee. Mixed reviews but worth a visit for the range of teas.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"greyskull",n:"Greyskull",types:["cafe"],a:"Hastings, New Town",
+   tags:["breakfast","coffee-cake"],
+   b:"",tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"goat-ledge",n:"Goat Ledge",types:["cafe"],a:"St Leonards, Seafront",
+   tags:["breakfast","coffee-cake","child-friendly","dog-friendly","vegan-friendly","sea-views"],
+   b:"",tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"selkies",n:"Selkies",types:["cafe"],a:"St Leonards",
+   tags:["breakfast","coffee-cake","child-friendly","dog-friendly","vegan-friendly"],
+   b:"",tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"westhill-kiosk",n:"West Hill Kiosk",types:["cafe"],a:"Hastings, West Hill",
+   tags:["coffee-cake","child-friendly","sea-views"],
+   b:"",tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"arta",n:"Arta",types:["cafe"],a:"Hastings, Old Town",
+   tags:[],b:"",tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"hanushka",n:"Hanushka Coffee House",types:["cafe"],a:"Hastings Old Town",
+   tags:["coffee-cake","child-friendly"],
+   b:"Cosy Old Town coffee house filled with books, coffee, cakes and light food. Small selection of toys for the little ones.",
+   tip:"Two locations — George Street and Robertson Street.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"pump-house",n:"Pump House Café",types:["cafe"],a:"Hastings (Alexandra Park)",
+   tags:["coffee-cake","child-friendly","dog-friendly"],
+   b:"Family-friendly café and deli inside Alexandra Park. A perfect stop on a park walk.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  /* ── BAKERIES ───────────────────────────────────────────── */
+  {slug:"maker-baker",n:"Maker & Baker",types:["bakery"],a:"Hastings, New Town",
+   tags:["coffee-cake","breakfast","child-friendly"],
+   b:"Amazing bakery — the sourdough and pastries are next level.",
+   tip:"Expect queues at weekends.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"judges",n:"Judges",types:["bakery"],a:"Hastings, New Town",
+   tags:["coffee-cake","breakfast","child-friendly"],
+   b:"A solid neighbourhood bakery. Good bread, good pastries, no pretension.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"oak-bakery",n:"The Oak Bakery",types:["bakery"],a:"St Leonards",
+   tags:["coffee-cake","child-friendly"],
+   b:"Another great local bakery keeping St Leonards in sourdough.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  /* ── PARKS & OUTDOORS ──────────────────────────────────── */
+  {slug:"alexandra-park",n:"Alexandra Park",types:["park"],a:"Hastings",
+   tags:["child-friendly","dog-friendly","free-entry"],
+   b:"Hastings' largest park at 109 acres — playground, miniature railway, café and woodland walks.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:true},
+
+  {slug:"hastings-country-park",n:"Hastings Country Park",types:["park"],a:"Hastings, Fairlight",
+   tags:["child-friendly","dog-friendly","free-entry","sea-views"],
+   b:"Wild clifftop country park with coastal walks, ancient woodland and the Bale House Visitor Centre café. One of the best walks on the coast.",
+   tip:"Stop at the Bale House Visitor Centre for coffee and wildlife displays.",booking:"walk-in",sp:false,isNew:false,isFree:true},
+
+  {slug:"hastings-adventure-golf",n:"Hastings Adventure Golf",types:["playground"],a:"Hastings Seafront",
+   tags:["child-friendly"],
+   b:"18-hole pirate-themed adventure golf on the seafront, open 364 days a year. Suitable for ages 3+. £9.25 per round.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"flamingo-amusements",n:"Flamingo Amusements",types:["playground"],a:"Hastings, The Stade",
+   tags:["child-friendly"],
+   b:"Classic seaside arcade — penny falls, crane grabbers and plenty for a rainy day. Open every day until late.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"hastings-miniature-railway",n:"Hastings Miniature Railway",types:["playground"],a:"Hastings Seafront",
+   tags:["child-friendly"],
+   b:"Running since 1948 along the seafront. Steam and diesel locomotives, £3 per ride. Open weekends May–Oct and daily in school holidays.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"west-hill-cliff-railway",n:"West Hill Cliff Railway",types:["playground"],a:"Hastings Old Town",
+   tags:["child-friendly","sea-views"],
+   b:"Historic funicular from 1891 with original Victorian wooden carriages. Weekends 11am–4pm, £5.50 per ride.",
+   tip:"Card payment only.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"fisherwood-farm",n:"Fisherwood Farm",types:["farm"],a:"Near Hastings, Robertsbridge",
+   tags:["child-friendly"],
+   b:"Private alpaca and therapy pygmy goat experience. Exclusive farm visits with hand feeding, homemade food and two acres of countryside.",
+   tip:"All sessions privately booked in advance.",booking:"book-ahead",sp:false,isNew:false,isFree:false},
+
+  /* ── MUSEUMS & CULTURE ─────────────────────────────────── */
+  {slug:"hastings-castle",n:"Hastings Castle",types:["museum","park"],a:"Hastings, West Hill",
+   tags:["child-friendly","sea-views"],
+   b:"A clifftop castle ruin, the 1066 story and panoramic views across the bay. Open daily 10am–5pm.",
+   tip:null,booking:"walk-in",sp:true,isNew:false,isFree:false},
+
+  {slug:"hastings-aquarium",n:"Hastings Aquarium",types:["museum"],a:"Hastings, Rock-a-Nore",
+   tags:["child-friendly"],
+   b:"Sharks, rays and tropical fish with interactive displays and feeding demonstrations. Right on the seafront.",
+   tip:"Under 18s entry £15.65.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"smugglers-adventure",n:"Smugglers Adventure",types:["museum"],a:"Hastings, West Hill",
+   tags:["child-friendly"],
+   b:"Journey through St Clements Caves exploring smuggling history in atmospheric underground tunnels. Ages 4+.",
+   tip:"£11.50 entry.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"fishermens-museum",n:"Hastings Fishermen's Museum",types:["museum"],a:"Hastings, The Stade",
+   tags:["child-friendly","free-entry"],
+   b:"Small museum dedicated to Hastings' fishing industry and maritime history, in the former Fishermen's Church.",
+   tip:"Free entry, donations welcome.",booking:"walk-in",sp:false,isNew:false,isFree:true},
+
+  {slug:"hastings-museum",n:"Hastings Museum & Art Gallery",types:["museum"],a:"Hastings",
+   tags:["child-friendly","free-entry"],
+   b:"Local museum with a global collection and child-friendly spaces. Free entry, open Tue–Sat 10am–5pm.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:true},
+
+  {slug:"mechanical-making",n:"Mechanical Making Space",types:["workshop"],a:"Hastings Old Town",
+   tags:["child-friendly","free-entry"],
+   b:"Hands-on mechanical art studio and automata space. Explore kinetic artworks and tinker with mechanisms.",
+   tip:"Open Saturdays 11am–4pm, other days by appointment.",booking:"walk-in",sp:false,isNew:false,isFree:true},
+
+  {slug:"electric-palace",n:"Electric Palace Cinema",types:["cinema"],a:"Hastings Old Town",
+   tags:["child-friendly","send"],
+   b:"Independent community cinema in the Old Town with family screenings, autism-friendly relaxed screenings and special events.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"hastings-contemporary",n:"Hastings Contemporary",types:["gallery"],a:"Hastings, Rock-a-Nore",
+   tags:["child-friendly","sea-views"],
+   b:"Contemporary art gallery with changing exhibitions and sea views from the terrace. Restaurant and café on site. Under 18s go free.",
+   tip:"Open Wed–Sun 11am–5pm.",booking:"walk-in",sp:true,isNew:false,isFree:false},
+
+  {slug:"de-la-warr",n:"De La Warr Pavilion",types:["gallery"],a:"Bexhill-on-Sea",
+   tags:["child-friendly","sea-views","free-entry"],
+   b:"Contemporary art galleries with free entry, performance spaces, cinema and café. Sea views from the terrace.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:true},
+
+  {slug:"stade-hall",n:"Stade Hall",types:["workshop"],a:"Hastings, The Stade",
+   tags:["child-friendly"],
+   b:"Community arts and events venue hosting workshops, classes and family activities throughout the year.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  /* ── SOFT PLAY & PLAY CAFÉS ────────────────────────────── */
+  {slug:"clambers",n:"Clambers Soft Play",types:["soft_play"],a:"Hastings",
+   tags:["child-friendly"],
+   b:"Indoor play centre close to Hastings Pier with free parking for customers.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"lets-go-play",n:"Let's Go Play",types:["soft_play"],a:"Hastings",
+   tags:["child-friendly"],
+   b:"Multi-level play zones — a circus fairground, a beach area for tots and babies, and a castle adventure zone.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"sensory-soft-play",n:"Sensory Soft Play",types:["soft_play"],a:"Hastings",
+   tags:["child-friendly","send"],
+   b:"SEND charity offering respite sessions, holiday clubs and multi-sensory activities for children with additional needs. Includes a bookable sensory room.",
+   tip:null,booking:"book-ahead",sp:false,isNew:false,isFree:false},
+
+  {slug:"my-tiny-town",n:"My Tiny Town",types:["play_cafe"],a:"St Leonards",
+   tags:["child-friendly"],
+   b:"Indoor role-play café with mini shops and themed play areas. Daily sessions, creative activities and birthday parties.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"glow-baby",n:"Glow Baby Play Centre",types:["play_cafe"],a:"Bexhill-on-Sea",
+   tags:["child-friendly","send"],
+   b:"Play café and children's play centre in Bexhill, offering sessions for babies and young children.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  /* ── LEISURE ────────────────────────────────────────────── */
+  {slug:"summerfields",n:"Summerfields Leisure Centre",types:["gym","swim_spot"],a:"Hastings",
+   tags:["child-friendly"],
+   b:"Leisure centre with swimming pools, gym, fitness classes and sports halls. Regular family swims and birthday packages.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"bexhill-leisure",n:"Bexhill Leisure Centre",types:["gym","swim_spot","soft_play"],a:"Bexhill-on-Sea",
+   tags:["child-friendly"],
+   b:"Gym, soft play, swimming and sports hall. Birthday party packages available.",
+   tip:"Ring ahead to confirm soft play availability.",booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"y-centre",n:"Y Centre Hastings",types:["gym"],a:"St Leonards",
+   tags:["child-friendly"],
+   b:"Community sports hall hosting classes and youth activities.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+
+  {slug:"source-park",n:"The Source Park",types:["gym"],a:"Hastings, White Rock",
+   tags:["child-friendly"],
+   b:"Large indoor underground skatepark on the seafront with two parks, BMX and skate shop, and courtyard food and drink. Coaching for ages 4+.",
+   tip:null,booking:"walk-in",sp:false,isNew:false,isFree:false},
+];
+
+/* =============================================================
+   DIRECTORY CONFIG
+   ============================================================= */
+const CATS = [
+  {id:"eatdrink", label:"Eat & Drink", desc:"Restaurants, bars, coffee & bakeries, street food"},
+  {id:"family",   label:"Family",      desc:"Family restaurants, soft plays, parks & museums", pebblesCta:true},
+  {id:"culture",  label:"Culture",     desc:"Museums, galleries, cinema & workshops"},
+  {id:"stay",     label:"Stay",        soon:true, tagline:"Coastal boltholes & holiday lets"},
+  {id:"wellness", label:"Wellness",    soon:true, tagline:"Saunas, studios & sea swims"},
+  {id:"shops",    label:"Shops",       soon:true, tagline:"Independents & makers"},
+];
+
+/* Segmented "Type" control — the hero filter inside each section. */
+const SUBTYPES = {
+  eatdrink:[
+    {id:"eat",    short:"Eat",    types:["restaurant","pub","takeaway"]},
+    {id:"coffee", short:"Coffee", types:["cafe","bakery"]},
+    {id:"drink",  short:"Drink",  types:["bar"]},
+  ],
+  family:[
+    {id:"softplay", short:"Soft play", types:["soft_play","play_cafe"]},
+    {id:"outdoors", short:"Outdoors",  types:["park","playground","farm","beach"]},
+    {id:"daysout",  short:"Days out",  types:["museum","gallery","cinema","workshop","swim_spot","gym"]},
+    {id:"eat",      short:"Eat",       types:["restaurant","cafe","bakery","bar","pub"]},
+  ],
+  culture:[
+    {id:"museums",   short:"Museums",   types:["museum"]},
+    {id:"galleries", short:"Galleries", types:["gallery"]},
+    {id:"cinema",    short:"Cinema",    types:["cinema"]},
+    {id:"workshops", short:"Workshops", types:["workshop","theatre","music_venue"]},
+  ],
+};
+
+/* Edited lists */
+const GUIDES = [
+  {title:"Best Sunday Roasts",   match:v=>v.tags.includes("roast")},
+  {title:"Date Night",           match:v=>v.tags.includes("date-night")},
+  {title:"Brunch & Breakfast",   match:v=>v.tags.includes("breakfast")},
+  {title:"Dog Friendly",         match:v=>v.tags.includes("dog-friendly")},
+  {title:"Just Landed",          match:v=>v.isNew},
+];
+
+/* Weekend picks — illustrative. Swap weekly. `hot` chip = the lead pick.
+   In production these come from the events table (this Fri–Sun). */
+const WEEK_COUNT = "31 things on this week";
+const TEASERS = [
+  {d:"Fri", t:"<b>Dark Circles</b> goes late — vinyl, small plates and natural wine until midnight on the Marina.",
+   chips:[{x:"Late",hot:true},{x:"Free entry"}]},
+  {d:"Sat", t:"A <b>midsummer ceilidh</b> on the seafront. Live band, caller, everyone welcome — bring soft shoes.",
+   chips:[{x:"Family"},{x:"Outdoors"},{x:"Free"}]},
+  {d:"Sat", t:"<b>Hastings Contemporary</b> late opening with a curator's tour of the new show.",
+   chips:[{x:"Culture"},{x:"Booking"}]},
+  {d:"Sun", t:"<b>Shiosai</b>'s first proper weekend service at Source Park — sushi and sake, walk-ins only.",
+   chips:[{x:"New"},{x:"Food"}]},
+];
+
+/* Coming up — the forward look. Shows the guide knows what's next. */
+const SOON = [
+  {mo:"Jul 5", t:"<b>Stade Saturdays</b> kick off — free family arts on the seafront, every weekend through summer."},
+  {mo:"Jul 12", t:"<b>Coastal Currents</b> open studios begin: artists across Hastings & St Leonards open their doors."},
+  {mo:"Jul 19", t:"<b>Pig racing & pop-ups</b> at the farmers' market — the big one before the holidays hit."},
+];
+
+/* =============================================================
+   LINKS  (website + instagram per venue, keyed by slug)
+   Stored separately so the V[] data stays lean.
+   Maps to places.website_url + places.social_url in Supabase.
+   ============================================================= */
+const LINKS = {
+  /* food */
+  "farmyard":            {w:"https://farmyardwine.com",                          ig:"farmyardwine"},
+  "lury":                {w:"https://www.luryrestaurant.com",                    ig:"lury_restaurant"},
+  "coquina":             {w:"https://www.coquinarestaurant.co.uk",               ig:"coquina.hastings"},
+  "bayte":               {w:"https://www.bayte.co.uk",                           ig:"bayte_stleonards"},
+  "three-faces":         {w:"https://threefacestapas.com",                       ig:"threefacesofdelparc"},
+  "st-clements":         {w:"https://www.stclementsrestaurant.co.uk",            ig:"stclementsstleonards"},
+  "crown":               {w:"https://www.thecrownhastings.co.uk",                ig:"thecrownhastings"},
+  "porters":             {w:"https://www.porterswinebar.com"},
+  "liban-coast":         {w:"https://www.libancoast.com",                        ig:"liban.coast"},
+  "sumisu":              {                                                         ig:"sumisu_ramen"},
+  "heist":               {w:"https://www.heistmarket.com",                       ig:"heistmarket"},
+  "bella-vista":         {w:"https://www.labellavista.co.uk",                    ig:"labellavistaristorante"},
+  "gurkha-chef":         {w:"https://www.gurkhachef.com"},
+  "sleeper":             {w:"https://www.thesleeperstore.co.uk",                 ig:"thesleeperstore"},
+  "dark-circles":        {                                                         ig:"darkcircles.stl"},
+  "forage-fleur":        {                                                         ig:"forageandfleur"},
+  "rituals":             {                                                         ig:"ritualsbar.stleonards"},
+  "noahs-goat":          {                                                         ig:"noahsgoat"},
+  "hanushka":            {                                                         ig:"hanushkacoffeehouse"},
+  /* family / culture */
+  "hastings-castle":     {w:"https://hastingscastle.org.uk"},
+  "hastings-aquarium":   {w:"https://hastingsaquarium.co.uk"},
+  "smugglers-adventure": {w:"https://www.smugglersadventure.co.uk"},
+  "fishermens-museum":   {w:"https://www.ohps.org.uk/hastings-fishermans-museum/"},
+  "hastings-museum":     {w:"https://www.hmag.org.uk"},
+  "hastings-contemporary":{w:"https://www.hastingscontemporary.org",             ig:"hastingscontemporary"},
+  "de-la-warr":          {w:"https://www.dlwp.com",                              ig:"delawarrpavilion"},
+  "electric-palace":     {w:"https://www.electricpalacecinema.com"},
+  "mechanical-making":   {w:"https://cabaret.co.uk"},
+  "stade-hall":          {w:"https://stadehall.com"},
+  "alexandra-park":      {w:"https://www.hastings.gov.uk/parks_gardens_allotments/parks/alexandra/"},
+  "hastings-country-park":{w:"https://www.hastings.gov.uk/parks_gardens_allotments/parks/hastingscountrypark/"},
+  "hastings-adventure-golf":{w:"https://www.hastingsadventuregolf.com"},
+  "west-hill-cliff-railway":{w:"https://www.hastings.gov.uk/coastlinebeaches/cliff-railways/"},
+  "fisherwood-farm":     {w:"https://www.fisherwoodfarm.co.uk"},
+  "clambers":            {w:"https://www.clambers.co.uk"},
+  "lets-go-play":        {w:"https://lets-go-play.co.uk"},
+  "sensory-soft-play":   {w:"https://www.sensoftplay.co.uk"},
+  "my-tiny-town":        {w:"https://mytinytown.co.uk",                          ig:"mytinytown_stleonards"},
+  "glow-baby":           {w:"https://www.glowbabyplaycentre.co.uk"},
+  "summerfields":        {w:"https://www.freedom-leisure.co.uk/centres/summerfields-leisure-centre/"},
+  "bexhill-leisure":     {w:"https://www.freedom-leisure.co.uk/centres/bexhill-leisure-centre/"},
+  "y-centre":            {w:"https://www.ycentrehastings.org.uk"},
+  "source-park":         {w:"https://www.sourcebmx.com/pages/source-park-coaching"},
+};
+
+/* =============================================================
+   SECTION LOGIC  (mirrors Supabase type_sections view)
+   ============================================================= */
+function inSection(id){
+  const EAT_TYPES = ["restaurant","cafe","bar","pub","bakery","takeaway","play_cafe"];
+  let items = V.filter(v => v.types.some(t => (TYPE_SECTION[t]||[]).includes(id)));
+  // child-friendly tag also pulls places into Family (same rule as the DB)
+  if(id==="family"){
+    V.forEach(v=>{
+      if(!items.includes(v) && v.tags.includes("child-friendly")) items.push(v);
+    });
+  }
+  return items;
+}
+
+function img(seed){return `https://picsum.photos/seed/${encodeURIComponent(seed)}/640/440`;}
+
+/* =============================================================
+   RENDER DIRECTORY
+   ============================================================= */
+document.getElementById("idx").innerHTML = CATS.map(c=>{
+  let sub, cls="";
+  if(c.soon){
+    sub=`${c.tagline} <span class="soon-badge">soon</span>`;
+    cls=" soon";
+  } else {
+    const count=inSection(c.id).length;
+    sub=`${c.desc} <span class="idx-count">${count}</span>`;
+  }
+  return `<button class="idx-row${cls}" onclick="openCat('${c.id}','${c.label.replace(/'/g,"\\'")}')">
+    <div class="col"><div class="nm">${c.label}</div><div class="feat">${sub}</div></div>
+    <div class="arrow">→</div>
+  </button>`;
+}).join("");
+
+/* =============================================================
+   RENDER TEASERS & GUIDES
+   ============================================================= */
+document.getElementById("weekCount").textContent = WEEK_COUNT;
+
+document.getElementById("teasers").innerHTML = TEASERS.map(t=>{
+  const chips = (t.chips||[]).map(c=>
+    `<span class="chip${c.hot?" hot":""}">${c.x}</span>`).join("");
+  return `<div class="tz">
+    <div class="d">${t.d}</div>
+    <div class="body">
+      <div class="t">${t.t}</div>
+      ${chips?`<div class="chips">${chips}</div>`:""}
+    </div>
+  </div>`;
+}).join("");
+
+document.getElementById("soonList").innerHTML = SOON.map(s=>
+  `<div class="soon-row"><div class="mo">${s.mo}</div><div class="tx">${s.t}</div></div>`
+).join("");
+
+document.getElementById("guides").innerHTML = GUIDES.map((g,i)=>{
+  const items=V.filter(g.match);
+  const count=items.length?`${items.length} place${items.length>1?"s":""}` : "Still building this one";
+  const rows=items.length
+    ? items.map(v=>`<div class="gv">
+        <div class="gn">${v.n}${v.isFree?'<span class="free-badge">Free</span>':''}</div>
+        <div class="gm">${v.a}${v.tip?` — ${v.tip}`:""}</div>
+      </div>`).join("")
+    : `<div class="gv"><div class="gm" style="text-transform:none;letter-spacing:0;padding:4px 0 8px;">
+        We're still putting this one together — reply to the newsletter with a tip.
+       </div></div>`;
+  return `<div class="guide" id="g${i}">
+    <div class="guide-head" onclick="toggleGuide(${i})">
+      <div><div class="t">${g.title}</div><div class="c">${count}</div></div>
+      <div class="arr">+</div>
+    </div>
+    <div class="guide-body">${rows}</div>
+  </div>`;
+}).join("");
+
+/* =============================================================
+   OVERLAY
+   ============================================================= */
+let CTX = {catId:null, sub:null, tag:null, base:[]};
+
+function toggleGuide(i){document.getElementById("g"+i).classList.toggle("open");}
+
+function renderList(items){
+  const el=document.getElementById("ovList");
+  const pebbles=CTX.catId==="family"
+    ? `<div class="pebbles-cta">
+        <div class="txt">
+          <div class="kicker">Also on Pebbles List</div>
+          <p>Classes, baby groups and local activities — the full family picture.</p>
+        </div>
+        <a href="https://pebbleslist.com" target="_blank" rel="noopener">Visit →</a>
+      </div>` : "";
+  if(!items.length){
+    el.innerHTML=pebbles+`<div class="empty"><div class="bar"></div>
+      <h4>Nothing here yet</h4>
+      <p>We'd rather show nothing than guess. This one's still being tagged.</p></div>`;
+    el.scrollTop=0; return;
+  }
+  el.innerHTML=pebbles+items.map(v=>{
+    const lnk=LINKS[v.slug]||{};
+    /* Directions: in production this uses places.address + places.postcode from Supabase. */
+    const mapsQ=encodeURIComponent(`${v.n}, ${v.a}, East Sussex`);
+    const mapsUrl=`https://maps.google.com/?q=${mapsQ}`;
+    const kind=kindLabel(v);
+    const linksHtml=[
+      lnk.w  ? `<a href="${lnk.w}" target="_blank" rel="noopener">Website →</a>` : "",
+      lnk.ig ? `<a href="https://instagram.com/${lnk.ig}" target="_blank" rel="noopener" class="ig">@${lnk.ig}</a>` : "",
+      `<a href="${mapsUrl}" target="_blank" rel="noopener" class="dir">Maps →</a>`,
+    ].filter(Boolean).join("");
+    return `<div class="rv${v.sp?" pick":""}">
+      <div class="rv-meta">
+        ${v.sp?'<span class="rv-pick">★ Salt pick</span>':''}
+        ${kind?`<span class="rv-kind">${kind}</span>`:""}
+        ${v.isFree?'<span class="free-badge">Free</span>':''}
+      </div>
+      <div class="rn">${v.n}</div>
+      <div class="rm">${v.a}${v.booking==="book-ahead"?" · Book ahead":""}</div>
+      <div class="rb">${v.b||""}${v.tip?`<br><span style="color:var(--ink);font-weight:600">Tip:</span> ${v.tip}`:""}</div>
+      <div class="links">${linksHtml}</div>
+    </div>`;
+  }).join("");
+  el.scrollTop=0;
+}
+
+function renderSubtype(){
+  const wrap=document.getElementById("subWrap"), row=document.getElementById("subRow");
+  const subs=SUBTYPES[CTX.catId];
+  if(!subs){wrap.style.display="none"; return;}
+  wrap.style.display="block";
+  row.innerHTML=
+    `<button class="${CTX.sub===null?"on":""}" onclick="setSub(null)">All</button>`+
+    subs.map(s=>`<button class="${CTX.sub===s.id?"on":""}" onclick="setSub('${s.id}')">${s.short}</button>`).join("");
+}
+
+/* What kind of place — single label shown above each name.
+   Section-aware: in Family a leisure centre reads "Soft play", in
+   Wellness the same place would read "Swimming". */
+const TYPE_LABEL = {
+  restaurant:"Restaurant", cafe:"Café", bar:"Bar", pub:"Pub", bakery:"Bakery", takeaway:"Takeaway",
+  museum:"Museum", gallery:"Gallery", theatre:"Theatre", music_venue:"Live music", cinema:"Cinema", workshop:"Workshop",
+  gym:"Sport & swim", yoga_studio:"Yoga", sauna:"Sauna", swim_spot:"Swimming", beach:"Beach",
+  park:"Park", garden:"Garden", playground:"Seaside fun", soft_play:"Soft play", play_cafe:"Play café", farm:"Farm",
+  shop:"Shop", market:"Market", holiday_let:"Stay",
+};
+const KIND_ORDER = {
+  family:  ["soft_play","play_cafe","playground","park","farm","beach","swim_spot","gym","museum","gallery","cinema","workshop","restaurant","cafe","bakery","bar","pub"],
+  culture: ["museum","gallery","cinema","workshop","theatre","music_venue","park"],
+  eatdrink:["restaurant","bar","pub","cafe","bakery","takeaway"],
+};
+function kindLabel(v){
+  const order=KIND_ORDER[CTX.catId]||[];
+  const t=order.find(x=>v.types.includes(x))||v.types[0];
+  return TYPE_LABEL[t]||"";
+}
+
+/* Per-section filter whitelist — the ONLY "Good for" chips a tab can show.
+   Defined positively so nothing irrelevant can ever leak in. */
+const SECTION_GOODFOR = {
+  eatdrink: ["date-night","roast","breakfast","coffee-cake","sea-views","dog-friendly","vegan-friendly","night-out","wine"],
+  family:   ["free-entry","send"],
+  culture:  ["free-entry"],
+};
+function okTag(t){
+  const allow=SECTION_GOODFOR[CTX.catId];
+  if(allow) return allow.includes(t) && GOOD_FOR[t];
+  return GOOD_FOR[t] && t!=="child-friendly"; // search results: show all
+}
+
+function renderGoodFor(){
+  const wrap=document.getElementById("goodfor"), row=document.getElementById("gfRow");
+  let pool=CTX.base;
+  if(CTX.sub && SUBTYPES[CTX.catId]){
+    const types=(SUBTYPES[CTX.catId].find(s=>s.id===CTX.sub)||{}).types||[];
+    pool=pool.filter(v=>v.types.some(t=>types.includes(t)));
+  }
+  const present=[...new Set(pool.flatMap(v=>v.tags))].filter(t=>okTag(t));
+  if(!present.length){wrap.style.display="none"; return;}
+  wrap.style.display="block";
+  const lbl=document.getElementById("gfLabel");
+  if(lbl){
+    const labels={eatdrink:"Good for", family:"Filter", culture:"Filter"};
+    lbl.textContent = labels[CTX.catId] || "Filter";
+  }
+  row.innerHTML=present.map(t=>
+    `<button class="gf ${CTX.tag===t?"on":""}" onclick="setTag('${t}')">${GOOD_FOR[t]}</button>`
+  ).join("");
+}
+
+function applyCtx(){
+  let items=CTX.base;
+  if(CTX.sub && SUBTYPES[CTX.catId]){
+    const types=(SUBTYPES[CTX.catId].find(s=>s.id===CTX.sub)||{}).types||[];
+    items=items.filter(v=>v.types.some(t=>types.includes(t)));
+  }
+  if(CTX.tag) items=items.filter(v=>v.tags.includes(CTX.tag));
+  document.getElementById("ovSub").textContent=
+    items.length+" place"+(items.length!==1?"s":"");
+  renderList(items);
+  renderSubtype();
+  renderGoodFor();
+}
+
+function openCat(id,label){
+  const cat=CATS.find(c=>c.id===id);
+  document.getElementById("ovTitle").firstChild.textContent=label;
+  if(cat&&cat.soon){
+    document.getElementById("ovSub").textContent="Coming soon";
+    document.getElementById("subWrap").style.display="none";
+    document.getElementById("goodfor").style.display="none";
+    document.getElementById("ovList").innerHTML=`<div class="empty">
+      <div class="bar"></div>
+      <h4>${label} is coming</h4>
+      <p>${cat.tagline}. We're curating it now — reply to the newsletter with somewhere we should include.</p>
+    </div>`;
+    document.getElementById("overlay").classList.add("show"); return;
+  }
+  CTX={catId:id, sub:null, tag:null, base:inSection(id)};
+  applyCtx();
+  document.getElementById("overlay").classList.add("show");
+}
+
+function setSub(s){CTX.sub=s; CTX.tag=null; applyCtx();}
+function setTag(t){CTX.tag=(CTX.tag===t)?null:t; applyCtx();}
+function closeOverlay(){document.getElementById("overlay").classList.remove("show");}
+
+/* =============================================================
+   SEARCH
+   ============================================================= */
+const searchEl=document.getElementById("search");
+let searchTimer;
+searchEl.addEventListener("input",e=>{
+  clearTimeout(searchTimer);
+  const q=e.target.value.trim().toLowerCase();
+  if(q.length<2){closeOverlay(); return;}
+  searchTimer=setTimeout(()=>{
+    const items=V.filter(v=>
+      v.n.toLowerCase().includes(q)||
+      v.a.toLowerCase().includes(q)||
+      (v.b||"").toLowerCase().includes(q)||
+      v.types.some(t=>t.includes(q))||
+      v.tags.some(t=>t.includes(q)||(GOOD_FOR[t]||"").toLowerCase().includes(q))
+    );
+    CTX={catId:null, sub:null, tag:null, base:items};
+    document.getElementById("ovTitle").firstChild.textContent=`"${e.target.value.trim()}"`;
+    document.getElementById("subWrap").style.display="none";
+    document.getElementById("goodfor").style.display="none";
+    renderList(items);
+    document.getElementById("overlay").classList.add("show");
+  },180);
+});
+
+/* =============================================================
+   NEWSLETTER
+   ============================================================= */
+function showToast(m){
+  const t=document.getElementById("toast");
+  t.textContent=m; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2200);
+}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeOverlay();});
+
+</script>
+</body>
+</html>

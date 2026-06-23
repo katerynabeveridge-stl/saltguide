@@ -24,3 +24,5 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: ${{ (github.ref == 'refs/heads/staging' || github.base_ref == 'staging') && 'https://staging.saltguide.co.uk' || 'https://www.saltguide.co.uk' }}
           NEXT_PUBLIC_APP_ENV: ${{ (github.ref == 'refs/heads/staging' || github.base_ref == 'staging') && 'staging' || 'production' }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
