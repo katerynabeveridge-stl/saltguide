@@ -1,4 +1,4 @@
-import type { Category, GuideDef, SoonItem, Teaser } from "./types";
+import type { Category, CuratedGuide, SoonItem, Teaser } from "./types";
 
 export const TYPE_SECTION: Record<string, string[]> = {
   restaurant: ["eatdrink"],
@@ -108,12 +108,82 @@ export const SUBTYPES: Record<
   ],
 };
 
-export const GUIDES: GuideDef[] = [
-  { title: "Best Sunday Roasts", match: (v) => v.tags.includes("roast") },
-  { title: "Date Night", match: (v) => v.tags.includes("date-night") },
-  { title: "Brunch & Breakfast", match: (v) => v.tags.includes("breakfast") },
-  { title: "Dog Friendly", match: (v) => v.tags.includes("dog-friendly") },
-  { title: "Just Landed", match: (v) => v.isNew },
+
+export const CURATED_GUIDES: CuratedGuide[] = [
+  {
+    title: "10 places to watch the World Cup",
+    entries: [
+      {
+        name: "The Seadog",
+        location: "32 Station Rd",
+        ig: "theseadoghastings",
+        description:
+          "Settle in at The Seadog for glorious beer and good craic to go with the on-pitch antics.",
+      },
+      {
+        name: "Bunka",
+        location: "4th Floor, Observer Building",
+        ig: "bunkarestaurant",
+        description:
+          "With the best view (and pizza) in town, Bunka is hosting ticketed screenings of all the England games.",
+      },
+      {
+        name: "The Cutter",
+        location: "11 East Parade, Hastings",
+        description:
+          "For cold Guinness and a lively atmosphere, head to the Cutter on the seafront. It's also running a sweepstake – entry £5.",
+      },
+      {
+        name: "Blackbox",
+        location: "10 George St",
+        ig: "blackboxhst",
+        description:
+          "Football presenter Steve Hopper hosts a special fanzone in the heart of the Old Town, with burgers by new seafront spot Lily's.",
+      },
+      {
+        name: "French's Bar",
+        location: "24 Robertson St",
+        ig: "frenchsbar_hastings",
+        description:
+          "Catch all the England games at cosy French's bar in town and ease any group-stage jitters with a cocktail or two.",
+      },
+      {
+        name: "The Good Place",
+        location: "53-54 Havelock Rd",
+        ig: "thegoodplace_cafebar",
+        description:
+          "With a strict 'no pricks' policy, The Good Place promises a friendly, chilled atmosphere. Tickets from £4, with three big screens + table service.",
+      },
+      {
+        name: "The Prince Albert",
+        location: "28 Cornwallis St",
+        ig: "theprince.albert",
+        description:
+          "Join a friendly crowd at the Prince Albert and enjoy a top selection of cask ales and craft beers.",
+      },
+      {
+        name: "Prince of Wales",
+        location: "15 Western Rd",
+        ig: "thehastingsprojectpub",
+        description:
+          "Support your team and the community at the new Prince of Wales pub, run by the Hastings Project brewery.",
+      },
+      {
+        name: "The Nags Head",
+        location: "8-9 Gensing Rd",
+        ig: "nags_head_stleonards",
+        description:
+          "Promising character, cold pints and good company, The Nags Head serves a rotating selection of guest cask ales.",
+      },
+      {
+        name: "Saint Leonards Church",
+        location: "London Rd",
+        ig: "saintleonardschurchmarket",
+        description:
+          "Head to Saint Leonards Church for a big screen, Brewing Brothers beer and pop-up food vendors. Standing tickets are free.",
+      },
+    ],
+  },
 ];
 
 export const TEASERS: Teaser[] = [

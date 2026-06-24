@@ -31,6 +31,18 @@ export type GuideDef = {
   match: (venue: Venue) => boolean;
 };
 
+export type CuratedGuideEntry = {
+  name: string;
+  location?: string;
+  ig?: string;
+  description: string;
+};
+
+export type CuratedGuide = {
+  title: string;
+  entries: CuratedGuideEntry[];
+};
+
 export type Teaser = {
   d: string;
   t: string;

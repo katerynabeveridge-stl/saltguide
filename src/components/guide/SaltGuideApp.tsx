@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   CATS,
+  CURATED_GUIDES,
   GOOD_FOR,
-  GUIDES,
   INSTAGRAM_URL,
   PEBBLES_URL,
   SUBSTACK_ABOUT_URL,
@@ -284,14 +284,17 @@ export default function SaltGuideApp({ data }: Props) {
         <section>
           <div className="eyebrow">Edited lists</div>
           <div id="guides">
-            {GUIDES.map((guide, i) => {
-              const items = venues.filter(guide.match);
-              const count = items.length
-                ? `${items.length} place${items.length > 1 ? "s" : ""}`
-                : "Still building this one";
+            {CURATED_GUIDES.map((guide, i) => {
+              const count = `${guide.entries.length} place${guide.entries.length !== 1 ? "s" : ""}`;
               return (
                 <div className={`guide${openGuides.has(i) ? " open" : ""}`} key={guide.title}>
-                  <div className="guide-head" onClick={() => toggleGuide(i)} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && toggleGuide(i)}>
+                  <div
+                    className="guide-head"
+                    onClick={() => toggleGuide(i)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === "Enter" && toggleGuide(i)}
+                  >
                     <div>
                       <div className="t">{guide.title}</div>
                       <div className="c">{count}</div>
@@ -299,34 +302,28 @@ export default function SaltGuideApp({ data }: Props) {
                     <div className="arr">+</div>
                   </div>
                   <div className="guide-body">
-                    {items.length
-                      ? items.map((v) => (
-                          <div className="gv" key={v.slug}>
-                            <div className="gn">
-                              {v.n}
-                              {v.isFree ? <span className="free-badge">Free</span> : null}
-                            </div>
-                            <div className="gm">
-                              {v.a}
-                              {v.tip ? ` — ${v.tip}` : ""}
-                            </div>
-                          </div>
-                        ))
-                      : (
-                        <div className="gv">
-                          <div
-                            className="gm"
-                            style={{
-                              textTransform: "none",
-                              letterSpacing: 0,
-                              padding: "4px 0 8px",
-                            }}
-                          >
-                            We&apos;re still putting this one together — reply to the
-                            newsletter with a tip.
-                          </div>
+                    {guide.entries.map((entry) => (
+                      <div className="gv" key={entry.name}>
+                        <div className="gn">{entry.name}</div>
+                        <div className="gm">
+                          {entry.location}
+                          {entry.ig ? (
+                            <>
+                              {entry.location ? " · " : ""}
+                              <a
+                                href={`https://instagram.com/${entry.ig}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="guide-ig"
+                              >
+                                @{entry.ig}
+                              </a>
+                            </>
+                          ) : null}
                         </div>
-                      )}
+                        <div className="gb">{entry.description}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               );

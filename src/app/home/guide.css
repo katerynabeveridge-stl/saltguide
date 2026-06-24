@@ -145,8 +145,11 @@ body:has(.staging-banner) .guide-route .top{
   .guide-body{display:none;padding:0 16px 8px;}
   .guide.open .guide-body{display:block;}
   .gv{padding:10px 0;border-top:1px solid var(--line);}
-  .gv .gn{font-size:13.5px;font-weight:500;}
-  .gv .gm{font-family:'Space Mono';font-size:10px;color:var(--ink-faint);margin-top:2px;text-transform:uppercase;letter-spacing:0.04em;}
+  .gv .gn{font-family:'Fraunces';font-size:15px;font-weight:700;letter-spacing:-0.02em;}
+  .gv .gm{font-family:'Space Mono';font-size:10px;color:var(--ink-faint);margin-top:4px;text-transform:uppercase;letter-spacing:0.04em;}
+  .gv .gm .guide-ig{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);text-transform:none;letter-spacing:0;}
+  .gv .gm .guide-ig:hover{color:var(--neon);border-color:var(--neon);}
+  .gv .gb{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-top:8px;}
 
   /* ---------- FOOTER ---------- */
   footer{background:var(--navy);color:var(--paper);margin-top:34px;padding:32px 20px 44px;text-align:center;}
