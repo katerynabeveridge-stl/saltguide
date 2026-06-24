@@ -1,4 +1,5 @@
 import { SOON, TEASERS, WEEK_COUNT } from "./constants";
+import { mapEventsToWhatsOn, type EventRow, type WhatsOnData } from "./events";
 import fallbackLinks from "./links.json";
 import fallbackVenues from "./venues.json";
 import type { GuideData, SoonItem, Teaser, Venue, VenueLinks } from "./types";
@@ -50,10 +51,34 @@ function buildLinksFromRows(
   return links;
 }
 
-async function fetchFromSupabase(): Promise<GuideData | null> {
-  const supabase = getBuildSupabase();
-  if (!supabase) return null;
+const EVENT_SELECT =
+  "slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, status, places(name)";
 
+function fallbackWhatsOn(): WhatsOnData {
+  return {
+    weekCount: WEEK_COUNT,
+    teasers: TEASERS as Teaser[],
+    soon: SOON as SoonItem[],
+  };
+}
+
+async function fetchEventsFromSupabase(
+  supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
+): Promise<WhatsOnData | null> {
+  const { data, error } = await supabase
+    .from("events")
+    .select(EVENT_SELECT)
+    .eq("status", "published")
+    .order("starts_at");
+
+  if (error || !data?.length) return null;
+
+  return mapEventsToWhatsOn(data as EventRow[]);
+}
+
+async function fetchPlacesFromSupabase(
+  supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
+): Promise<{ venues: Venue[]; links: Record<string, VenueLinks> } | null> {
   const directorySelect =
     "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, status";
 
@@ -77,18 +102,36 @@ async function fetchFromSupabase(): Promise<GuideData | null> {
     return {
       venues: fallback.data.map((row) => mapRowToVenue(row as Record<string, unknown>)),
       links: buildLinksFromRows(fallback.data as Record<string, unknown>[]),
-      weekCount: WEEK_COUNT,
-      teasers: TEASERS,
-      soon: SOON,
     };
   }
 
   return {
     venues: places.map((row) => mapRowToVenue(row as Record<string, unknown>)),
     links: buildLinksFromRows(places as Record<string, unknown>[]),
-    weekCount: WEEK_COUNT,
-    teasers: TEASERS,
-    soon: SOON,
+  };
+}
+
+async function fetchFromSupabase(): Promise<GuideData | null> {
+  const supabase = getBuildSupabase();
+  if (!supabase) return null;
+
+  const [placesResult, eventsResult] = await Promise.all([
+    fetchPlacesFromSupabase(supabase),
+    fetchEventsFromSupabase(supabase),
+  ]);
+
+  const whatsOn = eventsResult ?? fallbackWhatsOn();
+
+  if (!placesResult?.venues.length) {
+    return null;
+  }
+
+  return {
+    venues: placesResult.venues,
+    links: placesResult.links,
+    weekCount: whatsOn.weekCount,
+    teasers: whatsOn.teasers,
+    soon: whatsOn.soon,
   };
 }
 
@@ -96,9 +139,7 @@ function fallbackData(): GuideData {
   return {
     venues: fallbackVenues as Venue[],
     links: fallbackLinks as Record<string, VenueLinks>,
-    weekCount: WEEK_COUNT,
-    teasers: TEASERS as Teaser[],
-    soon: SOON as SoonItem[],
+    ...fallbackWhatsOn(),
   };
 }
 
