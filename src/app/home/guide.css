@@ -261,8 +261,9 @@ body:has(.staging-banner) .guide-route .top{
     /* What's on */
     .week{padding:32px 36px;}
     .week h3{font-size:27px;}
-    /* Guides — two columns */
-    #guides{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    /* Guides — full width stack on desktop */
+    #guides{display:flex;flex-direction:column;gap:14px;}
+    #guides .guide{margin-bottom:0;width:100%;}
     /* Directory — split view when a category is open */
     .where-layout.has-detail{
       display:grid;
