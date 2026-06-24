@@ -227,4 +227,5 @@ export const SECTION_GOODFOR: Record<string, string[]> = {
 
 export const SUBSTACK_ABOUT_URL = "https://saltguide.substack.com/about";
 export const SUBSTACK_URL = "https://saltguide.substack.com";
+export const INSTAGRAM_URL = "https://www.instagram.com/salt.guide/";
 export const PEBBLES_URL = "https://pebbleslist.com";

@@ -5,6 +5,7 @@ import {
   CATS,
   GOOD_FOR,
   GUIDES,
+  INSTAGRAM_URL,
   PEBBLES_URL,
   SUBSTACK_ABOUT_URL,
   SUBSTACK_URL,
@@ -335,12 +336,28 @@ export default function SaltGuideApp({ data }: Props) {
 
         <footer>
           <div className="fm">salt guide</div>
+          <div className="footer-social">
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Saltguide on Instagram"
+            >
+              <InstagramIcon />
+            </a>
+            <a
+              href={SUBSTACK_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Saltguide on Substack"
+            >
+              <SubstackIcon />
+            </a>
+          </div>
           <p>
             PART OF SALT &amp; PEBBLES
             <br />
             HASTINGS &amp; ST LEONARDS-ON-SEA
-            <br />
-            PROTOTYPE · PHOTOS ARE PLACEHOLDERS
           </p>
         </footer>
       </div>
@@ -614,5 +631,24 @@ function PebblesCta() {
         Visit →
       </a>
     </div>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11.5 1.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"
+      />
+    </svg>
+  );
+}
+
+function SubstackIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+      <path fill="currentColor" d="M4 4h16v3H4V4zm0 5h16v3H4V9zm0 5h16v6H4v-6z" />
+    </svg>
   );
 }
