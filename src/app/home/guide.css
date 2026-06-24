@@ -265,7 +265,13 @@ body:has(.staging-banner) .guide-route .top{
     #guides{display:flex;flex-direction:column;gap:14px;}
     #guides .guide{margin-bottom:0;width:100%;}
     /* Directory — full-width detail when a category is open */
-    .where-layout.has-detail .idx{display:none;}
+    .where-layout.has-detail .directory-panel--inline{
+      display:flex;
+      flex-direction:column;
+      width:100%;
+      border:2px solid var(--ink);
+      border-top:none;
+    }
     .directory-panel--sheet{display:none!important;}
     .directory-panel--inline{
       position:static;
@@ -276,12 +282,6 @@ body:has(.staging-banner) .guide-route .top{
       margin:0;
       box-shadow:none;
       z-index:auto;
-    }
-    .where-layout.has-detail .directory-panel--inline{
-      display:flex;
-      flex-direction:column;
-      border:2px solid var(--ink);
-      border-top:none;
     }
     .directory-panel--inline .ov-head{padding:22px 32px 18px;}
     .directory-panel--inline .ov-list{padding:8px 32px 60px;}

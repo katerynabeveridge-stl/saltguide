@@ -193,17 +193,19 @@ export default function SaltGuideApp({ data }: Props) {
         <section className="where-to-go">
           <div className="eyebrow">Where to go</div>
           <div className={`where-layout${overlayOpen ? " has-detail" : ""}`}>
-            <div className="idx">
-              {CATS.map((cat) => (
-                <DirectoryRow
-                  key={cat.id}
-                  cat={cat}
-                  venues={venues}
-                  active={overlayOpen && ctx.catId === cat.id}
-                  onOpen={openCat}
-                />
-              ))}
-            </div>
+            {!overlayOpen ? (
+              <div className="idx">
+                {CATS.map((cat) => (
+                  <DirectoryRow
+                    key={cat.id}
+                    cat={cat}
+                    venues={venues}
+                    active={false}
+                    onOpen={openCat}
+                  />
+                ))}
+              </div>
+            ) : null}
             <DirectoryPanel
               variant="inline"
               open={overlayOpen}
