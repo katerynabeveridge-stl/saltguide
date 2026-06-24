@@ -278,7 +278,6 @@ body:has(.staging-banner) .guide-route .top{
       flex-direction:column;
       width:100%;
       border:2px solid var(--ink);
-      border-top:none;
     }
     .directory-panel--sheet{display:none!important;}
     .directory-panel--inline{
