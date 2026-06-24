@@ -130,12 +130,14 @@ export default function SaltGuideApp({ data }: Props) {
   }, [search, venues]);
 
   useEffect(() => {
-    if (overlayOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    const mq = window.matchMedia("(max-width: 767px)");
+    const lockScroll = () => {
+      document.body.style.overflow = overlayOpen && mq.matches ? "hidden" : "";
+    };
+    lockScroll();
+    mq.addEventListener("change", lockScroll);
     return () => {
+      mq.removeEventListener("change", lockScroll);
       document.body.style.overflow = "";
     };
   }, [overlayOpen]);
@@ -188,12 +190,37 @@ export default function SaltGuideApp({ data }: Props) {
           </svg>
         </div>
 
-        <section>
+        <section className="where-to-go">
           <div className="eyebrow">Where to go</div>
-          <div className="idx">
-            {CATS.map((cat) => (
-              <DirectoryRow key={cat.id} cat={cat} venues={venues} onOpen={openCat} />
-            ))}
+          <div className={`where-layout${overlayOpen ? " has-detail" : ""}`}>
+            <div className="idx">
+              {CATS.map((cat) => (
+                <DirectoryRow
+                  key={cat.id}
+                  cat={cat}
+                  venues={venues}
+                  active={overlayOpen && ctx.catId === cat.id}
+                  onOpen={openCat}
+                />
+              ))}
+            </div>
+            <DirectoryPanel
+              variant="inline"
+              open={overlayOpen}
+              title={ovTitle}
+              subtitle={ovSub}
+              showSubtypes={showSubtypes}
+              showGoodFor={showGoodFor}
+              gfLabel={gfLabel}
+              ctx={ctx}
+              soonOverlay={soonOverlay}
+              soonMessage={soonMessage}
+              filteredItems={filteredItems}
+              links={links}
+              onClose={closeOverlay}
+              onSetSub={setSub}
+              onSetTag={setTag}
+            />
           </div>
         </section>
 
@@ -316,94 +343,153 @@ export default function SaltGuideApp({ data }: Props) {
         </footer>
       </div>
 
-      <div className={`overlay${overlayOpen ? " show" : ""}`}>
-        <div className="ov-head">
-          <div className="ov-top">
-            <button type="button" className="back" onClick={closeOverlay} aria-label="Back">
-              ←
-            </button>
-            <div className="title">
-              {ovTitle}
-              <span>{ovSub}</span>
+      <DirectoryPanel
+        variant="sheet"
+        open={overlayOpen}
+        title={ovTitle}
+        subtitle={ovSub}
+        showSubtypes={showSubtypes}
+        showGoodFor={showGoodFor}
+        gfLabel={gfLabel}
+        ctx={ctx}
+        soonOverlay={soonOverlay}
+        soonMessage={soonMessage}
+        filteredItems={filteredItems}
+        links={links}
+        onClose={closeOverlay}
+        onSetSub={setSub}
+        onSetTag={setTag}
+      />
+    </>
+  );
+}
+
+function DirectoryPanel({
+  variant,
+  open,
+  title,
+  subtitle,
+  showSubtypes,
+  showGoodFor,
+  gfLabel,
+  ctx,
+  soonOverlay,
+  soonMessage,
+  filteredItems,
+  links,
+  onClose,
+  onSetSub,
+  onSetTag,
+}: {
+  variant: "inline" | "sheet";
+  open: boolean;
+  title: string;
+  subtitle: string;
+  showSubtypes: boolean;
+  showGoodFor: boolean;
+  gfLabel: string;
+  ctx: CtxState;
+  soonOverlay: boolean;
+  soonMessage: { title: string; body: string };
+  filteredItems: Venue[];
+  links: Record<string, VenueLinks>;
+  onClose: () => void;
+  onSetSub: (sub: string | null) => void;
+  onSetTag: (tag: string) => void;
+}) {
+  return (
+    <div
+      className={`directory-panel directory-panel--${variant}${open ? " show" : ""}`}
+      aria-hidden={!open}
+    >
+      <div className="ov-head">
+        <div className="ov-top">
+          <button type="button" className="back" onClick={onClose} aria-label="Back">
+            ←
+          </button>
+          <div className="title">
+            {title}
+            <span>{subtitle}</span>
+          </div>
+        </div>
+        {showSubtypes ? (
+          <div className="goodfor">
+            <div className="lbl">Type</div>
+            <div className="seg">
+              <button
+                type="button"
+                className={ctx.sub === null ? "on" : ""}
+                onClick={() => onSetSub(null)}
+              >
+                All
+              </button>
+              {(SUBTYPES[ctx.catId as string] || []).map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  className={ctx.sub === s.id ? "on" : ""}
+                  onClick={() => onSetSub(s.id)}
+                >
+                  {s.short}
+                </button>
+              ))}
             </div>
           </div>
-          {showSubtypes ? (
-            <div className="goodfor">
-              <div className="lbl">Type</div>
-              <div className="seg">
+        ) : null}
+        {showGoodFor ? (
+          <div className="goodfor">
+            <div className="lbl">{gfLabel}</div>
+            <div className="gf-row">
+              {presentTags(ctx).map((t) => (
                 <button
+                  key={t}
                   type="button"
-                  className={ctx.sub === null ? "on" : ""}
-                  onClick={() => setSub(null)}
+                  className={`gf${ctx.tag === t ? " on" : ""}`}
+                  onClick={() => onSetTag(t)}
                 >
-                  All
+                  {GOOD_FOR[t]}
                 </button>
-                {(SUBTYPES[ctx.catId as string] || []).map((s) => (
-                  <button
-                    key={s.id}
-                    type="button"
-                    className={ctx.sub === s.id ? "on" : ""}
-                    onClick={() => setSub(s.id)}
-                  >
-                    {s.short}
-                  </button>
-                ))}
-              </div>
+              ))}
             </div>
-          ) : null}
-          {showGoodFor ? (
-            <div className="goodfor">
-              <div className="lbl">{gfLabel}</div>
-              <div className="gf-row">
-                {presentTags(ctx).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    className={`gf${ctx.tag === t ? " on" : ""}`}
-                    onClick={() => setTag(t)}
-                  >
-                    {GOOD_FOR[t]}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : null}
-        </div>
-        <div className="ov-list">
-          {soonOverlay ? (
-            <div className="empty">
-              <div className="bar" />
-              <h4>{soonMessage.title}</h4>
-              <p>{soonMessage.body}</p>
-            </div>
-          ) : (
-            <VenueList
-              items={filteredItems}
-              links={links}
-              catId={ctx.catId}
-              showPebbles={ctx.catId === "family"}
-            />
-          )}
-        </div>
+          </div>
+        ) : null}
       </div>
-    </>
+      <div className="ov-list">
+        {soonOverlay ? (
+          <div className="empty">
+            <div className="bar" />
+            <h4>{soonMessage.title}</h4>
+            <p>{soonMessage.body}</p>
+          </div>
+        ) : (
+          <VenueList
+            items={filteredItems}
+            links={links}
+            catId={ctx.catId}
+            showPebbles={ctx.catId === "family"}
+          />
+        )}
+      </div>
+    </div>
   );
 }
 
 function DirectoryRow({
   cat,
   venues,
+  active,
   onOpen,
 }: {
   cat: Category;
   venues: Venue[];
+  active: boolean;
   onOpen: (id: string, label: string) => void;
 }) {
   if (cat.soon) {
     return (
       <button
         type="button"
-        className="idx-row soon"
+        className={`idx-row soon${active ? " is-active" : ""}`}
         onClick={() => onOpen(cat.id, cat.label)}
       >
         <div className="col">
@@ -421,7 +507,7 @@ function DirectoryRow({
   return (
     <button
       type="button"
-      className="idx-row"
+      className={`idx-row${active ? " is-active" : ""}`}
       onClick={() => onOpen(cat.id, cat.label)}
     >
       <div className="col">
