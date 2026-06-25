@@ -1,4 +1,4 @@
-import type { Category, CuratedGuide, SoonItem, Teaser } from "./types";
+import type { Category, CuratedGuide, GuideEvent } from "./types";
 
 export const TYPE_SECTION: Record<string, string[]> = {
   restaurant: ["eatdrink"],
@@ -186,41 +186,75 @@ export const CURATED_GUIDES: CuratedGuide[] = [
   },
 ];
 
-export const TEASERS: Teaser[] = [
+export const TEASERS: GuideEvent[] = [
   {
-    d: "Fri",
-    t: "<b>Dark Circles</b> goes late — vinyl, small plates and natural wine until midnight on the Marina.",
+    slug: "dark-circles-late",
+    dateLabel: "FRI",
+    dateSub: "27",
+    title: "Dark Circles",
+    venue: "Marina",
+    time: "7pm–midnight",
+    description:
+      "Vinyl, small plates and natural wine until midnight on the Marina.",
     chips: [{ x: "Late", hot: true }, { x: "Free entry" }],
   },
   {
-    d: "Sat",
-    t: "<b>A midsummer ceilidh</b> on the seafront. Live band, caller, everyone welcome — bring soft shoes.",
+    slug: "midsummer-ceilidh",
+    dateLabel: "SAT",
+    dateSub: "28",
+    title: "A midsummer ceilidh",
+    venue: "Seafront",
+    description:
+      "Live band, caller, everyone welcome — bring soft shoes.",
     chips: [{ x: "Family" }, { x: "Outdoors" }, { x: "Free" }],
   },
   {
-    d: "Sat",
-    t: "<b>Hastings Contemporary</b> late opening with a curator's tour of the new show.",
-    chips: [{ x: "Culture" }, { x: "Booking" }],
+    slug: "hastings-contemporary-late",
+    dateLabel: "SAT",
+    dateSub: "28",
+    title: "Hastings Contemporary late opening",
+    venue: "Hastings Contemporary",
+    time: "6pm",
+    description: "Curator's tour of the new show.",
+    chips: [{ x: "Culture" }],
+    bookingUrl: "https://saltguide.substack.com",
   },
   {
-    d: "Sun",
-    t: "<b>Shiosai</b>'s first proper weekend service at Source Park — sushi and sake, walk-ins only.",
+    slug: "shiosai-weekend",
+    dateLabel: "SUN",
+    dateSub: "29",
+    title: "Shiosai weekend service",
+    venue: "Source Park",
+    description: "Sushi and sake, walk-ins only.",
     chips: [{ x: "New" }, { x: "Food" }],
   },
 ];
 
-export const SOON: SoonItem[] = [
+export const SOON: GuideEvent[] = [
   {
-    mo: "Jul 5",
-    t: "<b>Stade Saturdays</b> kick off — free family arts on the seafront, every weekend through summer.",
+    slug: "stade-saturdays",
+    dateLabel: "JUL",
+    dateSub: "5",
+    title: "Stade Saturdays",
+    venue: "Seafront",
+    description:
+      "Free family arts on the seafront, every weekend through summer.",
   },
   {
-    mo: "Jul 12",
-    t: "<b>Coastal Currents</b> open studios begin: artists across Hastings & St Leonards open their doors.",
+    slug: "coastal-currents",
+    dateLabel: "JUL",
+    dateSub: "12",
+    title: "Coastal Currents open studios",
+    description:
+      "Artists across Hastings & St Leonards open their doors.",
   },
   {
-    mo: "Jul 19",
-    t: "<b>Pig racing & pop-ups</b> at the farmers' market — the big one before the holidays hit.",
+    slug: "farmers-market-july",
+    dateLabel: "JUL",
+    dateSub: "19",
+    title: "Pig racing & pop-ups",
+    venue: "Farmers' market",
+    description: "The big one before the holidays hit.",
   },
 ];
 

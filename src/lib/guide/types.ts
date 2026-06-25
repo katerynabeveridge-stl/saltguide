@@ -43,15 +43,17 @@ export type CuratedGuide = {
   entries: CuratedGuideEntry[];
 };
 
-export type Teaser = {
-  d: string;
-  t: string;
+export type GuideEvent = {
+  slug: string;
+  dateLabel: string;
+  dateSub?: string;
+  title: string;
+  venue?: string;
+  time?: string;
+  description?: string;
   chips?: { x: string; hot?: boolean }[];
-};
-
-export type SoonItem = {
-  mo: string;
-  t: string;
+  bookingUrl?: string;
+  isSaltyPick?: boolean;
 };
 
 export type CtxState = {
@@ -65,6 +67,6 @@ export type GuideData = {
   venues: Venue[];
   links: Record<string, VenueLinks>;
   weekCount: string;
-  teasers: Teaser[];
-  soon: SoonItem[];
+  teasers: GuideEvent[];
+  soon: GuideEvent[];
 };

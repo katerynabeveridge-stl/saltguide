@@ -2,7 +2,7 @@ import { SOON, TEASERS, WEEK_COUNT } from "./constants";
 import { mapEventsToWhatsOn, type EventRow, type WhatsOnData } from "./events";
 import fallbackLinks from "./links.json";
 import fallbackVenues from "./venues.json";
-import type { GuideData, SoonItem, Teaser, Venue, VenueLinks } from "./types";
+import type { GuideData, GuideEvent, Venue, VenueLinks } from "./types";
 import { getBuildSupabase } from "../supabase/build";
 
 function venueDescription(row: Record<string, unknown>): string {
@@ -57,8 +57,8 @@ const EVENT_SELECT =
 function fallbackWhatsOn(): WhatsOnData {
   return {
     weekCount: WEEK_COUNT,
-    teasers: TEASERS as Teaser[],
-    soon: SOON as SoonItem[],
+    teasers: TEASERS as GuideEvent[],
+    soon: SOON as GuideEvent[],
   };
 }
 

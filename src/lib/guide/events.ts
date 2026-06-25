@@ -1,4 +1,4 @@
-import type { SoonItem, Teaser } from "./types";
+import type { GuideEvent } from "./types";
 
 const TZ = "Europe/London";
 
@@ -19,8 +19,8 @@ export type EventRow = {
 
 export type WhatsOnData = {
   weekCount: string;
-  teasers: Teaser[];
-  soon: SoonItem[];
+  teasers: GuideEvent[];
+  soon: GuideEvent[];
 };
 
 const CHIP_LABELS: Record<string, string> = {
@@ -37,6 +37,9 @@ const CHIP_LABELS: Record<string, string> = {
   sport: "Sport",
   kids: "Kids",
   send: "SEND friendly",
+  market: "Market",
+  exhibition: "Exhibition",
+  workshop: "Workshop",
 };
 
 function humanizeType(slug: string): string {
@@ -115,45 +118,189 @@ function currentWeekRange(now = new Date()): { start: Date; end: Date } {
   return { start: monday, end: sunday };
 }
 
-function inRange(iso: string, start: Date, end: Date): boolean {
-  const t = londonDate(iso).getTime();
-  return t >= start.getTime() && t <= end.getTime();
+function eventEndDay(row: EventRow): Date {
+  const end = row.ends_at ? londonDate(row.ends_at) : londonDate(row.starts_at);
+  return startOfDayLondon(end);
 }
 
-function formatDayLabel(iso: string): string {
+function overlapsRange(
+  row: EventRow,
+  rangeStart: Date,
+  rangeEnd: Date,
+): boolean {
+  const start = startOfDayLondon(londonDate(row.starts_at));
+  const end = eventEndDay(row);
+  return start.getTime() <= rangeEnd.getTime() && end.getTime() >= rangeStart.getTime();
+}
+
+function formatWeekdayShort(d: Date): string {
   return new Intl.DateTimeFormat("en-GB", {
     timeZone: TZ,
     weekday: "short",
-  }).format(londonDate(iso));
+  })
+    .format(d)
+    .toUpperCase()
+    .replace(".", "");
 }
 
-function formatSoonLabel(iso: string): string {
-  const parts = new Intl.DateTimeFormat("en-GB", {
+function formatDayNumber(d: Date): string {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    day: "numeric",
+  }).format(d);
+}
+
+function formatMonthShort(d: Date): string {
+  return new Intl.DateTimeFormat("en-GB", {
     timeZone: TZ,
     month: "short",
-    day: "numeric",
+  })
+    .format(d)
+    .toUpperCase()
+    .replace(".", "");
+}
+
+function sameCalendarDay(a: Date, b: Date): boolean {
+  return (
+    formatDayNumber(a) === formatDayNumber(b) &&
+    formatMonthShort(a) === formatMonthShort(b) &&
+    new Intl.DateTimeFormat("en-GB", { timeZone: TZ, year: "numeric" }).format(
+      a,
+    ) ===
+      new Intl.DateTimeFormat("en-GB", { timeZone: TZ, year: "numeric" }).format(
+        b,
+      )
+  );
+}
+
+function formatEventDateBlock(
+  startsAt: string,
+  endsAt: string | null,
+): { dateLabel: string; dateSub?: string } {
+  const start = londonDate(startsAt);
+  const end = endsAt ? londonDate(endsAt) : start;
+  const startDay = startOfDayLondon(start);
+  const endDay = startOfDayLondon(end);
+
+  if (sameCalendarDay(startDay, endDay)) {
+    return {
+      dateLabel: formatWeekdayShort(start),
+      dateSub: formatDayNumber(start),
+    };
+  }
+
+  const startMonth = formatMonthShort(start);
+  const endMonth = formatMonthShort(end);
+  const startWd = formatWeekdayShort(start);
+  const endWd = formatWeekdayShort(end);
+  const startNum = formatDayNumber(start);
+  const endNum = formatDayNumber(end);
+
+  if (startMonth === endMonth) {
+    return {
+      dateLabel: `${startWd}–${endWd}`,
+      dateSub: `${startNum}–${endNum}`,
+    };
+  }
+
+  return {
+    dateLabel: `${startNum} ${startMonth}`,
+    dateSub: `${endNum} ${endMonth}`,
+  };
+}
+
+function formatSoonDateBlock(
+  startsAt: string,
+  endsAt: string | null,
+): { dateLabel: string; dateSub?: string } {
+  const start = londonDate(startsAt);
+  const end = endsAt ? londonDate(endsAt) : start;
+  const startDay = startOfDayLondon(start);
+  const endDay = startOfDayLondon(end);
+
+  if (sameCalendarDay(startDay, endDay)) {
+    return {
+      dateLabel: formatMonthShort(start),
+      dateSub: formatDayNumber(start),
+    };
+  }
+
+  const startMonth = formatMonthShort(start);
+  const endMonth = formatMonthShort(end);
+  if (startMonth === endMonth) {
+    return {
+      dateLabel: startMonth,
+      dateSub: `${formatDayNumber(start)}–${formatDayNumber(end)}`,
+    };
+  }
+
+  return {
+    dateLabel: `${formatDayNumber(start)} ${startMonth}`,
+    dateSub: `${formatDayNumber(end)} ${endMonth}`,
+  };
+}
+
+function hasMeaningfulTime(iso: string): boolean {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
   }).formatToParts(londonDate(iso));
-  const month = parts.find((p) => p.type === "month")?.value ?? "";
-  const day = parts.find((p) => p.type === "day")?.value ?? "";
-  return `${month} ${day}`;
+  const hour = Number(parts.find((p) => p.type === "hour")?.value ?? 0);
+  const minute = Number(parts.find((p) => p.type === "minute")?.value ?? 0);
+  return !(hour === 0 && minute === 0);
 }
 
-function teaserBody(row: EventRow): string {
+function formatTimeShort(iso: string): string {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  })
+    .format(londonDate(iso))
+    .toLowerCase()
+    .replace(/\s/g, "");
+}
+
+function formatEventTime(startsAt: string, endsAt: string | null): string | undefined {
+  const startHasTime = hasMeaningfulTime(startsAt);
+  const endHasTime = endsAt ? hasMeaningfulTime(endsAt) : false;
+
+  if (!startHasTime && !endHasTime) return undefined;
+
+  const startTime = formatTimeShort(startsAt);
+  if (!endsAt || !endHasTime) {
+    return startHasTime ? startTime : undefined;
+  }
+
+  const endTime = formatTimeShort(endsAt);
+  if (startTime === endTime) return startTime;
+  return `${startTime}–${endTime}`;
+}
+
+function resolveVenue(row: EventRow): string | undefined {
+  const places = row.places;
+  if (places) {
+    const place = Array.isArray(places) ? places[0] : places;
+    if (place?.name?.trim()) return place.name.trim();
+  }
+  const free = row.venue_freetext?.trim();
+  return free || undefined;
+}
+
+function eventDescription(row: EventRow): string | undefined {
   const desc =
-    row.description_short?.trim() ||
-    row.description_long?.trim() ||
-    "";
-  const title = row.title.trim();
-  if (!desc) return `<b>${title}</b>`;
-  if (desc.startsWith("<")) return desc;
-  return `<b>${title}</b> ${desc}`;
+    row.description_short?.trim() || row.description_long?.trim() || "";
+  return desc || undefined;
 }
 
-function buildChips(row: EventRow, markHot: boolean): Teaser["chips"] {
-  const chips: NonNullable<Teaser["chips"]> = [];
+function buildChips(row: EventRow, markHot: boolean): GuideEvent["chips"] {
+  const chips: NonNullable<GuideEvent["chips"]> = [];
   const seen = new Set<string>();
 
-  for (const type of row.event_types ?? []) {
+  for (const type of (row.event_types ?? []).slice(0, 2)) {
     const label = CHIP_LABELS[type] ?? humanizeType(type);
     if (seen.has(label)) continue;
     seen.add(label);
@@ -166,14 +313,35 @@ function buildChips(row: EventRow, markHot: boolean): Teaser["chips"] {
   if (row.is_free && !seen.has("Free")) {
     chips.push({ x: "Free" });
   }
-  if (row.booking_url && !seen.has("Booking")) {
-    chips.push({ x: "Booking" });
-  }
-  if (row.is_salty_pick && chips.length === 0) {
+  if (row.is_salty_pick && !chips.some((c) => c.hot)) {
     chips.push({ x: "Salt pick", hot: markHot });
   }
 
-  return chips.length ? chips : undefined;
+  return chips.length ? chips.slice(0, 3) : undefined;
+}
+
+function mapRowToGuideEvent(
+  row: EventRow,
+  markHot: boolean,
+  variant: "weekend" | "soon",
+): GuideEvent {
+  const { dateLabel, dateSub } =
+    variant === "soon"
+      ? formatSoonDateBlock(row.starts_at, row.ends_at)
+      : formatEventDateBlock(row.starts_at, row.ends_at);
+
+  return {
+    slug: row.slug,
+    dateLabel,
+    dateSub,
+    title: row.title.trim(),
+    venue: resolveVenue(row),
+    time: formatEventTime(row.starts_at, row.ends_at),
+    description: eventDescription(row),
+    chips: buildChips(row, markHot),
+    bookingUrl: row.booking_url?.trim() || undefined,
+    isSaltyPick: row.is_salty_pick,
+  };
 }
 
 export function mapEventsToWhatsOn(rows: EventRow[]): WhatsOnData | null {
@@ -183,26 +351,23 @@ export function mapEventsToWhatsOn(rows: EventRow[]): WhatsOnData | null {
   const week = currentWeekRange(now);
   const weekend = featuredWeekendRange(now);
 
-  const thisWeek = rows.filter((r) => inRange(r.starts_at, week.start, week.end));
+  const thisWeek = rows.filter((r) => overlapsRange(r, week.start, week.end));
   const weekendEvents = rows.filter((r) =>
-    inRange(r.starts_at, weekend.start, weekend.end),
+    overlapsRange(r, weekend.start, weekend.end),
   );
   const soonEvents = rows
-    .filter((r) => londonDate(r.starts_at).getTime() > weekend.end.getTime())
+    .filter((r) => startOfDayLondon(londonDate(r.starts_at)).getTime() > weekend.end.getTime())
     .slice(0, 3);
 
   const weekCount = `${thisWeek.length} thing${thisWeek.length !== 1 ? "s" : ""} on this week`;
 
-  const teasers: Teaser[] = weekendEvents.slice(0, 6).map((row, i) => ({
-    d: formatDayLabel(row.starts_at),
-    t: teaserBody(row),
-    chips: buildChips(row, i === 0),
-  }));
+  const teasers: GuideEvent[] = weekendEvents
+    .slice(0, 6)
+    .map((row, i) => mapRowToGuideEvent(row, i === 0, "weekend"));
 
-  const soon: SoonItem[] = soonEvents.map((row) => ({
-    mo: formatSoonLabel(row.starts_at),
-    t: teaserBody(row),
-  }));
+  const soon: GuideEvent[] = soonEvents.map((row) =>
+    mapRowToGuideEvent(row, false, "soon"),
+  );
 
   return { weekCount, teasers, soon };
 }

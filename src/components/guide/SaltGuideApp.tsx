@@ -18,7 +18,7 @@ import {
   presentTags,
   searchVenues,
 } from "../../lib/guide/filters";
-import type { Category, CtxState, GuideData, Venue, VenueLinks } from "../../lib/guide/types";
+import type { Category, CtxState, GuideData, GuideEvent, Venue, VenueLinks } from "../../lib/guide/types";
 
 type Props = {
   data: GuideData;
@@ -237,22 +237,8 @@ export default function SaltGuideApp({ data }: Props) {
               <em>worth knowing about.</em>
             </h3>
             <div>
-              {teasers.map((t, i) => (
-                <div className="tz" key={`${t.d}-${i}`}>
-                  <div className="d">{t.d}</div>
-                  <div className="body">
-                    <div className="t" dangerouslySetInnerHTML={{ __html: t.t }} />
-                    {t.chips?.length ? (
-                      <div className="chips">
-                        {t.chips.map((c) => (
-                          <span key={c.x} className={`chip${c.hot ? " hot" : ""}`}>
-                            {c.x}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
+              {teasers.map((event) => (
+                <EventHighlight key={event.slug} event={event} variant="weekend" />
               ))}
             </div>
             <p className="week-note">
@@ -270,11 +256,8 @@ export default function SaltGuideApp({ data }: Props) {
             <div className="soon-strip">
               <div className="lbl">Coming up</div>
               <div>
-                {soon.map((s) => (
-                  <div className="soon-row" key={s.mo}>
-                    <div className="mo">{s.mo}</div>
-                    <div className="tx" dangerouslySetInnerHTML={{ __html: s.t }} />
-                  </div>
+                {soon.map((event) => (
+                  <EventHighlight key={event.slug} event={event} variant="soon" />
                 ))}
               </div>
             </div>
@@ -614,6 +597,53 @@ function VenueList({
         );
       })}
     </>
+  );
+}
+
+function EventHighlight({
+  event,
+  variant,
+}: {
+  event: GuideEvent;
+  variant: "weekend" | "soon";
+}) {
+  const meta = [event.venue, event.time].filter(Boolean).join(" · ");
+
+  return (
+    <div className={`ev${variant === "soon" ? " ev--soon" : ""}`}>
+      <div className="ev-date">
+        <span className="ev-day">{event.dateLabel}</span>
+        {event.dateSub ? <span className="ev-sub">{event.dateSub}</span> : null}
+      </div>
+      <div className="ev-body">
+        <div className="ev-title">{event.title}</div>
+        {meta ? <div className="ev-meta">{meta}</div> : null}
+        {event.description ? <p className="ev-desc">{event.description}</p> : null}
+        {event.chips?.length || event.bookingUrl ? (
+          <div className="ev-foot">
+            {event.chips?.length ? (
+              <div className="ev-chips">
+                {event.chips.map((c) => (
+                  <span key={c.x} className={`ev-chip${c.hot ? " hot" : ""}`}>
+                    {c.x}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+            {event.bookingUrl ? (
+              <a
+                className="ev-book"
+                href={event.bookingUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Book →
+              </a>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+    </div>
   );
 }
 
