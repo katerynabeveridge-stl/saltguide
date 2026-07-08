@@ -43,6 +43,7 @@ export type CuratedGuide = {
   entries: CuratedGuideEntry[];
 };
 
+/** Structured highlight used by older weekend/soon blocks and fallbacks. */
 export type GuideEvent = {
   slug: string;
   dateLabel: string;
@@ -56,6 +57,33 @@ export type GuideEvent = {
   isSaltyPick?: boolean;
 };
 
+export type EventCat =
+  | "music"
+  | "night"
+  | "food"
+  | "art"
+  | "perform"
+  | "film"
+  | "market"
+  | "workshop"
+  | "outdoors";
+
+/** Flat feed card for the new What's On UI. */
+export type FeedEvent = {
+  slug: string;
+  dateISO: string;
+  title: string;
+  venue?: string;
+  time?: string;
+  description?: string;
+  detail?: string;
+  cat: EventCat;
+  free: boolean;
+  pick: boolean;
+  family: boolean;
+  bookingUrl?: string;
+};
+
 export type CtxState = {
   catId: string | null;
   sub: string | null;
@@ -66,7 +94,5 @@ export type CtxState = {
 export type GuideData = {
   venues: Venue[];
   links: Record<string, VenueLinks>;
-  weekCount: string;
-  teasers: GuideEvent[];
-  soon: GuideEvent[];
+  events: FeedEvent[];
 };

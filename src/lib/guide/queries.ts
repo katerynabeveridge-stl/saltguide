@@ -1,8 +1,8 @@
-import { SOON, TEASERS, WEEK_COUNT } from "./constants";
-import { mapEventsToWhatsOn, type EventRow, type WhatsOnData } from "./events";
+import { FALLBACK_EVENTS } from "./constants";
+import { mapEventsToFeed, type EventRow } from "./events";
 import fallbackLinks from "./links.json";
 import fallbackVenues from "./venues.json";
-import type { GuideData, GuideEvent, Venue, VenueLinks } from "./types";
+import type { FeedEvent, GuideData, Venue, VenueLinks } from "./types";
 import { getBuildSupabase } from "../supabase/build";
 
 function venueDescription(row: Record<string, unknown>): string {
@@ -44,7 +44,9 @@ function buildLinksFromRows(
     if (row.website_url) entry.w = String(row.website_url);
     if (row.social_url) {
       const social = String(row.social_url);
-      entry.ig = social.replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/$/, "");
+      entry.ig = social
+        .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
+        .replace(/\/$/, "");
     }
     if (entry.w || entry.ig) links[slug] = entry;
   }
@@ -54,17 +56,9 @@ function buildLinksFromRows(
 const EVENT_SELECT =
   "slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, status, places(name)";
 
-function fallbackWhatsOn(): WhatsOnData {
-  return {
-    weekCount: WEEK_COUNT,
-    teasers: TEASERS as GuideEvent[],
-    soon: SOON as GuideEvent[],
-  };
-}
-
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
-): Promise<WhatsOnData | null> {
+): Promise<FeedEvent[] | null> {
   const { data, error } = await supabase
     .from("events")
     .select(EVENT_SELECT)
@@ -73,7 +67,7 @@ async function fetchEventsFromSupabase(
 
   if (error || !data?.length) return null;
 
-  return mapEventsToWhatsOn(data as EventRow[]);
+  return mapEventsToFeed(data as EventRow[]);
 }
 
 async function fetchPlacesFromSupabase(
@@ -100,7 +94,9 @@ async function fetchPlacesFromSupabase(
     if (fallback.error || !fallback.data?.length) return null;
 
     return {
-      venues: fallback.data.map((row) => mapRowToVenue(row as Record<string, unknown>)),
+      venues: fallback.data.map((row) =>
+        mapRowToVenue(row as Record<string, unknown>),
+      ),
       links: buildLinksFromRows(fallback.data as Record<string, unknown>[]),
     };
   }
@@ -120,8 +116,6 @@ async function fetchFromSupabase(): Promise<GuideData | null> {
     fetchEventsFromSupabase(supabase),
   ]);
 
-  const whatsOn = eventsResult ?? fallbackWhatsOn();
-
   if (!placesResult?.venues.length) {
     return null;
   }
@@ -129,9 +123,7 @@ async function fetchFromSupabase(): Promise<GuideData | null> {
   return {
     venues: placesResult.venues,
     links: placesResult.links,
-    weekCount: whatsOn.weekCount,
-    teasers: whatsOn.teasers,
-    soon: whatsOn.soon,
+    events: eventsResult?.length ? eventsResult : FALLBACK_EVENTS,
   };
 }
 
@@ -139,7 +131,7 @@ function fallbackData(): GuideData {
   return {
     venues: fallbackVenues as Venue[],
     links: fallbackLinks as Record<string, VenueLinks>,
-    ...fallbackWhatsOn(),
+    events: FALLBACK_EVENTS,
   };
 }
 

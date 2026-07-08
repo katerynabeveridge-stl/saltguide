@@ -1,25 +1,30 @@
-import { Fraunces, Poppins, Space_Mono } from "next/font/google";
-import "./guide.css";
+import {
+  Bricolage_Grotesque,
+  Hanken_Grotesk,
+  Instrument_Serif,
+} from "next/font/google";
+import "./shell.css";
 
-const fraunces = Fraunces({
+const display = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+  weight: ["600", "700", "800"],
+});
+
+const serif = Instrument_Serif({
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
-  weight: ["400", "600", "700", "800", "900"],
+  weight: ["400"],
+  style: ["normal", "italic"],
 });
 
-const poppins = Poppins({
+const body = Hanken_Grotesk({
   subsets: ["latin"],
-  variable: "--font-poppins",
+  variable: "--font-body",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const spaceMono = Space_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-  weight: ["400", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export default function HomeLayout({
@@ -28,9 +33,7 @@ export default function HomeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div
-      className={`guide-route ${fraunces.variable} ${poppins.variable} ${spaceMono.variable}`}
-    >
+    <div className={`sg ${display.variable} ${serif.variable} ${body.variable}`}>
       {children}
     </div>
   );

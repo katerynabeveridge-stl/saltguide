@@ -1,4 +1,4 @@
-import type { Category, CuratedGuide, GuideEvent } from "./types";
+import type { Category, CuratedGuide, FeedEvent } from "./types";
 
 export const TYPE_SECTION: Record<string, string[]> = {
   restaurant: ["eatdrink"],
@@ -186,79 +186,83 @@ export const CURATED_GUIDES: CuratedGuide[] = [
   },
 ];
 
-export const TEASERS: GuideEvent[] = [
+/** Fallback feed when Supabase events are empty / unreachable. */
+export const FALLBACK_EVENTS: FeedEvent[] = [
   {
     slug: "dark-circles-late",
-    dateLabel: "FRI",
-    dateSub: "27",
+    dateISO: "2026-07-10",
     title: "Dark Circles",
     venue: "Marina",
     time: "7pm–midnight",
-    description:
-      "Vinyl, small plates and natural wine until midnight on the Marina.",
-    chips: [{ x: "Late", hot: true }, { x: "Free entry" }],
+    description: "Vinyl, small plates and natural wine until midnight on the Marina.",
+    cat: "night",
+    free: true,
+    pick: true,
+    family: false,
   },
   {
     slug: "midsummer-ceilidh",
-    dateLabel: "SAT",
-    dateSub: "28",
+    dateISO: "2026-07-11",
     title: "A midsummer ceilidh",
     venue: "Seafront",
-    description:
-      "Live band, caller, everyone welcome — bring soft shoes.",
-    chips: [{ x: "Family" }, { x: "Outdoors" }, { x: "Free" }],
+    time: "7pm",
+    description: "Live band, caller, everyone welcome — bring soft shoes.",
+    cat: "music",
+    free: true,
+    pick: false,
+    family: true,
   },
   {
     slug: "hastings-contemporary-late",
-    dateLabel: "SAT",
-    dateSub: "28",
+    dateISO: "2026-07-11",
     title: "Hastings Contemporary late opening",
     venue: "Hastings Contemporary",
     time: "6pm",
     description: "Curator's tour of the new show.",
-    chips: [{ x: "Culture" }],
+    cat: "art",
+    free: false,
+    pick: false,
+    family: false,
     bookingUrl: "https://saltguide.substack.com",
   },
   {
     slug: "shiosai-weekend",
-    dateLabel: "SUN",
-    dateSub: "29",
+    dateISO: "2026-07-12",
     title: "Shiosai weekend service",
     venue: "Source Park",
     description: "Sushi and sake, walk-ins only.",
-    chips: [{ x: "New" }, { x: "Food" }],
+    cat: "food",
+    free: false,
+    pick: false,
+    family: false,
   },
-];
-
-export const SOON: GuideEvent[] = [
   {
     slug: "stade-saturdays",
-    dateLabel: "JUL",
-    dateSub: "5",
+    dateISO: "2026-07-18",
     title: "Stade Saturdays",
     venue: "Seafront",
-    description:
-      "Free family arts on the seafront, every weekend through summer.",
-  },
-  {
-    slug: "coastal-currents",
-    dateLabel: "JUL",
-    dateSub: "12",
-    title: "Coastal Currents open studios",
-    description:
-      "Artists across Hastings & St Leonards open their doors.",
-  },
-  {
-    slug: "farmers-market-july",
-    dateLabel: "JUL",
-    dateSub: "19",
-    title: "Pig racing & pop-ups",
-    venue: "Farmers' market",
-    description: "The big one before the holidays hit.",
+    description: "Free family arts on the seafront, every weekend through summer.",
+    cat: "outdoors",
+    free: true,
+    pick: false,
+    family: true,
   },
 ];
 
-export const WEEK_COUNT = "31 things on this week";
+export const EVENT_CATS: Record<
+  string,
+  { label: string; c: string; icon: string }
+> = {
+  music: { label: "Music & Gigs", c: "#FF7AC6", icon: "🎸" },
+  night: { label: "Nights Out", c: "#FF6B57", icon: "🪩" },
+  food: { label: "Food & Drink", c: "#FFA13D", icon: "🍜" },
+  art: { label: "Art & Exhibitions", c: "#B9A8FF", icon: "🎨" },
+  perform: { label: "Comedy & Theatre", c: "#FFD84D", icon: "🎭" },
+  film: { label: "Film", c: "#6FD5FF", icon: "🎬" },
+  market: { label: "Markets & Fairs", c: "#C8F135", icon: "🧺" },
+  workshop: { label: "Workshops", c: "#7BE8C0", icon: "✂️" },
+  outdoors: { label: "Outdoors", c: "#9BE87B", icon: "🌊" },
+};
 
 export const TYPE_LABEL: Record<string, string> = {
   restaurant: "Restaurant",
