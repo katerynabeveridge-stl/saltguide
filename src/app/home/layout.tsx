@@ -34,6 +34,10 @@ export default function HomeLayout({
 }>) {
   return (
     <div className={`sg ${display.variable} ${serif.variable} ${body.variable}`}>
+      <div className="sg-bg" aria-hidden="true">
+        <img src="/salt-background.png" alt="" />
+        <div className="sg-bg-wash" />
+      </div>
       {children}
     </div>
   );
