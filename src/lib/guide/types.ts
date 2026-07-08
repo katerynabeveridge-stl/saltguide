@@ -10,6 +10,8 @@ export type Venue = {
   sp: boolean;
   isNew: boolean;
   isFree: boolean;
+  coverImageUrl?: string;
+  coverImageAlt?: string;
 };
 
 export type VenueLinks = {
@@ -82,6 +84,8 @@ export type FeedEvent = {
   pick: boolean;
   family: boolean;
   bookingUrl?: string;
+  imageUrl?: string;
+  imageAlt?: string;
 };
 
 export type CtxState = {

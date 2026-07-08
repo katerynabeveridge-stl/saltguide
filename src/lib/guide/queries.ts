@@ -30,6 +30,12 @@ function mapRowToVenue(row: Record<string, unknown>): Venue {
     sp: Boolean(row.is_salty_pick),
     isNew: Boolean(row.is_new),
     isFree: Boolean(row.is_free),
+    coverImageUrl: row.cover_image_url
+      ? String(row.cover_image_url).trim() || undefined
+      : undefined,
+    coverImageAlt: row.cover_image_alt
+      ? String(row.cover_image_alt).trim() || undefined
+      : undefined,
   };
 }
 
@@ -54,7 +60,7 @@ function buildLinksFromRows(
 }
 
 const EVENT_SELECT =
-  "slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, status, places(name)";
+  "slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, cover_image_url, cover_image_alt, status, places(name, cover_image_url, cover_image_alt)";
 
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
@@ -74,7 +80,7 @@ async function fetchPlacesFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
 ): Promise<{ venues: Venue[]; links: Record<string, VenueLinks> } | null> {
   const directorySelect =
-    "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, status";
+    "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, cover_image_url, cover_image_alt, status";
 
   const { data: places, error } = await supabase
     .from("place_directory")
@@ -86,7 +92,7 @@ async function fetchPlacesFromSupabase(
     const fallback = await supabase
       .from("places")
       .select(
-        "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, status",
+        "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, cover_image_url, cover_image_alt, status",
       )
       .eq("status", "published")
       .order("name");

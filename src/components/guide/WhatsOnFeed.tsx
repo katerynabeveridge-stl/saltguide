@@ -11,6 +11,7 @@ import {
   weekendISODates,
 } from "../../lib/guide/events";
 import type { EventCat, FeedEvent } from "../../lib/guide/types";
+import ListingThumb from "./ListingThumb";
 
 type Props = {
   events: FeedEvent[];
@@ -242,13 +243,12 @@ export default function WhatsOnFeed({ events }: Props) {
               tabIndex={0}
             >
               <div className="sg-card-inner">
-                <div
-                  className="sg-thumb"
-                  aria-hidden
-                  style={{ background: c.c }}
-                >
-                  {c.icon}
-                </div>
+                <ListingThumb
+                  imageUrl={e.imageUrl}
+                  imageAlt={e.imageAlt}
+                  fallbackColor={c.c}
+                  fallbackIcon={c.icon}
+                />
                 <div className="sg-card-body">
                   <div className="sg-badges">
                     <span className="sg-badge-date">{dLabel}</span>

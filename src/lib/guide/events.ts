@@ -1,6 +1,13 @@
+import { pickCoverAlt, pickCoverUrl } from "./images";
 import type { EventCat, FeedEvent } from "./types";
 
 const TZ = "Europe/London";
+
+type PlaceJoin = {
+  name: string;
+  cover_image_url?: string | null;
+  cover_image_alt?: string | null;
+};
 
 export type EventRow = {
   slug: string;
@@ -14,7 +21,9 @@ export type EventRow = {
   is_salty_pick: boolean;
   is_free: boolean | null;
   booking_url: string | null;
-  places: { name: string } | { name: string }[] | null;
+  cover_image_url?: string | null;
+  cover_image_alt?: string | null;
+  places: PlaceJoin | PlaceJoin[] | null;
 };
 
 const TYPE_TO_CAT: Record<string, EventCat> = {
@@ -102,12 +111,15 @@ function formatEventTime(startsAt: string, endsAt: string | null): string | unde
   return `${startTime}–${endTime}`;
 }
 
-function resolveVenue(row: EventRow): string | undefined {
+function resolvePlace(row: EventRow): PlaceJoin | undefined {
   const places = row.places;
-  if (places) {
-    const place = Array.isArray(places) ? places[0] : places;
-    if (place?.name?.trim()) return place.name.trim();
-  }
+  if (!places) return undefined;
+  return Array.isArray(places) ? places[0] : places;
+}
+
+function resolveVenue(row: EventRow): string | undefined {
+  const place = resolvePlace(row);
+  if (place?.name?.trim()) return place.name.trim();
   const free = row.venue_freetext?.trim();
   return free || undefined;
 }
@@ -125,11 +137,17 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
   const family = (row.event_types ?? []).some(
     (t) => t === "kids" || t === "family" || t === "send",
   );
+  const place = resolvePlace(row);
+  const title = row.title.trim();
+  const imageUrl = pickCoverUrl(row.cover_image_url, place?.cover_image_url);
+  const imageAlt = imageUrl
+    ? pickCoverAlt(title, row.cover_image_alt, place?.cover_image_alt)
+    : undefined;
 
   return {
     slug: row.slug,
     dateISO: toDateISO(row.starts_at),
-    title: row.title.trim(),
+    title,
     venue: resolveVenue(row),
     time: formatEventTime(row.starts_at, row.ends_at),
     description: short || long,
@@ -139,6 +157,8 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
     pick: Boolean(row.is_salty_pick),
     family,
     bookingUrl: row.booking_url?.trim() || undefined,
+    imageUrl,
+    imageAlt,
   };
 }
 

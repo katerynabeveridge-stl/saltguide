@@ -14,6 +14,7 @@ import {
   presentTags,
 } from "../../lib/guide/filters";
 import type { Category, CtxState, Venue, VenueLinks } from "../../lib/guide/types";
+import ListingThumb from "./ListingThumb";
 
 type Props = {
   venues: Venue[];
@@ -273,47 +274,85 @@ function VenueList({
         const label = kindLabel(v, catId);
         return (
           <div className={`sg-venue${v.sp ? " pick" : ""}`} key={v.slug}>
-            <div className="sg-venue-meta">
-              {v.sp ? <span className="sg-venue-pick">★ Salt pick</span> : null}
-              {label ? <span className="sg-venue-kind">{label}</span> : null}
-              {v.isFree ? <span className="sg-venue-free">Free</span> : null}
-            </div>
-            <div className="sg-venue-name">{v.n}</div>
-            <div className="sg-venue-area">
-              {v.a}
-              {v.booking === "book-ahead" ? " · Book ahead" : ""}
-            </div>
-            <div className="sg-venue-body">
-              {v.b}
-              {v.tip ? (
-                <>
-                  <br />
-                  <span className="tip">Tip:</span> {v.tip}
-                </>
-              ) : null}
-            </div>
-            <div className="sg-venue-links">
-              {lnk.w ? (
-                <a href={lnk.w} target="_blank" rel="noreferrer">
-                  Website →
-                </a>
-              ) : null}
-              {lnk.ig ? (
-                <a
-                  href={`https://instagram.com/${lnk.ig}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  @{lnk.ig}
-                </a>
-              ) : null}
-              <a href={mapsUrl} target="_blank" rel="noreferrer">
-                Maps →
-              </a>
-            </div>
+            {v.coverImageUrl ? (
+              <div className="sg-venue-row">
+                <ListingThumb
+                  imageUrl={v.coverImageUrl}
+                  imageAlt={v.coverImageAlt ?? v.n}
+                  fallbackColor="var(--sg-green)"
+                  fallbackIcon="📍"
+                  className="sg-venue-thumb"
+                />
+                <div className="sg-venue-main">
+                  <VenueBody
+                    v={v}
+                    lnk={lnk}
+                    mapsUrl={mapsUrl}
+                    label={label}
+                  />
+                </div>
+              </div>
+            ) : (
+              <VenueBody v={v} lnk={lnk} mapsUrl={mapsUrl} label={label} />
+            )}
           </div>
         );
       })}
+    </>
+  );
+}
+
+function VenueBody({
+  v,
+  lnk,
+  mapsUrl,
+  label,
+}: {
+  v: Venue;
+  lnk: VenueLinks;
+  mapsUrl: string;
+  label: string;
+}) {
+  return (
+    <>
+      <div className="sg-venue-meta">
+        {v.sp ? <span className="sg-venue-pick">★ Salt pick</span> : null}
+        {label ? <span className="sg-venue-kind">{label}</span> : null}
+        {v.isFree ? <span className="sg-venue-free">Free</span> : null}
+      </div>
+      <div className="sg-venue-name">{v.n}</div>
+      <div className="sg-venue-area">
+        {v.a}
+        {v.booking === "book-ahead" ? " · Book ahead" : ""}
+      </div>
+      <div className="sg-venue-body">
+        {v.b}
+        {v.tip ? (
+          <>
+            <br />
+            <span className="tip">Tip:</span> {v.tip}
+          </>
+        ) : null}
+      </div>
+      <div className="sg-venue-links">
+        {lnk.w ? (
+          <a href={lnk.w} target="_blank" rel="noreferrer">
+            Website →
+          </a>
+        ) : null}
+        {lnk.ig ? (
+          <a
+            href={`https://instagram.com/${lnk.ig}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            @{lnk.ig}
+          </a>
+        ) : null}
+        <a href={mapsUrl} target="_blank" rel="noreferrer">
+          Maps →
+        </a>
+      </div>
     </>
   );
 }
