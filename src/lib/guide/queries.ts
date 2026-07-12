@@ -59,21 +59,37 @@ function buildLinksFromRows(
   return links;
 }
 
-const EVENT_SELECT =
-  "slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, cover_image_url, cover_image_alt, price_label, salt_says, recurrence_label, status, places(name, cover_image_url, cover_image_alt)";
+const EVENT_SELECT_BASE =
+  "slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, cover_image_url, cover_image_alt, status, places(name, cover_image_url, cover_image_alt)";
+
+// Optional editorial columns added by supabase/event_editorial.sql. Selected
+// separately so the whole feed doesn't fail before that migration is run.
+const EVENT_SELECT_EDITORIAL = `${EVENT_SELECT_BASE}, price_label, salt_says, recurrence_label`;
 
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
 ): Promise<FeedEvent[] | null> {
-  const { data, error } = await supabase
+  const withEditorial = await supabase
     .from("events")
-    .select(EVENT_SELECT)
+    .select(EVENT_SELECT_EDITORIAL)
     .eq("status", "published")
     .order("starts_at");
 
-  if (error || !data?.length) return null;
+  if (!withEditorial.error && withEditorial.data?.length) {
+    return mapEventsToFeed(withEditorial.data as EventRow[]);
+  }
 
-  return mapEventsToFeed(data as EventRow[]);
+  // Editorial columns may not exist yet — retry with the base columns so real
+  // events (venue, time, free/paid) still load.
+  const base = await supabase
+    .from("events")
+    .select(EVENT_SELECT_BASE)
+    .eq("status", "published")
+    .order("starts_at");
+
+  if (base.error || !base.data?.length) return null;
+
+  return mapEventsToFeed(base.data as EventRow[]);
 }
 
 async function fetchPlacesFromSupabase(

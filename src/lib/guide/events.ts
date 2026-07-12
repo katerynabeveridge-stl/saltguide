@@ -30,25 +30,40 @@ export type EventRow = {
 };
 
 const TYPE_TO_CAT: Record<string, EventCat> = {
+  // Music & Nights Out — gigs, DJ sets, club nights, quizzes, karaoke
   music: "music",
   gig: "music",
-  night: "night",
-  late: "night",
-  club: "night",
+  night: "music",
+  late: "music",
+  club: "music",
+  dj: "music",
+  quiz: "music",
+  karaoke: "music",
+  // Food & Drink
   food: "food",
-  market: "market",
+  drink: "food",
+  // Arts & Culture — exhibitions, film, theatre, comedy, stage & screen
   exhibition: "art",
   art: "art",
   culture: "art",
+  film: "art",
+  cinema: "art",
+  comedy: "art",
+  theatre: "art",
+  perform: "art",
+  stage: "art",
+  // Markets & Fairs
+  market: "market",
+  fair: "market",
+  // Workshops
   workshop: "workshop",
   kids: "workshop",
-  film: "film",
-  cinema: "film",
+  // Outdoors & Wellbeing
   outdoors: "outdoors",
-  comedy: "perform",
-  theatre: "perform",
-  perform: "perform",
+  wellbeing: "outdoors",
+  wellness: "outdoors",
   sport: "outdoors",
+  swim: "outdoors",
 };
 
 function londonParts(iso: string): {

@@ -61,11 +61,8 @@ export type GuideEvent = {
 
 export type EventCat =
   | "music"
-  | "night"
   | "food"
   | "art"
-  | "perform"
-  | "film"
   | "market"
   | "workshop"
   | "outdoors";

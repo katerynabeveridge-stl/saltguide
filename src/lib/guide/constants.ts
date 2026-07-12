@@ -195,7 +195,7 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     venue: "Marina",
     time: "7pm–midnight",
     description: "Vinyl, small plates and natural wine until midnight on the Marina.",
-    cat: "night",
+    cat: "music",
     free: true,
     pick: true,
     family: false,
@@ -253,15 +253,12 @@ export const EVENT_CATS: Record<
   string,
   { label: string; c: string; icon: string }
 > = {
-  music: { label: "Music & Gigs", c: "#FF7AC6", icon: "🎸" },
-  night: { label: "Nights Out", c: "#FF6B57", icon: "🪩" },
+  music: { label: "Music & Nights Out", c: "#FF7AC6", icon: "🎸" },
   food: { label: "Food & Drink", c: "#FFA13D", icon: "🍜" },
-  art: { label: "Art & Culture", c: "#B9A8FF", icon: "🎨" },
-  perform: { label: "Stage & Screen", c: "#6FD5FF", icon: "🎭" },
-  film: { label: "Stage & Screen", c: "#6FD5FF", icon: "🎬" },
+  art: { label: "Arts & Culture", c: "#B9A8FF", icon: "🎨" },
   market: { label: "Markets & Fairs", c: "#C8F135", icon: "🧺" },
   workshop: { label: "Workshops", c: "#7BE8C0", icon: "✂️" },
-  outdoors: { label: "Outdoors", c: "#9BE87B", icon: "🌊" },
+  outdoors: { label: "Outdoors & Wellbeing", c: "#9BE87B", icon: "🌊" },
 };
 
 export const TYPE_LABEL: Record<string, string> = {
