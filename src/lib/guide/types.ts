@@ -84,7 +84,6 @@ export type FeedEvent = {
   imageUrl?: string;
   imageAlt?: string;
   price?: string;
-  saltSays?: string;
   recurs?: string;
 };
 

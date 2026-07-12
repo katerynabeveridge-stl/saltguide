@@ -24,7 +24,6 @@ export type EventRow = {
   cover_image_url?: string | null;
   cover_image_alt?: string | null;
   price_label?: string | null;
-  salt_says?: string | null;
   recurrence_label?: string | null;
   places: PlaceJoin | PlaceJoin[] | null;
 };
@@ -164,7 +163,6 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
   const price =
     row.price_label?.trim() ||
     (row.is_free ? "Free" : undefined);
-  const saltSays = row.salt_says?.trim() || undefined;
   const recurs = row.recurrence_label?.trim() || undefined;
 
   return {
@@ -183,7 +181,6 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
     imageUrl,
     imageAlt,
     price,
-    saltSays,
     recurs,
   };
 }

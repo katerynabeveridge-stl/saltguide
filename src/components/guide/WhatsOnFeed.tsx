@@ -281,12 +281,6 @@ export default function WhatsOnFeed({ events }: Props) {
               {isOpen ? (
                 <div className="sg-card-expand">
                   <p>{e.detail || e.description || "More details coming soon."}</p>
-                  {e.saltSays ? (
-                    <p className="sg-salt-says">
-                      <span className="sg-salt-says-label">SALT SAYS</span>
-                      {e.saltSays}
-                    </p>
-                  ) : null}
                   {e.bookingUrl ? (
                     <a
                       className="sg-more"

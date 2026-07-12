@@ -495,29 +495,6 @@ body:has(.staging-banner) .sg-wrap {
   color: rgba(22, 23, 15, 0.85);
 }
 
-.sg-salt-says {
-  font-family: var(--font-serif), "Instrument Serif", serif;
-  font-style: italic;
-  font-size: 16.5px;
-  margin-bottom: 14px;
-  line-height: 1.5;
-}
-
-.sg-salt-says-label {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
-  font-style: normal;
-  font-weight: 800;
-  font-size: 10px;
-  letter-spacing: 1.2px;
-  background: var(--sg-green);
-  border: 1.5px solid var(--sg-ink);
-  border-radius: 99px;
-  padding: 2px 8px;
-  margin-right: 8px;
-  vertical-align: 2px;
-  display: inline-block;
-}
-
 .sg-more {
   width: 100%;
   padding: 13px;

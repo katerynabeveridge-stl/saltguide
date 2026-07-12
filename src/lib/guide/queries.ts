@@ -64,7 +64,7 @@ const EVENT_SELECT_BASE =
 
 // Optional editorial columns added by supabase/event_editorial.sql. Selected
 // separately so the whole feed doesn't fail before that migration is run.
-const EVENT_SELECT_EDITORIAL = `${EVENT_SELECT_BASE}, price_label, salt_says, recurrence_label`;
+const EVENT_SELECT_EDITORIAL = `${EVENT_SELECT_BASE}, price_label, recurrence_label`;
 
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
