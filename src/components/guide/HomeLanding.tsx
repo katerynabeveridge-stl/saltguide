@@ -77,8 +77,7 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
           &amp; <span className="hl">St Leonards.</span>
         </h1>
         <p className="sg-home-lede">
-          What&apos;s on, where to go and what&apos;s actually worth your time.
-          Written by locals, in your inbox every Sunday.
+          What&apos;s on, local guides, and a Sunday email with the best of it.
         </p>
         <div className="sg-home-ctas">
           <button
@@ -95,7 +94,7 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
               document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" })
             }
           >
-            GET THE NEWSLETTER
+            GET THE SUNDAY EMAIL
           </button>
         </div>
       </section>
