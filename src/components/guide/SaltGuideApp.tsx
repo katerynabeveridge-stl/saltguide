@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import type { GuideData } from "../../lib/guide/types";
+import HomeLanding from "./HomeLanding";
 import PlacesDirectory from "./PlacesDirectory";
 import WhatsOnFeed from "./WhatsOnFeed";
 
-type Page = "whatson" | "places" | "about";
+type Page = "home" | "whatson" | "places" | "about";
 
 type Props = {
   data: GuideData;
@@ -18,7 +19,7 @@ const NAV: [Page, string][] = [
 ];
 
 export default function SaltGuideApp({ data }: Props) {
-  const [page, setPage] = useState<Page>("whatson");
+  const [page, setPage] = useState<Page>("home");
   const { venues, links, events } = data;
 
   return (
@@ -28,7 +29,7 @@ export default function SaltGuideApp({ data }: Props) {
           <button
             type="button"
             className="sg-brand"
-            onClick={() => setPage("whatson")}
+            onClick={() => setPage("home")}
           >
             SALT<mark>GUIDE</mark>
           </button>
@@ -45,7 +46,25 @@ export default function SaltGuideApp({ data }: Props) {
             ))}
           </nav>
         </div>
+        {page === "whatson" ? (
+          <>
+            <h1 className="sg-h1">
+              What&apos;s <span className="hl">on</span>
+            </h1>
+            <p className="sg-lede" style={{ marginBottom: 22 }}>
+              This week and beyond in Hastings &amp; St Leonards.
+            </p>
+          </>
+        ) : null}
       </header>
+
+      {page === "home" ? (
+        <HomeLanding
+          events={events}
+          venues={venues}
+          onNavigate={(next) => setPage(next)}
+        />
+      ) : null}
 
       {page === "whatson" ? <WhatsOnFeed events={events} /> : null}
 

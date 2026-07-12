@@ -23,6 +23,9 @@ export type EventRow = {
   booking_url: string | null;
   cover_image_url?: string | null;
   cover_image_alt?: string | null;
+  price_label?: string | null;
+  salt_says?: string | null;
+  recurrence_label?: string | null;
   places: PlaceJoin | PlaceJoin[] | null;
 };
 
@@ -143,6 +146,11 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
   const imageAlt = imageUrl
     ? pickCoverAlt(title, row.cover_image_alt, place?.cover_image_alt)
     : undefined;
+  const price =
+    row.price_label?.trim() ||
+    (row.is_free ? "Free" : undefined);
+  const saltSays = row.salt_says?.trim() || undefined;
+  const recurs = row.recurrence_label?.trim() || undefined;
 
   return {
     slug: row.slug,
@@ -159,6 +167,9 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
     bookingUrl: row.booking_url?.trim() || undefined,
     imageUrl,
     imageAlt,
+    price,
+    saltSays,
+    recurs,
   };
 }
 
@@ -235,4 +246,13 @@ export function badgeDateLabel(dateISO: string, todayISO: string, tomorrowISO: s
   const d = parts.find((p) => p.type === "day")?.value ?? "";
   const mo = (parts.find((p) => p.type === "month")?.value ?? "").toUpperCase();
   return `${day} ${d} ${mo}`;
+}
+
+export function eventBadgeLabel(
+  event: Pick<FeedEvent, "dateISO" | "recurs">,
+  todayISO: string,
+  tomorrowISO: string,
+): string {
+  if (event.recurs) return `↻ ${event.recurs}`;
+  return badgeDateLabel(event.dateISO, todayISO, tomorrowISO);
 }

@@ -256,9 +256,9 @@ export const EVENT_CATS: Record<
   music: { label: "Music & Gigs", c: "#FF7AC6", icon: "🎸" },
   night: { label: "Nights Out", c: "#FF6B57", icon: "🪩" },
   food: { label: "Food & Drink", c: "#FFA13D", icon: "🍜" },
-  art: { label: "Art & Exhibitions", c: "#B9A8FF", icon: "🎨" },
-  perform: { label: "Comedy & Theatre", c: "#FFD84D", icon: "🎭" },
-  film: { label: "Film", c: "#6FD5FF", icon: "🎬" },
+  art: { label: "Art & Culture", c: "#B9A8FF", icon: "🎨" },
+  perform: { label: "Stage & Screen", c: "#6FD5FF", icon: "🎭" },
+  film: { label: "Stage & Screen", c: "#6FD5FF", icon: "🎬" },
   market: { label: "Markets & Fairs", c: "#C8F135", icon: "🧺" },
   workshop: { label: "Workshops", c: "#7BE8C0", icon: "✂️" },
   outdoors: { label: "Outdoors", c: "#9BE87B", icon: "🌊" },
@@ -332,6 +332,30 @@ export const SECTION_GOODFOR: Record<string, string[]> = {
   family: ["free-entry", "send"],
   culture: ["free-entry"],
 };
+
+export const HOME_PLACE_TEASER_FALLBACK = [
+  {
+    name: "Ritual",
+    type: "Bar",
+    icon: "🍸",
+    c: "#FF6B57",
+    line: "Cocktails that take themselves seriously so you don't have to.",
+  },
+  {
+    name: "Kino-Teatr",
+    type: "Cinema & gallery",
+    icon: "🎬",
+    c: "#6FD5FF",
+    line: "Films, art and a courtyard made for summer evenings.",
+  },
+  {
+    name: "Goat Ledge",
+    type: "Beach café",
+    icon: "🐟",
+    c: "#FFA13D",
+    line: "Fish finger sandwiches with the best table in town: the beach.",
+  },
+] as const;
 
 export const SUBSTACK_ABOUT_URL = "https://saltguide.substack.com/about";
 export const SUBSTACK_URL = "https://saltguide.substack.com";

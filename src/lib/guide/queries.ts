@@ -60,7 +60,7 @@ function buildLinksFromRows(
 }
 
 const EVENT_SELECT =
-  "slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, cover_image_url, cover_image_alt, status, places(name, cover_image_url, cover_image_alt)";
+  "slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, cover_image_url, cover_image_alt, price_label, salt_says, recurrence_label, status, places(name, cover_image_url, cover_image_alt)";
 
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,

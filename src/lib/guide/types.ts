@@ -86,6 +86,9 @@ export type FeedEvent = {
   bookingUrl?: string;
   imageUrl?: string;
   imageAlt?: string;
+  price?: string;
+  saltSays?: string;
+  recurs?: string;
 };
 
 export type CtxState = {

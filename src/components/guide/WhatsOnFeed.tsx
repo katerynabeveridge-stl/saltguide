@@ -4,12 +4,13 @@ import { Fragment, useMemo, useState } from "react";
 import { EVENT_CATS, PEBBLES_URL, SUBSTACK_URL } from "../../lib/guide/constants";
 import {
   addDaysISO,
-  badgeDateLabel,
+  eventBadgeLabel,
   londonTodayISO,
   longDayName,
   shortDateLabel,
   weekendISODates,
 } from "../../lib/guide/events";
+import { tint } from "../../lib/guide/images";
 import type { EventCat, FeedEvent } from "../../lib/guide/types";
 import ListingThumb from "./ListingThumb";
 
@@ -104,13 +105,6 @@ export default function WhatsOnFeed({ events }: Props) {
 
   return (
     <>
-      <h1 className="sg-h1">
-        What&apos;s <span className="hl">on</span>
-      </h1>
-      <p className="sg-lede" style={{ marginBottom: 22 }}>
-        This week and beyond in Hastings &amp; St Leonards.
-      </p>
-
       <div className="sg-search-bar">
         <div className="sg-search">
           <span aria-hidden>🔍</span>
@@ -225,13 +219,13 @@ export default function WhatsOnFeed({ events }: Props) {
 
       {list.map((e, i) => {
         const c = EVENT_CATS[e.cat] ?? EVENT_CATS.art;
-        const dLabel = badgeDateLabel(e.dateISO, todayISO, tomorrowISO);
+        const dLabel = eventBadgeLabel(e, todayISO, tomorrowISO);
         const isOpen = open === e.slug;
-        const meta = [e.venue, e.time].filter(Boolean).join(" · ");
         return (
           <Fragment key={e.slug}>
             <div
               className="sg-card"
+              style={{ background: tint(c.c, 0.9) }}
               onClick={() => setOpen(isOpen ? null : e.slug)}
               onKeyDown={(ev) => {
                 if (ev.key === "Enter" || ev.key === " ") {
@@ -262,14 +256,19 @@ export default function WhatsOnFeed({ events }: Props) {
                     {e.family ? (
                       <span className="sg-badge-family">👨‍👩‍👧 Family friendly</span>
                     ) : null}
-                    {e.free ? (
-                      <span className="sg-badge-family">Free</span>
-                    ) : null}
                   </div>
                   <div className="sg-card-title">{e.title}</div>
-                  {meta ? <div className="sg-card-meta">{meta}</div> : null}
-                  {e.description ? (
-                    <div className="sg-card-take">&ldquo;{e.description}&rdquo;</div>
+                  {(e.venue || e.time || e.price) ? (
+                    <div className="sg-card-meta">
+                      {e.venue}
+                      {e.venue && e.time ? " · " : null}
+                      {e.time}
+                      {(e.venue || e.time) && e.price ? " · " : null}
+                      {e.price ? <strong>{e.price}</strong> : null}
+                    </div>
+                  ) : null}
+                  {!isOpen && e.description ? (
+                    <div className="sg-card-desc clamp2">{e.description}</div>
                   ) : null}
                 </div>
                 <span
@@ -282,6 +281,12 @@ export default function WhatsOnFeed({ events }: Props) {
               {isOpen ? (
                 <div className="sg-card-expand">
                   <p>{e.detail || e.description || "More details coming soon."}</p>
+                  {e.saltSays ? (
+                    <p className="sg-salt-says">
+                      <span className="sg-salt-says-label">SALT SAYS</span>
+                      {e.saltSays}
+                    </p>
+                  ) : null}
                   {e.bookingUrl ? (
                     <a
                       className="sg-more"
