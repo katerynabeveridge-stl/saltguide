@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   EVENT_CATS,
   HOME_PLACE_TEASER_FALLBACK,
   PEBBLES_URL,
+  SUBSTACK_ABOUT_URL,
   TYPE_LABEL,
 } from "../../lib/guide/constants";
 import {
@@ -42,15 +43,16 @@ const SECTION_COLORS: Record<string, string> = {
 };
 
 export default function HomeLanding({ events, venues, onNavigate }: Props) {
-  const [email, setEmail] = useState("");
-  const [signed, setSigned] = useState(false);
-
   const todayISO = londonTodayISO();
   const tomorrowISO = addDaysISO(todayISO, 1);
 
   const picks = useMemo(
-    () => events.filter((e) => e.pick).slice(0, 3),
-    [events],
+    () =>
+      events
+        .filter((e) => e.pick && e.dateISO >= todayISO)
+        .sort((a, b) => a.dateISO.localeCompare(b.dateISO))
+        .slice(0, 3),
+    [events, todayISO],
   );
 
   const placeTeasers = useMemo((): PlaceTeaser[] => {
@@ -102,7 +104,10 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
       {picks.length > 0 ? (
         <section className="sg-home-section">
           <div className="sg-home-section-head">
-            <h2 className="sg-home-h2">This week&apos;s picks</h2>
+            <div>
+              <h2 className="sg-home-h2">What&apos;s On</h2>
+              <p className="sg-home-sub">Some highlights coming up.</p>
+            </div>
             <button
               type="button"
               className="sg-home-link"
@@ -182,23 +187,14 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
           The week ahead in Hastings &amp; St Leonards, every Sunday. Free, on
           Substack. Join 600+ locals.
         </p>
-        {signed ? (
-          <div className="sg-nl-ok">You&apos;re in. See you Sunday. ✳</div>
-        ) : (
-          <div className="sg-nl-form">
-            <input
-              value={email}
-              onChange={(ev) => setEmail(ev.target.value)}
-              placeholder="you@email.com"
-            />
-            <button
-              type="button"
-              onClick={() => email.includes("@") && setSigned(true)}
-            >
-              SIGN UP
-            </button>
-          </div>
-        )}
+        <a
+          className="sg-nl-cta"
+          href={SUBSTACK_ABOUT_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
+          SUBSCRIBE ON SUBSTACK ↗
+        </a>
       </section>
 
       <section

@@ -769,57 +769,26 @@ body:has(.staging-banner) .sg-wrap {
   opacity: 0.9;
 }
 
-.sg-nl-form {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.sg-nl-form input {
-  flex: 1 1 170px;
-  padding: 11px 13px;
-  border-radius: 10px;
-  border: 2px solid var(--sg-ink);
-  background: var(--sg-bg);
-  font-family: var(--font-body), "Hanken Grotesk", sans-serif;
-  font-size: 14px;
-  color: var(--sg-ink);
-  min-width: 0;
-}
-
-.sg-nl .sg-nl-form input {
-  font-size: 15px;
-  padding: 12px 14px;
-}
-
-.sg-nl-form button {
-  padding: 11px 18px;
+.sg-nl-cta {
+  display: inline-block;
+  padding: 11px 20px;
   border-radius: 10px;
   border: 2px solid var(--sg-ink);
   background: var(--sg-ink);
   color: var(--sg-green);
+  text-decoration: none;
   font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
   font-weight: 800;
   font-size: 13px;
   letter-spacing: 1px;
 }
 
-.sg-nl .sg-nl-form button {
+.sg-nl .sg-nl-cta {
   padding: 12px 22px;
   border: none;
   background: var(--sg-green);
   color: var(--sg-ink);
   font-size: 14px;
-}
-
-.sg-nl-ok {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
-  font-size: 14px;
-}
-
-.sg-nl .sg-nl-ok {
-  color: var(--sg-green);
 }
 
 .sg-empty {

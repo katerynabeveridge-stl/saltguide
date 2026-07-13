@@ -1,7 +1,12 @@
 "use client";
 
 import { Fragment, useMemo, useState } from "react";
-import { EVENT_CATS, PEBBLES_URL, SUBSTACK_URL } from "../../lib/guide/constants";
+import {
+  EVENT_CATS,
+  PEBBLES_URL,
+  SUBSTACK_ABOUT_URL,
+  SUBSTACK_URL,
+} from "../../lib/guide/constants";
 import {
   addDaysISO,
   eventBadgeLabel,
@@ -29,8 +34,6 @@ export default function WhatsOnFeed({ events }: Props) {
   const [showCal, setShowCal] = useState(false);
   const [showSheet, setShowSheet] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
-  const [email, setEmail] = useState("");
-  const [signed, setSigned] = useState(false);
 
   const todayISO = londonTodayISO();
   const tomorrowISO = addDaysISO(todayISO, 1);
@@ -312,24 +315,15 @@ export default function WhatsOnFeed({ events }: Props) {
               <div className="sg-nl-inline">
                 <div className="t">Never miss a week.</div>
                 <p>All of this in your inbox, every Sunday. Free.</p>
-                {signed ? (
-                  <div className="sg-nl-ok">You&apos;re in. See you Sunday. ✳</div>
-                ) : (
-                  <div className="sg-nl-form">
-                    <input
-                      value={email}
-                      onChange={(ev) => setEmail(ev.target.value)}
-                      placeholder="you@email.com"
-                      onClick={(ev) => ev.stopPropagation()}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => email.includes("@") && setSigned(true)}
-                    >
-                      SIGN UP
-                    </button>
-                  </div>
-                )}
+                <a
+                  className="sg-nl-cta"
+                  href={SUBSTACK_ABOUT_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={(ev) => ev.stopPropagation()}
+                >
+                  SUBSCRIBE ON SUBSTACK ↗
+                </a>
               </div>
             ) : null}
           </Fragment>
@@ -339,23 +333,14 @@ export default function WhatsOnFeed({ events }: Props) {
       <div className="sg-nl">
         <div className="t">Get this in your inbox.</div>
         <p>The Sunday Email — the week ahead, every Sunday, free.</p>
-        {signed ? (
-          <div className="sg-nl-ok">You&apos;re in. See you Sunday. ✳</div>
-        ) : (
-          <div className="sg-nl-form">
-            <input
-              value={email}
-              onChange={(ev) => setEmail(ev.target.value)}
-              placeholder="you@email.com"
-            />
-            <button
-              type="button"
-              onClick={() => email.includes("@") && setSigned(true)}
-            >
-              SIGN UP
-            </button>
-          </div>
-        )}
+        <a
+          className="sg-nl-cta"
+          href={SUBSTACK_ABOUT_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
+          SUBSCRIBE ON SUBSTACK ↗
+        </a>
       </div>
 
       {showSheet ? (
