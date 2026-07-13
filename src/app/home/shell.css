@@ -704,6 +704,17 @@ body:has(.staging-banner) .sg-wrap {
   letter-spacing: 1.5px;
   color: var(--sg-dim);
   margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.sg-sheet-head + .sg-narrow-lbl {
+  margin-top: 4px;
+}
+
+.sg-sheet-when {
+  flex-wrap: wrap;
+  overflow: visible;
+  margin-bottom: 4px;
 }
 
 .sg-show-btn {

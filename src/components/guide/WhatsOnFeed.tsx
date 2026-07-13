@@ -357,22 +357,65 @@ export default function WhatsOnFeed({ events }: Props) {
           >
             <div className="sg-sheet-handle" />
             <div className="sg-sheet-head">
-              <h3>What kind of thing?</h3>
-              {kindCount > 0 ? (
-                <button
-                  type="button"
-                  className="clear"
-                  onClick={() => {
-                    setCats(new Set());
-                    setFreeOnly(false);
-                    setFamilyOnly(false);
-                  }}
-                >
-                  Clear
+              <h3>Filters</h3>
+              {anyFilter ? (
+                <button type="button" className="clear" onClick={clearAll}>
+                  Clear filters
                 </button>
               ) : null}
             </div>
 
+            <div className="sg-narrow-lbl">WHEN</div>
+            <div className="sg-row sg-sheet-when">
+              {(
+                [
+                  ["today", "Today"],
+                  ["tomorrow", "Tomorrow"],
+                  ["weekend", "This weekend"],
+                ] as const
+              ).map(([k, label]) => (
+                <button
+                  key={k}
+                  type="button"
+                  className={`sg-pill${when === k ? " on" : ""}`}
+                  onClick={() => {
+                    setWhen(when === k ? "all" : k);
+                    setShowCal(false);
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+              <button
+                type="button"
+                className={`sg-pill${isCustomDate || showCal ? " on" : ""}`}
+                onClick={() => {
+                  if (isCustomDate) {
+                    setWhen("all");
+                    setShowCal(false);
+                  } else {
+                    setShowCal(!showCal);
+                  }
+                }}
+              >
+                📅 {isCustomDate ? shortDateLabel(when) : "Pick a date"}
+                {isCustomDate ? " ✕" : ""}
+              </button>
+            </div>
+
+            {showCal ? (
+              <MonthCalendar
+                selected={isCustomDate ? when : null}
+                todayISO={todayISO}
+                eventDates={eventDates}
+                onSelect={(d) => {
+                  setWhen(isCustomDate && when === d ? "all" : d);
+                  setShowCal(false);
+                }}
+              />
+            ) : null}
+
+            <div className="sg-narrow-lbl">WHAT KIND OF THING?</div>
             <div className="sg-cat-grid">
               {(Object.entries(EVENT_CATS) as [EventCat, (typeof EVENT_CATS)[string]][]).map(
                 ([k, v]) => {
