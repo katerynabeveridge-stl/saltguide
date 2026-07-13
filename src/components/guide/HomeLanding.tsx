@@ -11,6 +11,8 @@ import {
 import {
   addDaysISO,
   eventBadgeLabel,
+  homeHighlightEvents,
+  homeHighlightsSubline,
   londonTodayISO,
 } from "../../lib/guide/events";
 import { tint } from "../../lib/guide/images";
@@ -46,12 +48,8 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
   const todayISO = londonTodayISO();
   const tomorrowISO = addDaysISO(todayISO, 1);
 
-  const picks = useMemo(
-    () =>
-      events
-        .filter((e) => e.pick && e.dateISO >= todayISO)
-        .sort((a, b) => a.dateISO.localeCompare(b.dateISO))
-        .slice(0, 3),
+  const highlights = useMemo(
+    () => homeHighlightEvents(events, todayISO, 4),
     [events, todayISO],
   );
 
@@ -101,12 +99,14 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
         </div>
       </section>
 
-      {picks.length > 0 ? (
+      {highlights ? (
         <section className="sg-home-section">
           <div className="sg-home-section-head">
             <div>
               <h2 className="sg-home-h2">What&apos;s On</h2>
-              <p className="sg-home-sub">Some highlights coming up.</p>
+              <p className="sg-home-sub">
+                {homeHighlightsSubline(highlights.dayISO, todayISO, tomorrowISO)}
+              </p>
             </div>
             <button
               type="button"
@@ -116,7 +116,7 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
               All events →
             </button>
           </div>
-          {picks.map((e) => {
+          {highlights.events.map((e) => {
             const c = EVENT_CATS[e.cat] ?? EVENT_CATS.art;
             const dLabel = eventBadgeLabel(e, todayISO, tomorrowISO);
             return (

@@ -268,3 +268,51 @@ export function eventBadgeLabel(
   if (event.recurs) return `↻ ${event.recurs}`;
   return badgeDateLabel(event.dateISO, todayISO, tomorrowISO);
 }
+
+/** Home highlights: today if any events, else nearest upcoming day, top N. */
+export function homeHighlightEvents(
+  events: FeedEvent[],
+  todayISO: string,
+  limit = 4,
+): { dayISO: string; events: FeedEvent[] } | null {
+  const upcoming = events
+    .filter((e) => e.dateISO >= todayISO)
+    .sort(
+      (a, b) =>
+        a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title),
+    );
+
+  if (!upcoming.length) return null;
+
+  const targetDay = upcoming.some((e) => e.dateISO === todayISO)
+    ? todayISO
+    : upcoming[0].dateISO;
+
+  const dayEvents = upcoming
+    .filter((e) => e.dateISO === targetDay)
+    .sort((a, b) => {
+      if (a.pick !== b.pick) return a.pick ? -1 : 1;
+      return a.title.localeCompare(b.title);
+    })
+    .slice(0, limit);
+
+  return dayEvents.length ? { dayISO: targetDay, events: dayEvents } : null;
+}
+
+export function homeHighlightsSubline(
+  dayISO: string,
+  todayISO: string,
+  tomorrowISO: string,
+): string {
+  if (dayISO === todayISO) return "What's on today.";
+  if (dayISO === tomorrowISO) return "What's on tomorrow.";
+  const day = longDayName(dayISO);
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    day: "numeric",
+    month: "long",
+  }).formatToParts(new Date(`${dayISO}T12:00:00Z`));
+  const d = parts.find((p) => p.type === "day")?.value ?? "";
+  const mo = parts.find((p) => p.type === "month")?.value ?? "";
+  return `What's on ${day} ${d} ${mo}.`;
+}
