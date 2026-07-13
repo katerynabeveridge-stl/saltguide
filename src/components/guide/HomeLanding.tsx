@@ -193,7 +193,7 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
           target="_blank"
           rel="noreferrer"
         >
-          SUBSCRIBE ON SUBSTACK ↗
+          SUBSCRIBE ↗
         </a>
       </section>
 

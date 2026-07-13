@@ -322,7 +322,7 @@ export default function WhatsOnFeed({ events }: Props) {
                   rel="noreferrer"
                   onClick={(ev) => ev.stopPropagation()}
                 >
-                  SUBSCRIBE ON SUBSTACK ↗
+                  SUBSCRIBE ↗
                 </a>
               </div>
             ) : null}
@@ -339,7 +339,7 @@ export default function WhatsOnFeed({ events }: Props) {
           target="_blank"
           rel="noreferrer"
         >
-          SUBSCRIBE ON SUBSTACK ↗
+          SUBSCRIBE ↗
         </a>
       </div>
 
