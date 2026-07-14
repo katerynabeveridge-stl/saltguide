@@ -1051,20 +1051,129 @@ body:has(.staging-banner) .sg-wrap {
   padding: 8px 18px 28px;
 }
 
-.sg-venue {
-  padding: 18px 0;
-  border-bottom: 1px solid rgba(22, 23, 15, 0.12);
+.sg-cat-pills {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px 12px;
+  margin-bottom: 4px;
+  scrollbar-width: none;
 }
 
-.sg-venue:last-child {
-  border-bottom: none;
+.sg-cat-pills::-webkit-scrollbar {
+  display: none;
 }
 
-.sg-venue.pick {
-  background: linear-gradient(90deg, rgba(200, 241, 53, 0.2), transparent 70%);
-  border-left: 3px solid var(--sg-green);
-  padding-left: 14px;
-  margin-left: -3px;
+.sg-cat-pill {
+  flex-shrink: 0;
+  border: 2px solid var(--sg-ink);
+  background: var(--sg-card);
+  color: var(--sg-ink);
+  border-radius: 99px;
+  padding: 7px 14px;
+  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.sg-cat-pill.on {
+  background: var(--sg-ink);
+  color: var(--sg-green);
+}
+
+.sg-cat-pill.soon:not(.on) {
+  opacity: 0.55;
+}
+
+.sg-seg {
+  text-transform: uppercase;
+}
+
+.sg-place-card {
+  background: var(--sg-card);
+  border: 2px solid var(--sg-ink);
+  box-shadow: 5px 5px 0 var(--sg-ink);
+  border-radius: 16px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  color: var(--sg-ink);
+}
+
+.sg-place-card.pick {
+  box-shadow: 5px 5px 0 var(--sg-green);
+}
+
+.sg-place-media-hero .sg-place-hero,
+.sg-place-media-hero4 .sg-place-hero {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: rgba(22, 23, 15, 0.08);
+  overflow: hidden;
+}
+
+.sg-place-hero img,
+.sg-place-tile img,
+.sg-place-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sg-place-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 4px;
+  background: var(--sg-ink);
+}
+
+.sg-place-tile {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: rgba(250, 246, 236, 0.2);
+}
+
+.sg-place-body-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px;
+}
+
+.sg-place-thumb {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  border: 2px solid var(--sg-ink);
+  box-shadow: 2px 2px 0 var(--sg-ink);
+  overflow: hidden;
+  background: var(--sg-bg);
+}
+
+.sg-place-icon-cell {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  border: 2px solid var(--sg-ink);
+  box-shadow: 2px 2px 0 var(--sg-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+.sg-place-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.sg-place-copy-pad {
+  padding: 14px 16px 16px;
 }
 
 .sg-venue-meta {
@@ -1082,9 +1191,9 @@ body:has(.staging-banner) .sg-wrap {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sg-ink);
-  background: var(--sg-bg);
+  background: var(--sg-card);
   padding: 3px 8px;
-  border: 1.5px solid rgba(22, 23, 15, 0.2);
+  border: 1.5px solid var(--sg-ink);
   border-radius: 6px;
 }
 
@@ -1099,7 +1208,19 @@ body:has(.staging-banner) .sg-wrap {
   padding: 3px 8px;
   border: 1.5px solid var(--sg-ink);
   border-radius: 6px;
-  box-shadow: 1.5px 1.5px 0 var(--sg-ink);
+}
+
+.sg-venue-featured {
+  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sg-bg);
+  background: var(--sg-ink);
+  padding: 3px 8px;
+  border: 1.5px solid var(--sg-ink);
+  border-radius: 6px;
 }
 
 .sg-venue-free {
@@ -1117,10 +1238,10 @@ body:has(.staging-banner) .sg-wrap {
 
 .sg-venue-name {
   font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
-  font-weight: 700;
-  font-size: 18px;
+  font-weight: 800;
+  font-size: 22px;
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 .sg-venue-area {
@@ -1133,14 +1254,21 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-venue-body {
-  font-size: 14px;
-  color: var(--sg-dim);
+  font-size: 14.5px;
+  color: rgba(22, 23, 15, 0.8);
   line-height: 1.5;
 }
 
-.sg-venue-body .tip {
+.sg-venue-tip {
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgba(22, 23, 15, 0.8);
+  line-height: 1.45;
+}
+
+.sg-venue-tip .tip {
   color: var(--sg-ink);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .sg-venue-links {

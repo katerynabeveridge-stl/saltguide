@@ -13,6 +13,13 @@ function venueDescription(row: Record<string, unknown>): string {
   return row.description ? String(row.description) : "";
 }
 
+function textArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((v) => String(v ?? "").trim())
+    .filter(Boolean);
+}
+
 function mapRowToVenue(row: Record<string, unknown>): Venue {
   return {
     slug: String(row.slug ?? ""),
@@ -36,6 +43,8 @@ function mapRowToVenue(row: Record<string, unknown>): Venue {
     coverImageAlt: row.cover_image_alt
       ? String(row.cover_image_alt).trim() || undefined
       : undefined,
+    galleryImageUrls: textArray(row.gallery_image_urls),
+    isFeatured: Boolean(row.is_featured),
   };
 }
 
@@ -95,38 +104,58 @@ async function fetchEventsFromSupabase(
 async function fetchPlacesFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
 ): Promise<{ venues: Venue[]; links: Record<string, VenueLinks> } | null> {
-  const directorySelect =
+  const directoryBase =
     "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, cover_image_url, cover_image_alt, status";
+  const directoryMedia = `${directoryBase}, gallery_image_urls, is_featured`;
 
-  const { data: places, error } = await supabase
+  const placesBase =
+    "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, cover_image_url, cover_image_alt, status";
+  const placesMedia = `${placesBase}, gallery_image_urls, is_featured`;
+
+  const mapRows = (rows: Record<string, unknown>[]) => ({
+    venues: rows.map(mapRowToVenue),
+    links: buildLinksFromRows(rows),
+  });
+
+  const withMedia = await supabase
     .from("place_directory")
-    .select(directorySelect)
+    .select(directoryMedia)
     .eq("status", "published")
     .order("name");
 
-  if (error || !places?.length) {
-    const fallback = await supabase
-      .from("places")
-      .select(
-        "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, cover_image_url, cover_image_alt, status",
-      )
-      .eq("status", "published")
-      .order("name");
-
-    if (fallback.error || !fallback.data?.length) return null;
-
-    return {
-      venues: fallback.data.map((row) =>
-        mapRowToVenue(row as Record<string, unknown>),
-      ),
-      links: buildLinksFromRows(fallback.data as Record<string, unknown>[]),
-    };
+  if (!withMedia.error && withMedia.data?.length) {
+    return mapRows(withMedia.data as Record<string, unknown>[]);
   }
 
-  return {
-    venues: places.map((row) => mapRowToVenue(row as Record<string, unknown>)),
-    links: buildLinksFromRows(places as Record<string, unknown>[]),
-  };
+  const directory = await supabase
+    .from("place_directory")
+    .select(directoryBase)
+    .eq("status", "published")
+    .order("name");
+
+  if (!directory.error && directory.data?.length) {
+    return mapRows(directory.data as Record<string, unknown>[]);
+  }
+
+  const placesWithMedia = await supabase
+    .from("places")
+    .select(placesMedia)
+    .eq("status", "published")
+    .order("name");
+
+  if (!placesWithMedia.error && placesWithMedia.data?.length) {
+    return mapRows(placesWithMedia.data as Record<string, unknown>[]);
+  }
+
+  const fallback = await supabase
+    .from("places")
+    .select(placesBase)
+    .eq("status", "published")
+    .order("name");
+
+  if (fallback.error || !fallback.data?.length) return null;
+
+  return mapRows(fallback.data as Record<string, unknown>[]);
 }
 
 async function fetchFromSupabase(): Promise<GuideData | null> {

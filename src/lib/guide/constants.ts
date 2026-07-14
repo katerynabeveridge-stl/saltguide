@@ -35,13 +35,17 @@ export const GOOD_FOR: Record<string, string> = {
   roast: "Sunday roast",
   breakfast: "Brunch",
   "coffee-cake": "Coffee & cake",
-  "sea-views": "Sea views",
+  "sea-views": "Sea view",
   "dog-friendly": "Dog friendly",
   "child-friendly": "Family friendly",
   "vegan-friendly": "Vegan options",
   wine: "Natural wine",
-  "free-entry": "Free entry",
+  "late-kitchen": "Late kitchen",
+  "free-entry": "Free",
   send: "SEND friendly",
+  "rainy-day": "Rainy day",
+  "buggy-friendly": "Buggy friendly",
+  babyccinos: "Babyccinos",
 };
 
 export const CATS: Category[] = [
@@ -325,8 +329,9 @@ export const SECTION_GOODFOR: Record<string, string[]> = {
     "vegan-friendly",
     "night-out",
     "wine",
+    "late-kitchen",
   ],
-  family: ["free-entry", "send"],
+  family: ["rainy-day", "buggy-friendly", "free-entry", "babyccinos", "send"],
   culture: ["free-entry"],
 };
 

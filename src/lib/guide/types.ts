@@ -12,6 +12,8 @@ export type Venue = {
   isFree: boolean;
   coverImageUrl?: string;
   coverImageAlt?: string;
+  galleryImageUrls?: string[];
+  isFeatured?: boolean;
 };
 
 export type VenueLinks = {
