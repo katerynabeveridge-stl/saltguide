@@ -6,11 +6,14 @@ import type { FeedEvent, GuideData, Venue, VenueLinks } from "./types";
 import { getBuildSupabase } from "../supabase/build";
 
 function venueDescription(row: Record<string, unknown>): string {
-  const short = row.description_short ? String(row.description_short) : "";
-  const long = row.description_long ? String(row.description_long) : "";
-  if (short) return short;
+  const long = row.description_long ? String(row.description_long).trim() : "";
+  const short = row.description_short
+    ? String(row.description_short).trim()
+    : "";
+  // Place cards show the full blurb — prefer long, fall back to short.
   if (long) return long;
-  return row.description ? String(row.description) : "";
+  if (short) return short;
+  return row.description ? String(row.description).trim() : "";
 }
 
 function textArray(value: unknown): string[] {
