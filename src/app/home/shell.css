@@ -61,6 +61,16 @@
   outline-offset: 2px;
 }
 
+.sg-search input:focus {
+  outline: none;
+}
+
+.sg-search:focus-within {
+  box-shadow:
+    var(--sg-shadow),
+    0 0 0 3px var(--sg-ink);
+}
+
 .sg-wrap {
   position: relative;
   z-index: 1;
@@ -1203,6 +1213,23 @@ body:has(.staging-banner) .sg-wrap {
   margin-bottom: 16px;
   overflow: hidden;
   color: var(--sg-ink);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sg-place-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--sg-ink);
+}
+
+.sg-place-card.pick:hover {
+  box-shadow: 7px 7px 0 var(--sg-green);
+}
+
+.sg-place-card:focus-visible {
+  outline: 3px solid var(--sg-ink);
+  outline-offset: 2px;
 }
 
 .sg-place-card.pick {
@@ -1274,6 +1301,25 @@ body:has(.staging-banner) .sg-wrap {
 .sg-place-copy {
   flex: 1;
   min-width: 0;
+}
+
+.sg-place-copy-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.sg-place-copy-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.sg-place-copy .sg-card-expand {
+  margin-top: 12px;
+}
+
+.sg-place-copy .sg-venue-links {
+  margin-top: 12px;
 }
 
 .sg-place-copy-pad {

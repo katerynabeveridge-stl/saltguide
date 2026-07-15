@@ -374,6 +374,8 @@ function VenueList({
   showPebbles: boolean;
   emptyFromSearch?: boolean;
 }) {
+  const [open, setOpen] = useState<string | null>(null);
+
   if (!items.length) {
     return (
       <>
@@ -404,6 +406,8 @@ function VenueList({
             links={lnk}
             mapsUrl={mapsUrl}
             label={kindLabel(v, catId)}
+            isOpen={open === v.slug}
+            onToggle={() => setOpen(open === v.slug ? null : v.slug)}
           />
         );
       })}
