@@ -2,6 +2,8 @@
 -- Adds cover image fields and a public media bucket for Saltguide.
 
 -- 1. Image URL columns on places and events
+-- Live schema already uses places.photo_url and events.image_url; the app
+-- reads those. These columns are optional aliases for richer alt text / CMS.
 alter table public.places
   add column if not exists cover_image_url text,
   add column if not exists cover_image_alt text;

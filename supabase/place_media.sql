@@ -19,7 +19,7 @@ alter table public.places
 --   lead + ≥3 gallery URLs           → hero + row of 3
 
 -- Workflow:
--- 1. Set cover_image_url as the lead / hero photo
+-- 1. Set photo_url (or cover_image_url) as the lead / hero photo
 -- 2. Set gallery_image_urls to trailing shots (ordered)
 -- 3. Optional: is_featured = true for FEATURED badge + hero preference
 -- 4. Redeploy staging so the build picks up new values

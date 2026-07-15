@@ -20,6 +20,28 @@ function textArray(value: unknown): string[] {
     .filter(Boolean);
 }
 
+function coverUrlFromRow(row: Record<string, unknown>): string | undefined {
+  for (const key of ["cover_image_url", "photo_url", "image_url"] as const) {
+    const v = row[key];
+    if (v) {
+      const t = String(v).trim();
+      if (t) return t;
+    }
+  }
+  return undefined;
+}
+
+function coverAltFromRow(row: Record<string, unknown>): string | undefined {
+  for (const key of ["cover_image_alt", "photo_alt", "image_alt"] as const) {
+    const v = row[key];
+    if (v) {
+      const t = String(v).trim();
+      if (t) return t;
+    }
+  }
+  return undefined;
+}
+
 function mapRowToVenue(row: Record<string, unknown>): Venue {
   return {
     slug: String(row.slug ?? ""),
@@ -37,12 +59,8 @@ function mapRowToVenue(row: Record<string, unknown>): Venue {
     sp: Boolean(row.is_salty_pick),
     isNew: Boolean(row.is_new),
     isFree: Boolean(row.is_free),
-    coverImageUrl: row.cover_image_url
-      ? String(row.cover_image_url).trim() || undefined
-      : undefined,
-    coverImageAlt: row.cover_image_alt
-      ? String(row.cover_image_alt).trim() || undefined
-      : undefined,
+    coverImageUrl: coverUrlFromRow(row),
+    coverImageAlt: coverAltFromRow(row),
     galleryImageUrls: textArray(row.gallery_image_urls),
     isFeatured: Boolean(row.is_featured),
   };
@@ -68,99 +86,107 @@ function buildLinksFromRows(
   return links;
 }
 
-const EVENT_SELECT_BASE =
-  "slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, cover_image_url, cover_image_alt, status, places(name, cover_image_url, cover_image_alt)";
-
-// Optional editorial columns added by supabase/event_editorial.sql. Selected
-// separately so the whole feed doesn't fail before that migration is run.
-const EVENT_SELECT_EDITORIAL = `${EVENT_SELECT_BASE}, price_label, recurrence_label`;
+// Live schema uses id + image_url (no slug / event_types / cover_* yet).
+// Optional richer columns are tried first, then we peel back so missing
+// migrations never wipe the whole feed.
+const EVENT_SELECTS = [
+  "id, slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, image_url, cover_image_url, cover_image_alt, price_label, recurrence_label, status, places(name, photo_url, cover_image_url, cover_image_alt)",
+  "id, title, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, image_url, price_label, recurrence_label, status, places(name, photo_url)",
+  "id, title, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, image_url, status, places(name, photo_url)",
+  "id, title, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, image_url, status",
+];
 
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
 ): Promise<FeedEvent[] | null> {
-  const withEditorial = await supabase
-    .from("events")
-    .select(EVENT_SELECT_EDITORIAL)
-    .eq("status", "published")
-    .order("starts_at");
+  for (const select of EVENT_SELECTS) {
+    const { data, error } = await supabase
+      .from("events")
+      .select(select)
+      .eq("status", "published")
+      .order("starts_at");
 
-  if (!withEditorial.error && withEditorial.data?.length) {
-    return mapEventsToFeed(withEditorial.data as EventRow[]);
+    if (error || !data?.length) continue;
+    const mapped = mapEventsToFeed(data as unknown as EventRow[]);
+    if (mapped?.length) return mapped;
   }
 
-  // Editorial columns may not exist yet — retry with the base columns so real
-  // events (venue, time, free/paid) still load.
-  const base = await supabase
+  // Fall through for empty-table logging below.
+
+  const lastSelect = EVENT_SELECTS[EVENT_SELECTS.length - 1];
+  const last = await supabase
     .from("events")
-    .select(EVENT_SELECT_BASE)
+    .select(lastSelect)
     .eq("status", "published")
     .order("starts_at");
 
-  if (base.error || !base.data?.length) return null;
-
-  return mapEventsToFeed(base.data as EventRow[]);
+  if (last.error) {
+    console.warn("[guide] events query failed:", last.error.message);
+    return null;
+  }
+  if (!last.data?.length) {
+    console.warn("[guide] events: 0 published rows — using fallback feed");
+    return null;
+  }
+  return mapEventsToFeed(last.data as unknown as EventRow[]);
 }
+
+const PLACE_DIRECTORY_SELECTS = [
+  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, photo_url, cover_image_url, cover_image_alt, gallery_image_urls, is_featured, status",
+  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, photo_url, cover_image_url, cover_image_alt, status",
+  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, photo_url, status",
+];
+
+const PLACES_SELECTS = [
+  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, photo_url, cover_image_url, cover_image_alt, gallery_image_urls, is_featured, status",
+  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, photo_url, cover_image_url, cover_image_alt, status",
+  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, photo_url, status",
+];
 
 async function fetchPlacesFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
 ): Promise<{ venues: Venue[]; links: Record<string, VenueLinks> } | null> {
-  const directoryBase =
-    "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, cover_image_url, cover_image_alt, status";
-  const directoryMedia = `${directoryBase}, gallery_image_urls, is_featured`;
-
-  const placesBase =
-    "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, cover_image_url, cover_image_alt, status";
-  const placesMedia = `${placesBase}, gallery_image_urls, is_featured`;
-
   const mapRows = (rows: Record<string, unknown>[]) => ({
     venues: rows.map(mapRowToVenue),
     links: buildLinksFromRows(rows),
   });
 
-  const withMedia = await supabase
-    .from("place_directory")
-    .select(directoryMedia)
-    .eq("status", "published")
-    .order("name");
+  for (const select of PLACE_DIRECTORY_SELECTS) {
+    const { data, error } = await supabase
+      .from("place_directory")
+      .select(select)
+      .eq("status", "published")
+      .order("name");
 
-  if (!withMedia.error && withMedia.data?.length) {
-    return mapRows(withMedia.data as Record<string, unknown>[]);
+    if (!error && data?.length) {
+      return mapRows(data as unknown as Record<string, unknown>[]);
+    }
   }
 
-  const directory = await supabase
-    .from("place_directory")
-    .select(directoryBase)
-    .eq("status", "published")
-    .order("name");
+  for (const select of PLACES_SELECTS) {
+    const { data, error } = await supabase
+      .from("places")
+      .select(select)
+      .eq("status", "published")
+      .order("name");
 
-  if (!directory.error && directory.data?.length) {
-    return mapRows(directory.data as Record<string, unknown>[]);
+    if (!error && data?.length) {
+      return mapRows(data as unknown as Record<string, unknown>[]);
+    }
   }
 
-  const placesWithMedia = await supabase
-    .from("places")
-    .select(placesMedia)
-    .eq("status", "published")
-    .order("name");
-
-  if (!placesWithMedia.error && placesWithMedia.data?.length) {
-    return mapRows(placesWithMedia.data as Record<string, unknown>[]);
-  }
-
-  const fallback = await supabase
-    .from("places")
-    .select(placesBase)
-    .eq("status", "published")
-    .order("name");
-
-  if (fallback.error || !fallback.data?.length) return null;
-
-  return mapRows(fallback.data as Record<string, unknown>[]);
+  console.warn("[guide] places query returned no rows");
+  return null;
 }
 
 async function fetchFromSupabase(): Promise<GuideData | null> {
   const supabase = getBuildSupabase();
-  if (!supabase) return null;
+  if (!supabase) {
+    console.warn(
+      "[guide] missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    );
+    return null;
+  }
 
   const [placesResult, eventsResult] = await Promise.all([
     fetchPlacesFromSupabase(supabase),
@@ -171,14 +197,23 @@ async function fetchFromSupabase(): Promise<GuideData | null> {
     return null;
   }
 
+  const events = eventsResult?.length ? eventsResult : FALLBACK_EVENTS;
+  console.info(
+    `[guide] supabase: ${placesResult.venues.length} places, ${
+      eventsResult?.length ?? 0
+    } events` +
+      (eventsResult?.length ? "" : " (events using static fallback)"),
+  );
+
   return {
     venues: placesResult.venues,
     links: placesResult.links,
-    events: eventsResult?.length ? eventsResult : FALLBACK_EVENTS,
+    events,
   };
 }
 
 function fallbackData(): GuideData {
+  console.warn("[guide] using static venues.json + FALLBACK_EVENTS");
   return {
     venues: fallbackVenues as Venue[],
     links: fallbackLinks as Record<string, VenueLinks>,
@@ -192,8 +227,11 @@ export async function fetchGuideData(): Promise<GuideData> {
     if (fromDb?.venues.length) {
       return fromDb;
     }
-  } catch {
-    // use prototype fallback
+  } catch (err) {
+    console.warn(
+      "[guide] supabase fetch threw:",
+      err instanceof Error ? err.message : err,
+    );
   }
   return fallbackData();
 }

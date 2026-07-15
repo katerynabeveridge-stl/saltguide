@@ -5,14 +5,16 @@ const TZ = "Europe/London";
 
 type PlaceJoin = {
   name: string;
+  photo_url?: string | null;
   cover_image_url?: string | null;
   cover_image_alt?: string | null;
 };
 
 export type EventRow = {
-  slug: string;
+  id?: string | number;
+  slug?: string | null;
   title: string;
-  event_types: string[];
+  event_types?: string[] | null;
   starts_at: string;
   ends_at: string | null;
   description_short: string | null;
@@ -21,6 +23,7 @@ export type EventRow = {
   is_salty_pick: boolean;
   is_free: boolean | null;
   booking_url: string | null;
+  image_url?: string | null;
   cover_image_url?: string | null;
   cover_image_alt?: string | null;
   price_label?: string | null;
@@ -148,15 +151,28 @@ function resolveCat(types: string[]): EventCat {
   return "art";
 }
 
+function eventSlug(row: EventRow): string {
+  const fromSlug = row.slug?.trim();
+  if (fromSlug) return fromSlug;
+  if (row.id != null) return String(row.id);
+  return `event-${toDateISO(row.starts_at)}-${row.title.trim().toLowerCase().replace(/\s+/g, "-")}`;
+}
+
 function mapRowToFeedEvent(row: EventRow): FeedEvent {
   const short = row.description_short?.trim() || undefined;
   const long = row.description_long?.trim() || undefined;
-  const family = (row.event_types ?? []).some(
+  const types = row.event_types ?? [];
+  const family = types.some(
     (t) => t === "kids" || t === "family" || t === "send",
   );
   const place = resolvePlace(row);
   const title = row.title.trim();
-  const imageUrl = pickCoverUrl(row.cover_image_url, place?.cover_image_url);
+  const imageUrl = pickCoverUrl(
+    row.cover_image_url,
+    row.image_url,
+    place?.cover_image_url,
+    place?.photo_url,
+  );
   const imageAlt = imageUrl
     ? pickCoverAlt(title, row.cover_image_alt, place?.cover_image_alt)
     : undefined;
@@ -166,14 +182,14 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
   const recurs = row.recurrence_label?.trim() || undefined;
 
   return {
-    slug: row.slug,
+    slug: eventSlug(row),
     dateISO: toDateISO(row.starts_at),
     title,
     venue: resolveVenue(row),
     time: formatEventTime(row.starts_at, row.ends_at),
     description: short || long,
     detail: long && long !== short ? long : undefined,
-    cat: resolveCat(row.event_types ?? []),
+    cat: resolveCat(types),
     free: Boolean(row.is_free),
     pick: Boolean(row.is_salty_pick),
     family,
