@@ -69,15 +69,6 @@ export default function PlacesDirectory({ venues, links }: Props) {
     [venues],
   );
 
-  const switchCat = useCallback(
-    (id: string) => {
-      const cat = CATS.find((c) => c.id === id);
-      if (!cat) return;
-      openCat(id, cat.label);
-    },
-    [openCat],
-  );
-
   const applyCtx = useCallback((next: CtxState) => {
     const items = applyCtxFilter(next);
     setCtx(next);
@@ -118,25 +109,6 @@ export default function PlacesDirectory({ venues, links }: Props) {
               {title}
               <span>{subtitle}</span>
             </div>
-          </div>
-
-          <div className="sg-cat-pills" role="tablist" aria-label="Place categories">
-            {CATS.map((cat) => {
-              const active = ctx.catId === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  className={`sg-cat-pill${active ? " on" : ""}${cat.soon ? " soon" : ""}`}
-                  onClick={() => switchCat(cat.id)}
-                >
-                  {cat.label}
-                  {cat.soon ? " · soon" : ""}
-                </button>
-              );
-            })}
           </div>
 
           {showSubtypes ? (

@@ -1051,42 +1051,6 @@ body:has(.staging-banner) .sg-wrap {
   padding: 8px 18px 28px;
 }
 
-.sg-cat-pills {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 4px 2px 12px;
-  margin-bottom: 4px;
-  scrollbar-width: none;
-}
-
-.sg-cat-pills::-webkit-scrollbar {
-  display: none;
-}
-
-.sg-cat-pill {
-  flex-shrink: 0;
-  border: 2px solid var(--sg-ink);
-  background: var(--sg-card);
-  color: var(--sg-ink);
-  border-radius: 99px;
-  padding: 7px 14px;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-
-.sg-cat-pill.on {
-  background: var(--sg-ink);
-  color: var(--sg-green);
-}
-
-.sg-cat-pill.soon:not(.on) {
-  opacity: 0.55;
-}
-
 .sg-seg {
   text-transform: uppercase;
 }
