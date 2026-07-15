@@ -917,16 +917,18 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-detail {
-  background: var(--sg-card);
-  border: 2px solid var(--sg-ink);
-  box-shadow: 5px 5px 0 var(--sg-ink);
-  border-radius: 16px;
-  overflow: hidden;
+  /* Flat page stack — matches What's On (no nested bordered panel) */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
 }
 
 .sg-detail-head {
-  padding: 18px 18px 16px;
-  border-bottom: 2px solid var(--sg-ink);
+  padding: 0 0 4px;
+  border-bottom: none;
+  margin-bottom: 4px;
 }
 
 .sg-detail-top {
@@ -1048,7 +1050,12 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-detail-list {
-  padding: 8px 18px 28px;
+  padding: 0 0 28px;
+}
+
+.sg-detail-head .sg-search-bar {
+  margin-top: 16px;
+  margin-bottom: 4px;
 }
 
 .sg-seg {

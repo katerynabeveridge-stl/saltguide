@@ -6,6 +6,7 @@ import {
   GOOD_FOR,
   PEBBLES_URL,
   SUBTYPES,
+  TYPE_LABEL,
 } from "../../lib/guide/constants";
 import {
   applyCtxFilter,
@@ -23,33 +24,60 @@ type Props = {
 
 const EMPTY_CTX: CtxState = { catId: null, sub: null, tag: null, base: [] };
 
+function venueSearchHaystack(v: Venue, catId: string | null): string {
+  const typeLabels = v.types
+    .map((t) => TYPE_LABEL[t] || t)
+    .join(" ");
+  const kind = kindLabel(v, catId);
+  return `${v.n} ${v.a} ${v.b} ${typeLabels} ${kind} ${v.tags.join(" ")}`;
+}
+
 export default function PlacesDirectory({ venues, links }: Props) {
   const [open, setOpen] = useState(false);
   const [ctx, setCtx] = useState<CtxState>(EMPTY_CTX);
   const [title, setTitle] = useState("Results");
-  const [subtitle, setSubtitle] = useState("");
   const [soonMode, setSoonMode] = useState(false);
   const [soonMessage, setSoonMessage] = useState({ title: "", body: "" });
+  const [query, setQuery] = useState("");
 
   const filteredItems = useMemo(() => applyCtxFilter(ctx), [ctx]);
+  const q = query.trim().toLowerCase();
+  const listedItems = useMemo(() => {
+    if (!q) return filteredItems;
+    return filteredItems.filter((v) =>
+      venueSearchHaystack(v, ctx.catId).toLowerCase().includes(q),
+    );
+  }, [filteredItems, q, ctx.catId]);
+
   const showSubtypes = Boolean(ctx.catId && SUBTYPES[ctx.catId] && !soonMode);
   const showGoodFor =
     presentTags(ctx).length > 0 && !soonMode && ctx.catId !== null;
   const gfLabel =
     ctx.catId === "eatdrink" ? "Good for" : ctx.catId ? "Filter" : "Filter";
 
+  const anyFilter = Boolean(ctx.sub || ctx.tag || q);
+  const summaryLabel = q
+    ? "Matches"
+    : ctx.tag
+      ? GOOD_FOR[ctx.tag] || "Filtered"
+      : ctx.sub
+        ? (SUBTYPES[ctx.catId as string] || []).find((s) => s.id === ctx.sub)
+            ?.short || "Filtered"
+        : "All places";
+
   const close = useCallback(() => {
     setOpen(false);
     setSoonMode(false);
     setCtx(EMPTY_CTX);
+    setQuery("");
   }, []);
 
   const openCat = useCallback(
     (id: string, label: string) => {
       const cat = CATS.find((c) => c.id === id);
+      setQuery("");
       if (cat?.soon) {
         setTitle(label);
-        setSubtitle("Coming soon");
         setSoonMode(true);
         setSoonMessage({
           title: `${label} is coming`,
@@ -62,7 +90,6 @@ export default function PlacesDirectory({ venues, links }: Props) {
       const base = inSection(id, venues);
       setCtx({ catId: id, sub: null, tag: null, base });
       setTitle(label);
-      setSubtitle(`${base.length} place${base.length !== 1 ? "s" : ""}`);
       setSoonMode(false);
       setOpen(true);
     },
@@ -70,9 +97,7 @@ export default function PlacesDirectory({ venues, links }: Props) {
   );
 
   const applyCtx = useCallback((next: CtxState) => {
-    const items = applyCtxFilter(next);
     setCtx(next);
-    setSubtitle(`${items.length} place${items.length !== 1 ? "s" : ""}`);
   }, []);
 
   const setSub = useCallback(
@@ -89,6 +114,11 @@ export default function PlacesDirectory({ venues, links }: Props) {
     [applyCtx, ctx],
   );
 
+  const clearFilters = useCallback(() => {
+    setQuery("");
+    setCtx((prev) => ({ ...prev, sub: null, tag: null }));
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
@@ -102,14 +132,40 @@ export default function PlacesDirectory({ venues, links }: Props) {
       <div className="sg-detail">
         <div className="sg-detail-head">
           <div className="sg-detail-top">
-            <button type="button" className="sg-back" onClick={close} aria-label="Back">
+            <button
+              type="button"
+              className="sg-back"
+              onClick={close}
+              aria-label="Back"
+            >
               ←
             </button>
-            <div className="sg-detail-title">
-              {title}
-              <span>{subtitle}</span>
-            </div>
+            <div className="sg-detail-title">{title}</div>
           </div>
+
+          {!soonMode ? (
+            <div className="sg-search-bar">
+              <div className="sg-search">
+                <span aria-hidden>🔍</span>
+                <input
+                  value={query}
+                  onChange={(ev) => setQuery(ev.target.value)}
+                  placeholder="Where do you want to go?"
+                  aria-label="Search places"
+                />
+                {query ? (
+                  <button
+                    type="button"
+                    className="clear"
+                    onClick={() => setQuery("")}
+                    aria-label="Clear search"
+                  >
+                    ✕
+                  </button>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
 
           {showSubtypes ? (
             <div className="sg-filt">
@@ -153,6 +209,23 @@ export default function PlacesDirectory({ venues, links }: Props) {
             </div>
           ) : null}
         </div>
+
+        {!soonMode ? (
+          <div className="sg-summary">
+            <strong>{summaryLabel}</strong>
+            <span>
+              {listedItems.length}{" "}
+              {listedItems.length === 1 ? "place" : "places"}
+              {q ? ` · “${query.trim()}”` : ""}
+            </span>
+            {anyFilter ? (
+              <button type="button" className="clear-all" onClick={clearFilters}>
+                Clear all
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+
         <div className="sg-detail-list">
           {soonMode ? (
             <div className="sg-places-empty">
@@ -161,10 +234,11 @@ export default function PlacesDirectory({ venues, links }: Props) {
             </div>
           ) : (
             <VenueList
-              items={filteredItems}
+              items={listedItems}
               links={links}
               catId={ctx.catId}
               showPebbles={ctx.catId === "family"}
+              emptyFromSearch={Boolean(q)}
             />
           )}
         </div>
@@ -245,21 +319,24 @@ function VenueList({
   links,
   catId,
   showPebbles,
+  emptyFromSearch,
 }: {
   items: Venue[];
   links: Record<string, VenueLinks>;
   catId: string | null;
   showPebbles: boolean;
+  emptyFromSearch?: boolean;
 }) {
   if (!items.length) {
     return (
       <>
         {showPebbles ? <PebblesCta /> : null}
         <div className="sg-places-empty">
-          <h4>Nothing here yet</h4>
+          <h4>{emptyFromSearch ? "No matches" : "Nothing here yet"}</h4>
           <p>
-            We&apos;d rather show nothing than guess. This one&apos;s still being
-            tagged.
+            {emptyFromSearch
+              ? "Try a different search, or clear filters."
+              : "We'd rather show nothing than guess. This one's still being tagged."}
           </p>
         </div>
       </>
