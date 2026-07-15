@@ -47,8 +47,8 @@ export function applyCtxFilter(ctx: CtxState): Venue[] {
     items = items.filter((v) => v.types.some((t) => types.includes(t)));
   }
 
-  if (ctx.tag) {
-    items = items.filter((v) => v.tags.includes(ctx.tag as string));
+  if (ctx.tags.length) {
+    items = items.filter((v) => ctx.tags.every((t) => v.tags.includes(t)));
   }
 
   return items;

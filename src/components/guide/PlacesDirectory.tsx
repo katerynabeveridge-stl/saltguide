@@ -22,23 +22,51 @@ type Props = {
   links: Record<string, VenueLinks>;
 };
 
-const EMPTY_CTX: CtxState = { catId: null, sub: null, tag: null, base: [] };
+const DEFAULT_CAT = CATS.find((c) => !c.soon)?.id ?? "eatdrink";
 
 function venueSearchHaystack(v: Venue, catId: string | null): string {
-  const typeLabels = v.types
-    .map((t) => TYPE_LABEL[t] || t)
-    .join(" ");
+  const typeLabels = v.types.map((t) => TYPE_LABEL[t] || t).join(" ");
   const kind = kindLabel(v, catId);
   return `${v.n} ${v.a} ${v.b} ${typeLabels} ${kind} ${v.tags.join(" ")}`;
 }
 
+function buildCtx(
+  catId: string,
+  venues: Venue[],
+  sub: string | null = null,
+  tags: string[] = [],
+): CtxState {
+  return {
+    catId,
+    sub,
+    tags,
+    base: inSection(catId, venues),
+  };
+}
+
 export default function PlacesDirectory({ venues, links }: Props) {
-  const [open, setOpen] = useState(false);
-  const [ctx, setCtx] = useState<CtxState>(EMPTY_CTX);
-  const [title, setTitle] = useState("Results");
-  const [soonMode, setSoonMode] = useState(false);
-  const [soonMessage, setSoonMessage] = useState({ title: "", body: "" });
+  const [ctx, setCtx] = useState<CtxState>(() =>
+    buildCtx(DEFAULT_CAT, venues),
+  );
   const [query, setQuery] = useState("");
+  const [showCatMenu, setShowCatMenu] = useState(false);
+  const [showSheet, setShowSheet] = useState(false);
+  const [draftSub, setDraftSub] = useState<string | null>(null);
+  const [draftTags, setDraftTags] = useState<string[]>([]);
+
+  const activeCat = CATS.find((c) => c.id === ctx.catId) ?? CATS[0];
+  const soonMode = Boolean(activeCat?.soon);
+  const subtypes = ctx.catId ? SUBTYPES[ctx.catId] || [] : [];
+
+  // Keep section base in sync if venues data changes (build remounts usually).
+  useEffect(() => {
+    if (!ctx.catId || soonMode) return;
+    setCtx((prev) => ({
+      ...prev,
+      base: inSection(prev.catId as string, venues),
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [venues]);
 
   const filteredItems = useMemo(() => applyCtxFilter(ctx), [ctx]);
   const q = query.trim().toLowerCase();
@@ -49,168 +77,168 @@ export default function PlacesDirectory({ venues, links }: Props) {
     );
   }, [filteredItems, q, ctx.catId]);
 
-  const showSubtypes = Boolean(ctx.catId && SUBTYPES[ctx.catId] && !soonMode);
-  const showGoodFor =
-    presentTags(ctx).length > 0 && !soonMode && ctx.catId !== null;
-  const gfLabel =
-    ctx.catId === "eatdrink" ? "Good for" : ctx.catId ? "Filter" : "Filter";
+  const sheetCtx = useMemo(
+    (): CtxState => ({
+      ...ctx,
+      sub: draftSub,
+      tags: draftTags,
+    }),
+    [ctx, draftSub, draftTags],
+  );
+  const sheetTags = useMemo(() => presentTags(sheetCtx), [sheetCtx]);
+  const draftPreviewCount = useMemo(
+    () => applyCtxFilter(sheetCtx).length,
+    [sheetCtx],
+  );
 
-  const anyFilter = Boolean(ctx.sub || ctx.tag || q);
+  const filterCount = (ctx.sub ? 1 : 0) + ctx.tags.length;
+  const anyFilter = filterCount > 0 || q.length > 0;
+
   const summaryLabel = q
     ? "Matches"
-    : ctx.tag
-      ? GOOD_FOR[ctx.tag] || "Filtered"
-      : ctx.sub
-        ? (SUBTYPES[ctx.catId as string] || []).find((s) => s.id === ctx.sub)
-            ?.short || "Filtered"
-        : "All places";
+    : ctx.tags.length === 1
+      ? GOOD_FOR[ctx.tags[0]] || "Filtered"
+      : ctx.tags.length > 1
+        ? "Filtered"
+        : ctx.sub
+          ? subtypes.find((s) => s.id === ctx.sub)?.short || "Filtered"
+          : "All places";
 
-  const close = useCallback(() => {
-    setOpen(false);
-    setSoonMode(false);
-    setCtx(EMPTY_CTX);
-    setQuery("");
-  }, []);
-
-  const openCat = useCallback(
-    (id: string, label: string) => {
-      const cat = CATS.find((c) => c.id === id);
+  const selectCategory = useCallback(
+    (cat: Category) => {
+      setShowCatMenu(false);
       setQuery("");
-      if (cat?.soon) {
-        setTitle(label);
-        setSoonMode(true);
-        setSoonMessage({
-          title: `${label} is coming`,
-          body: `${cat.tagline ?? ""}. We're curating it now — reply to the newsletter with somewhere we should include.`,
-        });
-        setCtx({ catId: id, sub: null, tag: null, base: [] });
-        setOpen(true);
-        return;
-      }
-      const base = inSection(id, venues);
-      setCtx({ catId: id, sub: null, tag: null, base });
-      setTitle(label);
-      setSoonMode(false);
-      setOpen(true);
+      setCtx(buildCtx(cat.id, venues));
     },
     [venues],
   );
 
-  const applyCtx = useCallback((next: CtxState) => {
-    setCtx(next);
+  const openSheet = useCallback(() => {
+    setDraftSub(ctx.sub);
+    setDraftTags([...ctx.tags]);
+    setShowSheet(true);
+    setShowCatMenu(false);
+  }, [ctx.sub, ctx.tags]);
+
+  const applySheet = useCallback(() => {
+    setCtx((prev) => ({ ...prev, sub: draftSub, tags: draftTags }));
+    setShowSheet(false);
+  }, [draftSub, draftTags]);
+
+  const clearDraft = useCallback(() => {
+    setDraftSub(null);
+    setDraftTags([]);
   }, []);
 
-  const setSub = useCallback(
-    (sub: string | null) => {
-      applyCtx({ ...ctx, sub, tag: null });
-    },
-    [applyCtx, ctx],
-  );
-
-  const setTag = useCallback(
-    (tag: string) => {
-      applyCtx({ ...ctx, tag: ctx.tag === tag ? null : tag });
-    },
-    [applyCtx, ctx],
-  );
-
-  const clearFilters = useCallback(() => {
+  const clearAll = useCallback(() => {
     setQuery("");
-    setCtx((prev) => ({ ...prev, sub: null, tag: null }));
+    setCtx((prev) => ({ ...prev, sub: null, tags: [] }));
+  }, []);
+
+  const toggleDraftTag = useCallback((tag: string) => {
+    setDraftTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
+    );
   }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+      if (e.key === "Escape") {
+        setShowSheet(false);
+        setShowCatMenu(false);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [close]);
+  }, []);
 
-  if (open) {
-    return (
-      <div className="sg-detail">
-        <div className="sg-detail-head">
-          <div className="sg-detail-top">
+  return (
+    <>
+      <div className="sg-places-intro">
+        <h1 className="sg-h1">Places.</h1>
+        <p className="sg-lede">
+          Our little black book of Hastings &amp; St Leonards.
+        </p>
+      </div>
+
+      <div className="sg-search-bar">
+        <div className="sg-search">
+          <span aria-hidden>🔍</span>
+          <input
+            value={query}
+            onChange={(ev) => setQuery(ev.target.value)}
+            placeholder="Where do you want to go?"
+            aria-label="Search places"
+            disabled={soonMode}
+          />
+          {query ? (
             <button
               type="button"
-              className="sg-back"
-              onClick={close}
-              aria-label="Back"
+              className="clear"
+              onClick={() => setQuery("")}
+              aria-label="Clear search"
             >
-              ←
+              ✕
             </button>
-            <div className="sg-detail-title">{title}</div>
-          </div>
-
-          {!soonMode ? (
-            <div className="sg-search-bar">
-              <div className="sg-search">
-                <span aria-hidden>🔍</span>
-                <input
-                  value={query}
-                  onChange={(ev) => setQuery(ev.target.value)}
-                  placeholder="Where do you want to go?"
-                  aria-label="Search places"
-                />
-                {query ? (
-                  <button
-                    type="button"
-                    className="clear"
-                    onClick={() => setQuery("")}
-                    aria-label="Clear search"
-                  >
-                    ✕
-                  </button>
-                ) : null}
-              </div>
-            </div>
           ) : null}
+        </div>
+      </div>
 
-          {showSubtypes ? (
-            <div className="sg-filt">
-              <div className="lbl">Type</div>
-              <div className="sg-seg">
-                <button
-                  type="button"
-                  className={ctx.sub === null ? "on" : ""}
-                  onClick={() => setSub(null)}
-                >
-                  All
-                </button>
-                {(SUBTYPES[ctx.catId as string] || []).map((s) => (
+      <div className="sg-places-toolbar">
+        <div className="sg-cat-picker">
+          <button
+            type="button"
+            className="sg-cat-select"
+            aria-expanded={showCatMenu}
+            aria-haspopup="listbox"
+            onClick={() => setShowCatMenu((v) => !v)}
+          >
+            <span>{activeCat.label}</span>
+            <span className="chev" aria-hidden>
+              ▾
+            </span>
+          </button>
+          {showCatMenu ? (
+            <ul className="sg-cat-menu" role="listbox">
+              {CATS.map((cat) => (
+                <li key={cat.id}>
                   <button
-                    key={s.id}
                     type="button"
-                    className={ctx.sub === s.id ? "on" : ""}
-                    onClick={() => setSub(s.id)}
+                    role="option"
+                    aria-selected={cat.id === ctx.catId}
+                    className={cat.id === ctx.catId ? "on" : ""}
+                    onClick={() => selectCategory(cat)}
                   >
-                    {s.short}
+                    {cat.label}
+                    {cat.soon ? <span className="soon-badge">soon</span> : null}
                   </button>
-                ))}
-              </div>
-            </div>
-          ) : null}
-          {showGoodFor ? (
-            <div className="sg-filt">
-              <div className="lbl">{gfLabel}</div>
-              <div className="sg-gf-row">
-                {presentTags(ctx).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    className={`sg-gf${ctx.tag === t ? " on" : ""}`}
-                    onClick={() => setTag(t)}
-                  >
-                    {GOOD_FOR[t] || t}
-                  </button>
-                ))}
-              </div>
-            </div>
+                </li>
+              ))}
+            </ul>
           ) : null}
         </div>
 
-        {!soonMode ? (
+        <button
+          type="button"
+          className={`sg-filter-btn${filterCount > 0 ? " on" : ""}`}
+          onClick={openSheet}
+          disabled={soonMode}
+        >
+          <FilterIcon active={filterCount > 0} />
+          Filters{filterCount > 0 ? ` · ${filterCount}` : ""}
+        </button>
+      </div>
+
+      {soonMode ? (
+        <div className="sg-places-empty" style={{ marginTop: 28 }}>
+          <h4>{activeCat.label} is coming</h4>
+          <p>
+            {activeCat.tagline ?? ""}. We&apos;re curating it now — reply to the
+            newsletter with somewhere we should include.
+          </p>
+        </div>
+      ) : (
+        <>
           <div className="sg-summary">
             <strong>{summaryLabel}</strong>
             <span>
@@ -219,98 +247,117 @@ export default function PlacesDirectory({ venues, links }: Props) {
               {q ? ` · “${query.trim()}”` : ""}
             </span>
             {anyFilter ? (
-              <button type="button" className="clear-all" onClick={clearFilters}>
+              <button type="button" className="clear-all" onClick={clearAll}>
                 Clear all
               </button>
             ) : null}
           </div>
-        ) : null}
 
-        <div className="sg-detail-list">
-          {soonMode ? (
-            <div className="sg-places-empty">
-              <h4>{soonMessage.title}</h4>
-              <p>{soonMessage.body}</p>
-            </div>
-          ) : (
-            <VenueList
-              items={listedItems}
-              links={links}
-              catId={ctx.catId}
-              showPebbles={ctx.catId === "family"}
-              emptyFromSearch={Boolean(q)}
-            />
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div className="sg-places-intro">
-        <h1 className="sg-h1">Places.</h1>
-        <p className="sg-lede">
-          Our little black book of Hastings &amp; St Leonards — the cafés, pubs
-          and spots we actually rate.
-        </p>
-      </div>
-      <div className="sg-idx">
-        {CATS.map((cat) => (
-          <DirectoryRow
-            key={cat.id}
-            cat={cat}
-            venues={venues}
-            onOpen={openCat}
+          <VenueList
+            items={listedItems}
+            links={links}
+            catId={ctx.catId}
+            showPebbles={ctx.catId === "family"}
+            emptyFromSearch={Boolean(q) || anyFilter}
           />
-        ))}
-      </div>
-    </>
-  );
-}
+        </>
+      )}
 
-function DirectoryRow({
-  cat,
-  venues,
-  onOpen,
-}: {
-  cat: Category;
-  venues: Venue[];
-  onOpen: (id: string, label: string) => void;
-}) {
-  if (cat.soon) {
-    return (
-      <button
-        type="button"
-        className="sg-idx-row soon"
-        onClick={() => onOpen(cat.id, cat.label)}
-      >
-        <div className="col">
-          <div className="nm">{cat.label}</div>
-          <div className="feat">
-            {cat.tagline} <span className="soon-badge">soon</span>
+      {showSheet ? (
+        <div
+          className="sg-sheet-backdrop"
+          onClick={() => setShowSheet(false)}
+          role="presentation"
+        >
+          <div
+            className="sg-sheet"
+            onClick={(ev) => ev.stopPropagation()}
+            role="dialog"
+            aria-label="Filters"
+          >
+            <div className="sg-sheet-handle" />
+            <div className="sg-sheet-head">
+              <h3>Filters</h3>
+            </div>
+
+            {subtypes.length ? (
+              <>
+                <div className="sg-narrow-lbl">TYPE · pick one</div>
+                <div className="sg-pill-wrap">
+                  {subtypes.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      className={`sg-pill${draftSub === s.id ? " on" : ""}`}
+                      onClick={() =>
+                        setDraftSub(draftSub === s.id ? null : s.id)
+                      }
+                    >
+                      {s.short}
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : null}
+
+            {sheetTags.length ? (
+              <>
+                <div className="sg-narrow-lbl">
+                  {ctx.catId === "eatdrink" ? "GOOD FOR" : "FILTER"} · pick any
+                </div>
+                <div className="sg-pill-wrap">
+                  {sheetTags.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      className={`sg-pill${draftTags.includes(t) ? " on" : ""}`}
+                      onClick={() => toggleDraftTag(t)}
+                    >
+                      {GOOD_FOR[t] || t}
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : null}
+
+            {!subtypes.length && !sheetTags.length ? (
+              <p className="sg-sheet-empty">
+                No filters for this section yet.
+              </p>
+            ) : null}
+
+            <div className="sg-sheet-foot">
+              <button
+                type="button"
+                className="sg-sheet-clear"
+                onClick={clearDraft}
+              >
+                Clear
+              </button>
+              <button
+                type="button"
+                className="sg-sheet-apply"
+                onClick={applySheet}
+              >
+                Show places
+                {draftSub || draftTags.length
+                  ? ` · ${draftPreviewCount}`
+                  : ""}
+              </button>
+            </div>
           </div>
         </div>
-        <div className="arrow">→</div>
-      </button>
-    );
-  }
+      ) : null}
 
-  const count = inSection(cat.id, venues).length;
-  return (
-    <button
-      type="button"
-      className="sg-idx-row"
-      onClick={() => onOpen(cat.id, cat.label)}
-    >
-      <div className="col">
-        <div className="nm">{cat.label}</div>
-        <div className="feat">
-          {cat.desc} <span className="count">{count}</span>
-        </div>
-      </div>
-      <div className="arrow">→</div>
-    </button>
+      {showCatMenu ? (
+        <button
+          type="button"
+          className="sg-cat-menu-scrim"
+          aria-label="Close category menu"
+          onClick={() => setShowCatMenu(false)}
+        />
+      ) : null}
+    </>
   );
 }
 
@@ -375,5 +422,44 @@ function PebblesCta() {
         Visit →
       </a>
     </div>
+  );
+}
+
+function FilterIcon({ active }: { active: boolean }) {
+  return (
+    <svg aria-hidden width="15" height="15" viewBox="0 0 15 15" fill="none">
+      <line
+        x1="1"
+        y1="3.5"
+        x2="14"
+        y2="3.5"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <line
+        x1="1"
+        y1="11.5"
+        x2="14"
+        y2="11.5"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <circle
+        cx="10"
+        cy="3.5"
+        r="2.6"
+        fill={active ? "var(--sg-green)" : "var(--sg-card)"}
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <circle
+        cx="5"
+        cy="11.5"
+        r="2.6"
+        fill={active ? "var(--sg-green)" : "var(--sg-card)"}
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+    </svg>
   );
 }

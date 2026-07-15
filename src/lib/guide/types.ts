@@ -92,7 +92,8 @@ export type FeedEvent = {
 export type CtxState = {
   catId: string | null;
   sub: string | null;
-  tag: string | null;
+  /** Good-for tags — multi-select (AND). */
+  tags: string[];
   base: Venue[];
 };
 
