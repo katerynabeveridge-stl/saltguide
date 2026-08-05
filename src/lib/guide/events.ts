@@ -315,6 +315,59 @@ export function homeHighlightEvents(
   return dayEvents.length ? { dayISO: targetDay, events: dayEvents } : null;
 }
 
+/** Home carousel: salty picks first, then fill with upcoming events. */
+export function homeWeekPicks(
+  events: FeedEvent[],
+  todayISO: string,
+  limit = 3,
+): FeedEvent[] {
+  const upcoming = events
+    .filter((e) => e.dateISO >= todayISO)
+    .sort(
+      (a, b) =>
+        a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title),
+    );
+
+  const picks = upcoming.filter((e) => e.pick);
+  const rest = upcoming.filter((e) => !e.pick);
+  return [...picks, ...rest].slice(0, limit);
+}
+
+/** Compact “also on this week” strip — next 7 days, excluding carousel slugs. */
+export function homeWeekStrip(
+  events: FeedEvent[],
+  todayISO: string,
+  excludeSlugs: Set<string>,
+  limit = 5,
+): FeedEvent[] {
+  const endISO = addDaysISO(todayISO, 6);
+  return events
+    .filter(
+      (e) =>
+        e.dateISO >= todayISO &&
+        e.dateISO <= endISO &&
+        !excludeSlugs.has(e.slug),
+    )
+    .sort(
+      (a, b) =>
+        a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title),
+    )
+    .slice(0, limit);
+}
+
+/** Short date for home cards, e.g. "Fri 31 Jul". */
+export function shortWeekdayDate(dateISO: string): string {
+  const day = longDayName(dateISO).slice(0, 3);
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    day: "numeric",
+    month: "short",
+  }).formatToParts(new Date(`${dateISO}T12:00:00Z`));
+  const d = parts.find((p) => p.type === "day")?.value ?? "";
+  const mo = parts.find((p) => p.type === "month")?.value ?? "";
+  return `${day} ${d} ${mo}`;
+}
+
 export function homeHighlightsSubline(
   dayISO: string,
   todayISO: string,

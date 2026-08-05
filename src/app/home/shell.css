@@ -1543,50 +1543,54 @@ body:has(.staging-banner) .sg-wrap {
 
 /* ——— Home landing ——— */
 .sg-home-hero {
-  margin: 26px 0 40px;
+  margin: 26px 0 36px;
 }
 
 .sg-home-h1 {
   font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
   font-weight: 800;
   font-size: clamp(40px, 8vw, 64px);
-  line-height: 1.02;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
   margin-bottom: 12px;
 }
 
+.sg-home-h1-inline {
+  white-space: nowrap;
+}
+
 .sg-home-h1 .hl {
-  background: linear-gradient(
-    transparent 55%,
-    var(--sg-green) 55%,
-    var(--sg-green) 92%,
-    transparent 92%
-  );
+  background: var(--sg-green);
+  padding: 0 6px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .sg-home-lede {
   font-size: 17px;
-  line-height: 1.55;
-  color: rgba(22, 23, 15, 0.8);
-  max-width: 520px;
-  margin-bottom: 20px;
+  line-height: 1.5;
+  color: rgba(20, 22, 27, 0.75);
+  max-width: 320px;
+  margin: 18px 0 26px;
 }
 
 .sg-home-ctas {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
 }
 
 .sg-btn-primary,
 .sg-btn-secondary {
-  padding: 13px 22px;
+  padding: 14px 24px;
   border-radius: 99px;
   border: 2px solid var(--sg-ink);
   box-shadow: var(--sg-shadow);
   font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
   font-weight: 800;
   font-size: 14px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.06em;
 }
 
 .sg-btn-primary {
@@ -1595,31 +1599,31 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-btn-secondary {
-  background: var(--sg-card);
+  background: #faf3e3;
   color: var(--sg-ink);
 }
 
 .sg-home-section {
-  margin-bottom: 40px;
+  margin-bottom: 38px;
 }
 
-.sg-home-section-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 14px;
+.sg-home-section-copy {
+  margin-bottom: 16px;
 }
 
 .sg-home-h2 {
   font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
   font-weight: 800;
-  font-size: 26px;
+  font-size: 30px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
 }
 
 .sg-home-sub {
-  font-size: 14.5px;
-  color: var(--sg-dim);
-  margin-bottom: 14px;
+  font-size: 15px;
+  color: rgba(20, 22, 27, 0.6);
+  margin-top: 4px;
+  margin-bottom: 0;
 }
 
 .sg-home-link {
@@ -1627,177 +1631,295 @@ body:has(.staging-banner) .sg-wrap {
   border: none;
   color: var(--sg-ink);
   text-decoration: underline;
-  font-weight: 600;
+  text-underline-offset: 4px;
+  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
   font-size: 14px;
   cursor: pointer;
+  padding: 0;
 }
 
 .sg-home-link-block {
   display: block;
-  margin-top: 14px;
+  margin-top: 18px;
+  font-size: 15px;
 }
 
-.sg-pick-card {
+.sg-home-picks-rail {
   display: flex;
   gap: 14px;
-  align-items: center;
+  overflow-x: auto;
+  padding: 4px 2px 8px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sg-home-picks-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.sg-home-pick {
+  flex: 0 0 250px;
+  width: 250px;
+  text-align: left;
+  border: 2px solid var(--sg-ink);
+  border-radius: 22px;
+  box-shadow: var(--sg-shadow);
+  padding: 16px 16px 18px;
+  color: var(--sg-ink);
   cursor: pointer;
-  border: 2px solid var(--sg-ink);
-  box-shadow: 5px 5px 0 var(--sg-ink);
-  padding: 12px 14px;
-  margin-bottom: 14px;
-  border-radius: 14px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.sg-pick-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 7px 7px 0 var(--sg-ink);
-}
-
-.sg-pick-thumb {
-  flex: 0 0 52px;
-  height: 52px;
-  border-radius: 10px;
-  border: 2px solid var(--sg-ink);
-  box-shadow: 2px 2px 0 var(--sg-ink);
+.sg-home-pick-top {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  background: var(--sg-card);
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
-.sg-pick-body {
-  min-width: 0;
-  flex: 1;
-}
-
-.sg-pick-meta {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: 3px;
-  flex-wrap: wrap;
-}
-
-.sg-pick-date {
-  background: var(--sg-ink);
-  color: var(--sg-bg);
-  border-radius: 6px;
-  padding: 2px 8px;
+.sg-home-pick-date {
   font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
   font-weight: 800;
-  font-size: 10px;
-  letter-spacing: 1px;
-}
-
-.sg-pick-cat {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--sg-dim);
+  letter-spacing: 0.1em;
+  background: var(--sg-ink);
+  color: #faf3e3;
+  border-radius: 99px;
+  padding: 5px 11px;
+  white-space: nowrap;
 }
 
-.sg-pick-title {
+.sg-home-pick-tag {
   font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
-  font-weight: 700;
-  font-size: 16.5px;
-  line-height: 1.15;
+  font-weight: 800;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  background: var(--sg-green);
+  border: 1.5px solid var(--sg-ink);
+  border-radius: 99px;
+  padding: 4px 10px;
+  white-space: nowrap;
 }
 
-.sg-pick-venue {
+.sg-home-pick-tag.muted {
+  background: #faf3e3;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sg-home-pick-emoji {
+  font-size: 26px;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.sg-home-pick-title {
+  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.sg-home-pick-venue {
   font-size: 13px;
-  color: var(--sg-dim);
+  color: rgba(20, 22, 27, 0.6);
+  margin-bottom: 8px;
+}
+
+.sg-home-pick-blurb {
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.sg-home-week {
+  background: #faf3e3;
+  border: 2px solid var(--sg-ink);
+  border-radius: 22px;
+  box-shadow: var(--sg-shadow);
+  padding: 18px 18px 8px;
+}
+
+.sg-home-week-title {
+  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.sg-home-week-sub {
+  font-family: var(--font-serif), "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(20, 22, 27, 0.6);
+  margin-bottom: 10px;
+}
+
+.sg-home-week-row {
+  padding: 12px 0;
+  border-top: 1.5px solid rgba(20, 22, 27, 0.15);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.sg-home-week-row .d {
+  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.sg-home-week-row .sep {
+  color: rgba(20, 22, 27, 0.45);
+}
+
+.sg-home-week-row .v {
+  color: rgba(20, 22, 27, 0.6);
+}
+
+.sg-home-week-row .n {
   font-weight: 500;
 }
 
-.sg-pick-arrow {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+.sg-home-week-link {
+  display: block;
+  padding: 14px 0 12px;
+  font-size: 14px;
 }
 
-.sg-place-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
+.sg-place-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .sg-place-teaser {
   border: 2px solid var(--sg-ink);
-  box-shadow: 5px 5px 0 var(--sg-ink);
-  border-radius: 14px;
-  padding: 16px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.sg-place-teaser:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 7px 7px 0 var(--sg-ink);
+  box-shadow: var(--sg-shadow);
+  border-radius: 22px;
+  padding: 18px 18px 20px;
 }
 
 .sg-place-icon {
-  font-size: 26px;
-  margin-bottom: 8px;
+  font-size: 22px;
+  margin-bottom: 10px;
+  line-height: 1;
 }
 
 .sg-place-name {
   font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
   font-weight: 800;
-  font-size: 17px;
+  font-size: 21px;
+  margin-bottom: 2px;
 }
 
 .sg-place-type {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--sg-dim);
-  margin-bottom: 6px;
+  font-size: 13px;
+  color: rgba(20, 22, 27, 0.55);
+  margin-bottom: 8px;
 }
 
 .sg-place-line {
-  font-size: 13.5px;
+  font-size: 14.5px;
   line-height: 1.5;
-  color: rgba(22, 23, 15, 0.8);
+  color: rgba(20, 22, 27, 0.9);
 }
 
 .sg-nl-home {
-  margin-bottom: 24px;
+  margin-bottom: 22px;
   margin-top: 0;
+  border-radius: 22px;
+  background: #1a1c22;
+  box-shadow: 6px 6px 0 var(--sg-green);
+}
+
+.sg-nl-home .sg-nl-cta {
+  border-radius: 99px;
+  padding: 13px 22px;
 }
 
 .sg-pebbles-home {
   margin-bottom: 10px;
-  padding: 20px 22px;
-  border-radius: 16px;
+  padding: 22px 20px 24px;
+  border-radius: 22px;
   border: 2px solid var(--sg-ink);
-  box-shadow: 5px 5px 0 var(--sg-ink);
+  box-shadow: var(--sg-shadow);
+  background: #f0785c;
 }
 
 .sg-pebbles-home-title {
   font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
   font-weight: 800;
-  font-size: 19px;
-  margin-bottom: 4px;
+  font-size: 24px;
+  margin-bottom: 8px;
 }
 
 .sg-pebbles-home p {
-  font-size: 14.5px;
+  font-size: 15px;
   line-height: 1.55;
-  color: rgba(22, 23, 15, 0.85);
+  color: rgba(20, 22, 27, 0.95);
+  margin: 0;
 }
 
-.sg-pebbles-home strong a {
-  background: #ff6b57;
-  color: #fff;
-  padding: 0 5px;
-  border-radius: 4px;
+.sg-pebbles-home a {
+  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  background: rgba(250, 243, 227, 0.85);
+  color: var(--sg-ink);
+  padding: 1px 7px;
+  border-radius: 6px;
   text-decoration: none;
 }
 
 .sg-home-footer {
-  font-size: 12.5px;
-  color: var(--sg-dim);
+  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: rgba(20, 22, 27, 0.55);
   text-align: center;
-  margin-top: 30px;
+  margin-top: 36px;
+  margin-bottom: 8px;
+}
+
+.sg-home-footer .star {
+  color: var(--sg-ink);
+}
+
+.sg-home-pick-sheet-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.sg-home-pick-sheet-title {
+  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 27px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.sg-home-pick-sheet-venue {
+  font-size: 14px;
+  color: rgba(20, 22, 27, 0.6);
+  margin-bottom: 12px;
+}
+
+.sg-home-pick-sheet-body {
+  font-size: 15px;
+  line-height: 1.55;
+  margin: 0 0 20px;
+}
+
+.sg-home-pick-sheet-close {
+  width: 100%;
+  text-align: center;
+  box-shadow: none;
 }
 
 @media (min-width: 768px) {
