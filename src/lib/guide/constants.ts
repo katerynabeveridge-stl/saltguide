@@ -257,12 +257,12 @@ export const EVENT_CATS: Record<
   string,
   { label: string; c: string; icon: string }
 > = {
-  music: { label: "Music & Nights Out", c: "#FF7AC6", icon: "🎸" },
-  food: { label: "Food & Drink", c: "#FFA13D", icon: "🍜" },
-  art: { label: "Arts & Culture", c: "#B9A8FF", icon: "🎨" },
+  music: { label: "Music & Nights Out", c: "#F27BC0", icon: "🎸" },
+  food: { label: "Food & Drink", c: "#F5A54A", icon: "🍜" },
+  art: { label: "Arts & Culture", c: "#C9B8F0", icon: "🎨" },
   market: { label: "Markets & Fairs", c: "#C8F135", icon: "🧺" },
-  workshop: { label: "Workshops", c: "#7BE8C0", icon: "✂️" },
-  outdoors: { label: "Outdoors & Wellbeing", c: "#9BE87B", icon: "🌊" },
+  workshop: { label: "Workshops", c: "#F0785C", icon: "✂️" },
+  outdoors: { label: "Outdoors & Wellbeing", c: "#C9B8F0", icon: "🌊" },
 };
 
 export const TYPE_LABEL: Record<string, string> = {

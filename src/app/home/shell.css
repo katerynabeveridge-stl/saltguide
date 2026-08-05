@@ -1,9 +1,14 @@
 :root {
-  --sg-bg: #faf6ec;
-  --sg-card: #fffbf0;
-  --sg-ink: #16170f;
-  --sg-dim: rgba(22, 23, 15, 0.6);
+  --sg-bg: #faf3e3;
+  --sg-card: #faf3e3;
+  --sg-ink: #14161b;
+  --sg-dim: rgba(20, 22, 27, 0.6);
   --sg-green: #c8f135;
+  --sg-orange: #f5a54a;
+  --sg-lilac: #c9b8f0;
+  --sg-pink: #f27bc0;
+  --sg-coral: #f0785c;
+  --sg-dark: #1a1c22;
   --sg-shadow: 4px 4px 0 var(--sg-ink);
   --sg-shadow-sm: 3px 3px 0 var(--sg-ink);
 }
@@ -19,7 +24,7 @@
   min-height: 100vh;
   background: transparent;
   color: var(--sg-ink);
-  font-family: var(--font-body), "Hanken Grotesk", sans-serif;
+  font-family: var(--font-body), Outfit, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -102,7 +107,7 @@ body:has(.staging-banner) .sg-wrap {
   border: none;
   padding: 0;
   color: var(--sg-ink);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 15px;
   letter-spacing: 2px;
@@ -125,7 +130,7 @@ body:has(.staging-banner) .sg-wrap {
   border: none;
   border-radius: 99px;
   padding: 6px 12px;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 700;
   font-size: 12.5px;
 }
@@ -136,7 +141,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-h1 {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: clamp(42px, 8vw, 68px);
   line-height: 0.98;
@@ -153,14 +158,14 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-lede {
-  font-family: var(--font-serif), "Instrument Serif", serif;
+  font-family: var(--font-serif), "DM Serif Display", serif;
   font-style: italic;
   font-size: 20px;
   color: var(--sg-dim);
 }
 
 .sg-h2 {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 40px;
   margin-bottom: 10px;
@@ -175,7 +180,7 @@ body:has(.staging-banner) .sg-wrap {
   background: var(--sg-card);
   box-shadow: none;
   color: var(--sg-ink);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.3px;
@@ -230,7 +235,7 @@ body:has(.staging-banner) .sg-wrap {
   background: transparent;
   padding: 13px 0;
   min-width: 0;
-  font-family: var(--font-body), "Hanken Grotesk", sans-serif;
+  font-family: var(--font-body), Outfit, sans-serif;
   font-size: 15px;
   color: var(--sg-ink);
   outline: none;
@@ -255,7 +260,7 @@ body:has(.staging-banner) .sg-wrap {
   padding: 0 18px;
   height: 48px;
   color: var(--sg-ink);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 13px;
   letter-spacing: 0.5px;
@@ -274,7 +279,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-summary strong {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 14px;
 }
@@ -396,7 +401,7 @@ body:has(.staging-banner) .sg-wrap {
   color: var(--sg-bg);
   border-radius: 6px;
   padding: 3px 9px;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 11px;
   letter-spacing: 1px;
@@ -425,7 +430,7 @@ body:has(.staging-banner) .sg-wrap {
 .sg-badge-pick {
   background: var(--sg-green);
   border: 1.5px solid var(--sg-ink);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 10px;
   letter-spacing: 1px;
@@ -443,7 +448,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-card-title {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 700;
   font-size: 19px;
   line-height: 1.15;
@@ -475,14 +480,14 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-card-take {
-  font-family: var(--font-serif), "Instrument Serif", serif;
+  font-family: var(--font-serif), "DM Serif Display", serif;
   font-style: italic;
   font-size: 16px;
 }
 
 .sg-card-plus {
   flex-shrink: 0;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 16px;
   transition: transform 0.15s ease;
@@ -512,7 +517,7 @@ body:has(.staging-banner) .sg-wrap {
   border: 2px solid var(--sg-ink);
   color: var(--sg-ink);
   box-shadow: var(--sg-shadow-sm);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 13px;
   letter-spacing: 1px;
@@ -532,7 +537,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-cal-title {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 16px;
   margin-bottom: 12px;
@@ -658,7 +663,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-sheet-head h3 {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 22px;
 }
@@ -688,7 +693,7 @@ body:has(.staging-banner) .sg-wrap {
   border: 2px solid var(--sg-ink);
   background: var(--sg-card);
   box-shadow: none;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 700;
   font-size: 13.5px;
   text-align: left;
@@ -708,7 +713,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-narrow-lbl {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 11px;
   letter-spacing: 1.5px;
@@ -735,7 +740,7 @@ body:has(.staging-banner) .sg-wrap {
   background: var(--sg-green);
   color: var(--sg-ink);
   box-shadow: var(--sg-shadow);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 14px;
   letter-spacing: 1px;
@@ -753,7 +758,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-nl-inline .t {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 19px;
   line-height: 1.1;
@@ -776,7 +781,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-nl .t {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 27px;
   line-height: 1.05;
@@ -798,7 +803,7 @@ body:has(.staging-banner) .sg-wrap {
   background: var(--sg-ink);
   color: var(--sg-green);
   text-decoration: none;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 13px;
   letter-spacing: 1px;
@@ -819,7 +824,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-empty h3 {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 24px;
   color: var(--sg-ink);
@@ -873,7 +878,7 @@ body:has(.staging-banner) .sg-wrap {
   background: var(--sg-ink);
   color: var(--sg-green);
   box-shadow: var(--sg-shadow);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 15px;
   letter-spacing: -0.01em;
@@ -911,7 +916,7 @@ body:has(.staging-banner) .sg-wrap {
   border-radius: 10px;
   background: transparent;
   color: var(--sg-ink);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 700;
   font-size: 15px;
 }
@@ -960,7 +965,7 @@ body:has(.staging-banner) .sg-wrap {
   border: 2px solid var(--sg-ink);
   background: var(--sg-card);
   color: var(--sg-ink);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 700;
   font-size: 14px;
 }
@@ -973,7 +978,7 @@ body:has(.staging-banner) .sg-wrap {
   border: 2px solid var(--sg-ink);
   background: var(--sg-ink);
   color: var(--sg-green);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 15px;
   box-shadow: var(--sg-shadow-sm);
@@ -1011,7 +1016,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-idx-row .nm {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 22px;
   letter-spacing: -0.02em;
@@ -1026,7 +1031,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-idx-row .count {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 12px;
   color: var(--sg-ink);
@@ -1047,7 +1052,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-idx-row .soon-badge {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 9px;
   letter-spacing: 0.08em;
@@ -1093,7 +1098,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-detail-title {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 22px;
   letter-spacing: -0.02em;
@@ -1101,7 +1106,7 @@ body:has(.staging-banner) .sg-wrap {
 
 .sg-detail-title span {
   display: block;
-  font-family: var(--font-body), "Hanken Grotesk", sans-serif;
+  font-family: var(--font-body), Outfit, sans-serif;
   font-weight: 500;
   font-size: 12px;
   color: var(--sg-dim);
@@ -1115,7 +1120,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-filt .lbl {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -1139,7 +1144,7 @@ body:has(.staging-banner) .sg-wrap {
 
 .sg-seg button {
   flex: 1 0 auto;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
@@ -1177,7 +1182,7 @@ body:has(.staging-banner) .sg-wrap {
   background: var(--sg-card);
   border: 2px solid var(--sg-ink);
   color: var(--sg-ink);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-size: 11px;
   font-weight: 700;
   padding: 7px 13px;
@@ -1335,7 +1340,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-venue-kind {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -1348,7 +1353,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-venue-pick {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -1361,7 +1366,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-venue-featured {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -1374,7 +1379,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-venue-free {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 9px;
   letter-spacing: 0.07em;
@@ -1387,7 +1392,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-venue-name {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 22px;
   letter-spacing: -0.02em;
@@ -1429,7 +1434,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-venue-links a {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -1451,7 +1456,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-places-empty h4 {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 18px;
   margin-bottom: 8px;
@@ -1478,7 +1483,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-pebbles-cta .kicker {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -1495,7 +1500,7 @@ body:has(.staging-banner) .sg-wrap {
 
 .sg-pebbles-cta a {
   flex: 0 0 auto;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 12px;
   text-transform: uppercase;
@@ -1520,7 +1525,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-soon-page p {
-  font-family: var(--font-serif), "Instrument Serif", serif;
+  font-family: var(--font-serif), "DM Serif Display", serif;
   font-style: italic;
   font-size: 19px;
   color: var(--sg-dim);
@@ -1535,7 +1540,7 @@ body:has(.staging-banner) .sg-wrap {
   box-shadow: var(--sg-shadow-sm);
   border-radius: 99px;
   padding: 8px 18px;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 13px;
   letter-spacing: 1px;
@@ -1547,7 +1552,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-h1 {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: clamp(40px, 8vw, 64px);
   line-height: 1.04;
@@ -1587,7 +1592,7 @@ body:has(.staging-banner) .sg-wrap {
   border-radius: 99px;
   border: 2px solid var(--sg-ink);
   box-shadow: var(--sg-shadow);
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 14px;
   letter-spacing: 0.06em;
@@ -1599,7 +1604,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-btn-secondary {
-  background: #faf3e3;
+  background: var(--sg-card);
   color: var(--sg-ink);
 }
 
@@ -1612,7 +1617,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-h2 {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 30px;
   line-height: 1.05;
@@ -1632,7 +1637,7 @@ body:has(.staging-banner) .sg-wrap {
   color: var(--sg-ink);
   text-decoration: underline;
   text-underline-offset: 4px;
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 14px;
   cursor: pointer;
@@ -1679,7 +1684,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-pick-date {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 11px;
   letter-spacing: 0.1em;
@@ -1691,7 +1696,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-pick-tag {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 10.5px;
   letter-spacing: 0.1em;
@@ -1703,7 +1708,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-pick-tag.muted {
-  background: #faf3e3;
+  background: var(--sg-card);
   max-width: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1716,7 +1721,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-pick-title {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 19px;
   line-height: 1.15;
@@ -1736,7 +1741,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-week {
-  background: #faf3e3;
+  background: var(--sg-card);
   border: 2px solid var(--sg-ink);
   border-radius: 22px;
   box-shadow: var(--sg-shadow);
@@ -1744,14 +1749,14 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-week-title {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 22px;
   margin-bottom: 4px;
 }
 
 .sg-home-week-sub {
-  font-family: var(--font-serif), "Instrument Serif", serif;
+  font-family: var(--font-serif), "DM Serif Display", serif;
   font-style: italic;
   font-size: 15px;
   color: rgba(20, 22, 27, 0.6);
@@ -1766,7 +1771,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-week-row .d {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 13px;
 }
@@ -1809,7 +1814,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-place-name {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 21px;
   margin-bottom: 2px;
@@ -1831,7 +1836,7 @@ body:has(.staging-banner) .sg-wrap {
   margin-bottom: 22px;
   margin-top: 0;
   border-radius: 22px;
-  background: #1a1c22;
+  background: var(--sg-dark);
   box-shadow: 6px 6px 0 var(--sg-green);
 }
 
@@ -1846,11 +1851,11 @@ body:has(.staging-banner) .sg-wrap {
   border-radius: 22px;
   border: 2px solid var(--sg-ink);
   box-shadow: var(--sg-shadow);
-  background: #f0785c;
+  background: var(--sg-coral);
 }
 
 .sg-pebbles-home-title {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 24px;
   margin-bottom: 8px;
@@ -1864,7 +1869,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-pebbles-home a {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   background: rgba(250, 243, 227, 0.85);
   color: var(--sg-ink);
@@ -1874,7 +1879,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-footer {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 13px;
   letter-spacing: 0.1em;
@@ -1896,7 +1901,7 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-pick-sheet-title {
-  font-family: var(--font-display), "Bricolage Grotesque", sans-serif;
+  font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 27px;
   line-height: 1.1;

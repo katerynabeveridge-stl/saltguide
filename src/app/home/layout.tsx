@@ -1,18 +1,14 @@
-import {
-  Bricolage_Grotesque,
-  Hanken_Grotesk,
-  Instrument_Serif,
-} from "next/font/google";
+import { DM_Serif_Display, Outfit } from "next/font/google";
 import "./shell.css";
 
-const display = Bricolage_Grotesque({
+const display = Outfit({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
-  weight: ["600", "700", "800"],
+  weight: ["400", "500", "700", "800"],
 });
 
-const serif = Instrument_Serif({
+const serif = DM_Serif_Display({
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
@@ -20,11 +16,11 @@ const serif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
-const body = Hanken_Grotesk({
+const body = Outfit({
   subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "700", "800"],
 });
 
 export default function HomeLayout({
