@@ -45,16 +45,17 @@ function titleCaseArea(area: string): string {
 }
 
 function venueDescription(row: Record<string, unknown>): string {
+  const long = row.description_long
+    ? String(row.description_long).trim()
+    : "";
   const salt = row.summary_saltguide
     ? String(row.summary_saltguide).trim()
     : "";
   const summary = row.summary ? String(row.summary).trim() : "";
-  const long = row.description_long
-    ? String(row.description_long).trim()
-    : "";
+  // Prefer the editorial long blurb; fall back to Saltguide one-liner, then summary.
+  if (long) return long;
   if (salt) return salt;
   if (summary) return summary;
-  if (long) return long;
   return "";
 }
 
