@@ -45,18 +45,7 @@ function titleCaseArea(area: string): string {
 }
 
 function venueDescription(row: Record<string, unknown>): string {
-  const long = row.description_long
-    ? String(row.description_long).trim()
-    : "";
-  const salt = row.summary_saltguide
-    ? String(row.summary_saltguide).trim()
-    : "";
-  const summary = row.summary ? String(row.summary).trim() : "";
-  // Prefer the editorial long blurb; fall back to Saltguide one-liner, then summary.
-  if (long) return long;
-  if (salt) return salt;
-  if (summary) return summary;
-  return "";
+  return row.summary ? String(row.summary).trim() : "";
 }
 
 function textArray(value: unknown): string[] {
@@ -152,7 +141,7 @@ function buildLinksFromRows(
 }
 
 const PLACES_SELECT =
-  "slug, name, place_type, area, summary, summary_saltguide, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, tags, image_url, show_on_saltguide";
+  "slug, name, place_type, area, summary, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, tags, image_url, show_on_saltguide";
 
 const EVENTS_SELECT =
   "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, show_on_saltguide";
