@@ -1,145 +1,268 @@
 {
-  "farmyard": {
-    "w": "https://farmyardwine.com",
-    "ig": "farmyardwine"
+  "albo": {
+    "ig": "bistro_albo"
   },
-  "lury": {
-    "w": "https://www.luryrestaurant.com",
-    "ig": "lury_restaurant"
+  "alexandra-park": {
+    "w": "https://www.hastings.gov.uk/parks_gardens_allotments/parks/alexandra/"
   },
-  "coquina": {
-    "w": "https://www.coquinarestaurant.co.uk",
-    "ig": "coquina.hastings"
+  "arigato": {
+    "w": "www.arigatofood.com",
+    "ig": "arigatostleonards"
+  },
+  "arta": {
+    "ig": "artabythesea"
+  },
+  "bar40": {
+    "ig": "40barkitchen"
   },
   "bayte": {
     "w": "https://www.bayte.co.uk",
     "ig": "bayte_stleonards"
   },
-  "three-faces": {
-    "w": "https://threefacestapas.com",
-    "ig": "threefacesofdelparc"
+  "bexhill-leisure-centre": {
+    "w": "https://www.freedom-leisure.co.uk/centres/bexhill-leisure-centre/"
   },
-  "st-clements": {
-    "w": "https://www.stclementsrestaurant.co.uk",
-    "ig": "stclementsstleonards"
+  "boatyard": {
+    "w": "https://boatyardstleonards.com/",
+    "ig": "boatyardstleonards"
   },
-  "crown": {
-    "w": "https://www.thecrownhastings.co.uk",
-    "ig": "thecrownhastings"
+  "bonjour": {
+    "ig": "bonjourcafehastings"
   },
-  "porters": {
-    "w": "https://www.porterswinebar.com"
+  "cactus-hound": {
+    "ig": "cactushoundbar"
   },
-  "liban-coast": {
-    "w": "https://www.libancoast.com",
-    "ig": "liban.coast"
+  "clambers-soft-play-4f26a4": {
+    "w": "https://www.clambers.co.uk/"
   },
-  "sumisu": {
-    "ig": "sumisu_ramen"
+  "collected-fictions": {
+    "w": "www.collectedfictions.co.uk"
   },
-  "heist": {
-    "w": "https://www.heistmarket.com",
+  "coquina": {
+    "w": "https://www.coquinarestaurant.co.uk",
+    "ig": "coquina.hastings"
+  },
+  "dark-circles": {
+    "ig": "darkcircles.stl"
+  },
+  "de-la-warr-pavilion-28ccd7": {
+    "w": "https://www.dlwp.com/",
+    "ig": "delawarrpavilion"
+  },
+  "electric-palace-cinema": {
+    "w": "https://www.electricpalacecinema.com/"
+  },
+  "farmyard": {
+    "w": "https://farmyardwine.com",
+    "ig": "farmyardwine"
+  },
+  "fika": {
+    "ig": "fika.at44"
+  },
+  "fisherwood-farm": {
+    "w": "https://www.fisherwoodfarm.co.uk/"
+  },
+  "flamingo-amusements": {
+    "w": "https://www.visit1066country.com/things-to-do/flamingo-amusements-p1436761"
+  },
+  "folks": {
+    "ig": "folksonsea"
+  },
+  "forage-fleur": {
+    "w": "https://forageandfleur.co.uk/",
+    "ig": "forageandfleurfloristry"
+  },
+  "glow-baby-play-centre": {
+    "w": "https://www.glowbabyplaycentre.co.uk/"
+  },
+  "goat-ledge": {
+    "w": "www.goatledge.com",
+    "ig": "goatledge"
+  },
+  "good-bean": {
+    "w": "https://goodmansbarbers.com/",
+    "ig": "g_o_o_d_m_a_n_s"
+  },
+  "graze": {
+    "w": "https://www.grazeongrand.com/",
+    "ig": "grazeongrand"
+  },
+  "greyskull": {
+    "w": "https://greyskull.co.uk",
+    "ig": "greyskullcoffee"
+  },
+  "gurkha-chef": {
+    "w": "https://www.gurkhachef.com"
+  },
+  "hanushka-coffee-house-george-street": {
+    "w": "https://www.instagram.com/hanushkacoffeehouse/?hl=en",
+    "ig": "hanushkacoffeehouse"
+  },
+  "hastings-adventure-golf": {
+    "w": "https://www.hastingsadventuregolf.com/pirategolf.html"
+  },
+  "hastings-aquarium": {
+    "w": "https://hastingsaquarium.co.uk"
+  },
+  "hastings-castle-1066-story": {
+    "w": "https://hastingscastle.org.uk/"
+  },
+  "hastings-contemporary-741cf8": {
+    "w": "https://www.hastingscontemporary.org/",
+    "ig": "hastingscontemporary"
+  },
+  "hastings-country-park": {
+    "w": "https://www.hastings.gov.uk/parks_gardens_allotments/parks/hastingscountrypark/"
+  },
+  "hastings-fishermen-s-museum": {
+    "w": "https://www.ohps.org.uk/hastings-fishermans-museum/"
+  },
+  "hastings-miniature-railway": {
+    "w": "https://bglr.org/hastings-miniature-railway/"
+  },
+  "hastings-museum-art-gallery": {
+    "w": "https://www.hmag.org.uk/"
+  },
+  "heist-market": {
+    "w": "https://www.heistmarket.com/",
     "ig": "heistmarket"
+  },
+  "imperial": {
+    "w": "https://brewingbrothers.org/pages/imperial",
+    "ig": "brewingbrothersimperial"
+  },
+  "judges": {
+    "w": "https://www.judgesbakery.com/",
+    "ig": "judgesbakery"
+  },
+  "kassa": {
+    "ig": "kassacoffeehouse"
   },
   "bella-vista": {
     "w": "https://www.labellavista.co.uk",
     "ig": "labellavistaristorante"
   },
-  "gurkha-chef": {
-    "w": "https://www.gurkhachef.com"
+  "laya": {
+    "w": "https://www.layarestaurant.co.uk/",
+    "ig": "laya_srilankan_restaurant"
+  },
+  "let-s-go-play": {
+    "w": "https://lets-go-play.co.uk"
+  },
+  "liban-coast": {
+    "w": "https://www.libancoast.com",
+    "ig": "liban.coast"
+  },
+  "lury": {
+    "w": "https://www.luryrestaurant.com",
+    "ig": "lury_restaurant"
+  },
+  "maker-baker": {
+    "ig": "makerandbakeruk"
+  },
+  "mechanical-making-space": {
+    "w": "https://cabaret.co.uk/"
+  },
+  "my-tiny-town": {
+    "w": "https://mytinytown.co.uk/",
+    "ig": "mytinytown_stleonards"
+  },
+  "noahs-goat": {
+    "w": "https://www.noahsgoatwine.co.uk/",
+    "ig": "noahs_goat_wine"
+  },
+  "porters": {
+    "w": "https://www.porterswinebar.com"
+  },
+  "pump-house-alexandra-park": {
+    "w": "https://www.pumphouse.uk/",
+    "ig": "pumphouse_cafedeli"
+  },
+  "rituals": {
+    "w": "https://www.ritualbar.co.uk/",
+    "ig": "ritual_stleonards"
+  },
+  "seed": {
+    "w": "www.seedhastings.co.uk",
+    "ig": "seedhastings"
+  },
+  "selkies": {
+    "ig": "selkieseafoodbar"
+  },
+  "sensory-soft-play": {
+    "w": "https://www.sensoftplay.co.uk/"
   },
   "sleeper": {
     "w": "https://www.thesleeperstore.co.uk",
     "ig": "thesleeperstore"
   },
-  "dark-circles": {
-    "ig": "darkcircles.stl"
-  },
-  "forage-fleur": {
-    "ig": "forageandfleur"
-  },
-  "rituals": {
-    "ig": "ritualsbar.stleonards"
-  },
-  "noahs-goat": {
-    "ig": "noahsgoat"
-  },
-  "hanushka": {
-    "ig": "hanushkacoffeehouse"
-  },
-  "hastings-castle": {
-    "w": "https://hastingscastle.org.uk"
-  },
-  "hastings-aquarium": {
-    "w": "https://hastingsaquarium.co.uk"
-  },
   "smugglers-adventure": {
     "w": "https://www.smugglersadventure.co.uk"
   },
-  "fishermens-museum": {
-    "w": "https://www.ohps.org.uk/hastings-fishermans-museum/"
+  "sonnys": {
+    "w": "https://www.sonnysofrockanore.co.uk/"
   },
-  "hastings-museum": {
-    "w": "https://www.hmag.org.uk"
+  "st-clements": {
+    "w": "https://www.stclementsrestaurant.co.uk",
+    "ig": "stclementsstleonards"
   },
-  "hastings-contemporary": {
-    "w": "https://www.hastingscontemporary.org",
-    "ig": "hastingscontemporary"
+  "stade-hall-hastings": {
+    "w": "https://stadehall.com/"
   },
-  "de-la-warr": {
-    "w": "https://www.dlwp.com",
-    "ig": "delawarrpavilion"
+  "stooges": {
+    "ig": "stoogecoffee"
   },
-  "electric-palace": {
-    "w": "https://www.electricpalacecinema.com"
+  "sturdee": {
+    "ig": "sturdee_on_the_rocks"
   },
-  "mechanical-making": {
-    "w": "https://cabaret.co.uk"
+  "summerfields-leisure-centre": {
+    "w": "https://www.freedom-leisure.co.uk/centres/summerfields-leisure-centre/"
   },
-  "stade-hall": {
-    "w": "https://stadehall.com"
+  "beacon": {
+    "w": "https://beaconhastings.com/",
+    "ig": "thebeacon_hastings"
   },
-  "alexandra-park": {
-    "w": "https://www.hastings.gov.uk/parks_gardens_allotments/parks/alexandra/"
+  "the-crown-hastings": {
+    "w": "https://www.thecrownhastings.co.uk/",
+    "ig": "thecrownhastings"
   },
-  "hastings-country-park": {
-    "w": "https://www.hastings.gov.uk/parks_gardens_allotments/parks/hastingscountrypark/"
+  "oak-bakery": {
+    "w": "https://www.theoakbakery.com/",
+    "ig": "https://www.facebook.com/people/The-Oak-Bakery/100057178941774/#"
   },
-  "hastings-adventure-golf": {
-    "w": "https://www.hastingsadventuregolf.com"
+  "the-piper": {
+    "w": "https://www.thepiper.club",
+    "ig": "thepipercalls"
+  },
+  "prince-of-wales": {
+    "ig": "thehastingsprojectpub"
+  },
+  "royal": {
+    "w": "https://theroyalstleonards.co.uk/",
+    "ig": "the_royal_st_leonards"
+  },
+  "seadog": {
+    "w": "https://theseadogpub.com/",
+    "ig": "theseadoghastings"
+  },
+  "three-faces": {
+    "w": "https://threefacestapas.com",
+    "ig": "threefacesofdelparc"
+  },
+  "tonka": {
+    "ig": "tonkahastings"
   },
   "west-hill-cliff-railway": {
     "w": "https://www.hastings.gov.uk/coastlinebeaches/cliff-railways/"
   },
-  "fisherwood-farm": {
-    "w": "https://www.fisherwoodfarm.co.uk"
+  "westhill-kiosk": {
+    "ig": "west_hill_kiosk"
   },
-  "clambers": {
-    "w": "https://www.clambers.co.uk"
+  "winifreds": {
+    "w": "https://www.winifredsrestaurant.co.uk/",
+    "ig": "winifreds.dining"
   },
-  "lets-go-play": {
-    "w": "https://lets-go-play.co.uk"
-  },
-  "sensory-soft-play": {
-    "w": "https://www.sensoftplay.co.uk"
-  },
-  "my-tiny-town": {
-    "w": "https://mytinytown.co.uk",
-    "ig": "mytinytown_stleonards"
-  },
-  "glow-baby": {
-    "w": "https://www.glowbabyplaycentre.co.uk"
-  },
-  "summerfields": {
-    "w": "https://www.freedom-leisure.co.uk/centres/summerfields-leisure-centre/"
-  },
-  "bexhill-leisure": {
-    "w": "https://www.freedom-leisure.co.uk/centres/bexhill-leisure-centre/"
-  },
-  "y-centre": {
-    "w": "https://www.ycentrehastings.org.uk"
-  },
-  "source-park": {
-    "w": "https://www.sourcebmx.com/pages/source-park-coaching"
+  "y-centre-hastings": {
+    "w": "https://www.ycentrehastings.org.uk/"
   }
 }

@@ -1,261 +1,5 @@
 [
   {
-    "slug": "farmyard",
-    "n": "Farmyard",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "date-night",
-      "roast",
-      "dog-friendly",
-      "child-friendly",
-      "vegan-friendly"
-    ],
-    "b": "Steak, bone marrow, crevettes and oysters washed down with natty wine. Seasonal, farm-to-table at its best.",
-    "tip": "Ask for a natural wine pairing.",
-    "booking": "book-ahead",
-    "sp": true,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "lury",
-    "n": "Lury",
-    "types": [
-      "restaurant"
-    ],
-    "a": "Hastings, New Town",
-    "tags": [
-      "date-night"
-    ],
-    "b": "A spectacular Sri Lankan-inspired 12–14 course tasting menu. Nothing else like it on the coast.",
-    "tip": "Book well in advance — this is the one for a big occasion.",
-    "booking": "book-ahead",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "coquina",
-    "n": "Coquina",
-    "types": [
-      "restaurant"
-    ],
-    "a": "Hastings, Old Town",
-    "tags": [
-      "date-night",
-      "sea-views",
-      "child-friendly"
-    ],
-    "b": "Beautiful views and gorgeous plates — good for a quick bite or a more considered meal.",
-    "tip": "Try the polenta and the asparagus.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "bayte",
-    "n": "Bayte",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "date-night",
-      "vegan-friendly",
-      "dog-friendly",
-      "child-friendly"
-    ],
-    "b": "From the Petersham Nurseries family. Contemporary Italian with a real focus on seafood.",
-    "tip": "Any pasta dish is always a good shout.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "three-faces",
-    "n": "Three Faces of Del Parc",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "date-night"
-    ],
-    "b": "No à la carte — you get what you get, and it's always brilliant. Balearic house, loudish. Leave the kids at home.",
-    "tip": "You must try the cheesecake. Seriously.",
-    "booking": "book-ahead",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "st-clements",
-    "n": "St Clements",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "date-night",
-      "child-friendly"
-    ],
-    "b": "A perfect bistro for a cosy date night. Great front of house, honest cooking — the kind of place you keep coming back to.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "crown",
-    "n": "The Crown",
-    "types": [
-      "restaurant",
-      "pub"
-    ],
-    "a": "Hastings, Old Town",
-    "tags": [
-      "child-friendly",
-      "vegan-friendly",
-      "dog-friendly"
-    ],
-    "b": "Really good gastropub food, big on seasonality and plant-based options. One of the few reliably open Monday and Tuesday.",
-    "tip": "Check their events calendar — something interesting is usually on.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "porters",
-    "n": "Porters",
-    "types": [
-      "restaurant"
-    ],
-    "a": "Hastings, Old Town",
-    "tags": [
-      "child-friendly",
-      "roast"
-    ],
-    "b": "Traditional fayre done well in a family-friendly setting. Sunday roasts are a strong move.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "liban-coast",
-    "n": "Liban Coast",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards, Marina",
-    "tags": [
-      "child-friendly",
-      "vegan-friendly",
-      "sea-views"
-    ],
-    "b": "You can taste the love here. The falafels are beautiful, the mezze generous.",
-    "tip": "Get the chicken main — it's a transcendental experience.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "sumisu",
-    "n": "Sumisu Ramen",
-    "types": [
-      "restaurant"
-    ],
-    "a": "Hastings, New Town",
-    "tags": [
-      "vegan-friendly"
-    ],
-    "b": "The best ramen, with meat from Beak & Tail. Warming and filling — exactly what you want on a grey day.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "kassa",
-    "n": "Kassa",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "child-friendly"
-    ],
-    "b": "Stick to the traditional Afghani dishes and you won't be disappointed.",
-    "tip": "Try the chicken zerensk — a beautiful berry-jewelled rice dish.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "tonka",
-    "n": "Tonka",
-    "types": [
-      "restaurant",
-      "cafe"
-    ],
-    "a": "Hastings, Old Town",
-    "tags": [
-      "coffee-cake",
-      "child-friendly"
-    ],
-    "b": "Mauritian-inspired fusion with delicious iced coffees, matcha and really fun cakes.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "winifreds",
-    "n": "Winifred's",
-    "types": [
-      "restaurant"
-    ],
-    "a": "Hastings, Source Park",
-    "tags": [
-      "date-night"
-    ],
-    "b": "Strong early reviews at Source Park. An eclectic menu of fresh, seasonal ingredients.",
-    "tip": "Go for the wine, stay for the small plates.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": true,
-    "isFree": false
-  },
-  {
-    "slug": "shiosai",
-    "n": "Shiosai Sushi",
-    "types": [
-      "restaurant"
-    ],
-    "a": "Hastings, Source Park",
-    "tags": [
-      "date-night"
-    ],
-    "b": "Andrew Wong of The Seadog serving the most beautiful sushi and sake.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": true,
-    "isFree": false
-  },
-  {
     "slug": "albo",
     "n": "Albo",
     "types": [
@@ -263,723 +7,10 @@
     ],
     "a": "St Leonards",
     "tags": [
-      "date-night",
-      "night-out"
-    ],
-    "b": "Formerly Wavey Bar, now on the high street. European-style small plates packed with goodness.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": true,
-    "isFree": false
-  },
-  {
-    "slug": "boatyard",
-    "n": "Boatyard at Heist",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "date-night",
-      "sea-views"
-    ],
-    "b": "Inventive seafood from across all cuisines, delicious wines and brilliant front of house.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "arigato",
-    "n": "Arigato",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "vegan-friendly"
-    ],
-    "b": "Salmon teriyaki don, sashimi, gyoza and sake. Reliable and always good.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "beacon",
-    "n": "The Beacon",
-    "types": [
-      "restaurant"
-    ],
-    "a": "Hastings, West Hill",
-    "tags": [
-      "child-friendly",
-      "dog-friendly",
-      "sea-views",
-      "roast"
-    ],
-    "b": "Very child-friendly with an enclosed garden and gorgeous views. Sunday roasts are a highlight.",
-    "tip": "Parking is challenging — taxi or walk.",
-    "booking": "walk-in",
-    "sp": true,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "royal",
-    "n": "The Royal",
-    "types": [
       "restaurant",
-      "pub"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "date-night",
-      "vegan-friendly",
-      "dog-friendly",
-      "child-friendly",
-      "roast"
-    ],
-    "b": "Seasonally themed with plant-based and à la carte options. High-end gastropub.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "bella-vista",
-    "n": "Bella Vista",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards",
-    "tags": [
       "date-night"
     ],
-    "b": "Lovingly prepared food — all the classics plus some unique seafood offerings.",
-    "tip": "Order a cocktail.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "laya",
-    "n": "Laya",
-    "types": [
-      "restaurant"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "child-friendly",
-      "vegan-friendly"
-    ],
-    "b": "Sri Lankan on the St Leonards strip. Good range of curries and rice dishes.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "seadog",
-    "n": "The Seadog",
-    "types": [
-      "restaurant"
-    ],
-    "a": "Hastings, New Town",
-    "tags": [
-      "date-night",
-      "roast",
-      "night-out"
-    ],
-    "b": "Well-regarded New Town spot serving Asian fusion and a great Sunday roast.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "heist",
-    "n": "Heist",
-    "types": [
-      "restaurant",
-      "bar",
-      "takeaway"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "date-night",
-      "night-out",
-      "vegan-friendly",
-      "coffee-cake",
-      "breakfast",
-      "dog-friendly",
-      "child-friendly"
-    ],
-    "b": "Indoor street-food market, café, bar and four vendors — pizza, burgers, Chinese/Nepalese, Mexican. Open every day.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": true,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "gurkha-chef",
-    "n": "Gurkha Chef",
-    "types": [
-      "restaurant",
-      "takeaway"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "vegan-friendly"
-    ],
-    "b": "Authentic Nepalese restaurant and takeaway. Order online via their website.",
-    "tip": "Try the momo dumplings — worth the wait.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "imperial",
-    "n": "Imperial",
-    "types": [
-      "pub"
-    ],
-    "a": "Hastings, New Town",
-    "tags": [
-      "date-night"
-    ],
-    "b": "Amazing beer and pizza.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "creperie",
-    "n": "Creperie by the Sea",
-    "types": [
-      "restaurant"
-    ],
-    "a": "Hastings, New Town",
-    "tags": [
-      "child-friendly"
-    ],
-    "b": "French crêperie by the sea.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "rituals",
-    "n": "Rituals",
-    "types": [
-      "bar"
-    ],
-    "a": "St Leonards, Marina",
-    "tags": [
-      "night-out",
-      "sea-views",
-      "date-night"
-    ],
-    "b": "Newly opened with beautiful interiors and a sea vista at the Marina. Cocktails with a view.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": true,
-    "isFree": false
-  },
-  {
-    "slug": "cactus-hound",
-    "n": "Cactus Hound",
-    "types": [
-      "bar"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "night-out",
-      "date-night"
-    ],
-    "b": "Spicy margs with an eclectic crowd, loud music and dancing. The kind of place where anything can happen.",
-    "tip": "Order a clementine margarita.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "collected-fictions",
-    "n": "Collected Fictions",
-    "types": [
-      "bar"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "date-night",
-      "wine"
-    ],
-    "b": "Natural wine bar. Intimate, knowledgeable, always pouring something interesting.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "graze",
-    "n": "Graze on The Grand",
-    "types": [
-      "bar"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "date-night",
-      "child-friendly",
-      "wine"
-    ],
-    "b": "Wine, meats, cheese, pickles and bigger plates too. What's not to love.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "bar40",
-    "n": "Bar40",
-    "types": [
-      "bar"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "night-out",
-      "date-night"
-    ],
-    "b": "Great cocktails and small plates. A relaxed vibe that can go either way — quiet drink or big night.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "seed",
-    "n": "Seed",
-    "types": [
-      "bar"
-    ],
-    "a": "Hastings, Old Town",
-    "tags": [
-      "night-out",
-      "vegan-friendly"
-    ],
-    "b": "A tapas bar in the Old Town. Good drinks, shareable plates, buzzy atmosphere.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "noahs-goat",
-    "n": "Noah's Goat",
-    "types": [
-      "bar",
-      "cafe"
-    ],
-    "a": "Hastings, Old Town",
-    "tags": [
-      "date-night",
-      "coffee-cake",
-      "child-friendly",
-      "wine"
-    ],
-    "b": "Wine shop and café-bar. Browse the shelves, pick a bottle, drink it there.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "sleeper",
-    "n": "Sleeper",
-    "types": [
-      "cafe",
-      "bakery"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "breakfast",
-      "coffee-cake",
-      "dog-friendly",
-      "child-friendly",
-      "vegan-friendly"
-    ],
-    "b": "Great bagels, coffee and lovely artisan goods. Open until they sell out.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": true,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "sonnys",
-    "n": "Sonny's",
-    "types": [
-      "cafe"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "breakfast",
-      "child-friendly"
-    ],
-    "b": "A fishmonger with excellent breakfast and brunch. The food more than makes up for the basic filter coffee.",
-    "tip": "The kedgeree is insanely good.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "folks",
-    "n": "Folks",
-    "types": [
-      "cafe"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "coffee-cake",
-      "breakfast",
-      "child-friendly"
-    ],
-    "b": "Great coffee and pastries.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "fika",
-    "n": "Fika",
-    "types": [
-      "cafe"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "coffee-cake",
-      "vegan-friendly",
-      "child-friendly"
-    ],
-    "b": "Matcha, golden lattes, gorgeous cakes, soups and salads.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "dark-circles",
-    "n": "Dark Circles",
-    "types": [
-      "cafe"
-    ],
-    "a": "St Leonards, Marina",
-    "tags": [
-      "coffee-cake",
-      "child-friendly"
-    ],
-    "b": "Dig and sift through records while you sip. Coffee and vinyl — what more do you need.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "forage-fleur",
-    "n": "Forage & Fleur",
-    "types": [
-      "cafe"
-    ],
-    "a": "St Leonards, Bohemia",
-    "tags": [
-      "breakfast",
-      "coffee-cake",
-      "child-friendly"
-    ],
-    "b": "Also a florist and hairdresser with a secret garden. Unexpected and lovely.",
-    "tip": "Keep an eye on the workshops.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "sturdee",
-    "n": "Sturdee On The Rocks",
-    "types": [
-      "cafe"
-    ],
-    "a": "Hastings, Old Town",
-    "tags": [
-      "breakfast",
-      "child-friendly"
-    ],
-    "b": "When only a fry-up will do. No frills, proper breakfast, job done.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "bonjour",
-    "n": "Bonjour",
-    "types": [
-      "cafe"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "breakfast",
-      "child-friendly"
-    ],
-    "b": "Take the kids for pancakes. The bubble and squeak's good too.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "good-bean",
-    "n": "Good Bean at Goodmans",
-    "types": [
-      "cafe"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "coffee-cake",
-      "child-friendly"
-    ],
-    "b": "Get a haircut, grab a coffee. An unlikely combo that somehow works.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "stooges",
-    "n": "Stooges",
-    "types": [
-      "cafe"
-    ],
-    "a": "Hastings, New Town",
-    "tags": [
-      "coffee-cake"
-    ],
-    "b": "Speciality tea and coffee. Mixed reviews but worth a visit for the range of teas.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "greyskull",
-    "n": "Greyskull",
-    "types": [
-      "cafe"
-    ],
-    "a": "Hastings, New Town",
-    "tags": [
-      "breakfast",
-      "coffee-cake"
-    ],
-    "b": "",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "goat-ledge",
-    "n": "Goat Ledge",
-    "types": [
-      "cafe"
-    ],
-    "a": "St Leonards, Seafront",
-    "tags": [
-      "breakfast",
-      "coffee-cake",
-      "child-friendly",
-      "dog-friendly",
-      "vegan-friendly",
-      "sea-views"
-    ],
-    "b": "",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "selkies",
-    "n": "Selkies",
-    "types": [
-      "cafe"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "breakfast",
-      "coffee-cake",
-      "child-friendly",
-      "dog-friendly",
-      "vegan-friendly"
-    ],
-    "b": "",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "westhill-kiosk",
-    "n": "West Hill Kiosk",
-    "types": [
-      "cafe"
-    ],
-    "a": "Hastings, West Hill",
-    "tags": [
-      "coffee-cake",
-      "child-friendly",
-      "sea-views"
-    ],
-    "b": "",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "arta",
-    "n": "Arta",
-    "types": [
-      "cafe"
-    ],
-    "a": "Hastings, Old Town",
-    "tags": [],
-    "b": "",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "hanushka",
-    "n": "Hanushka Coffee House",
-    "types": [
-      "cafe"
-    ],
-    "a": "Hastings Old Town",
-    "tags": [
-      "coffee-cake",
-      "child-friendly"
-    ],
-    "b": "Cosy Old Town coffee house filled with books, coffee, cakes and light food. Small selection of toys for the little ones.",
-    "tip": "Two locations — George Street and Robertson Street.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "pump-house",
-    "n": "Pump House Café",
-    "types": [
-      "cafe"
-    ],
-    "a": "Hastings (Alexandra Park)",
-    "tags": [
-      "coffee-cake",
-      "child-friendly",
-      "dog-friendly"
-    ],
-    "b": "Family-friendly café and deli inside Alexandra Park. A perfect stop on a park walk.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "maker-baker",
-    "n": "Maker & Baker",
-    "types": [
-      "bakery"
-    ],
-    "a": "Hastings, New Town",
-    "tags": [
-      "coffee-cake",
-      "breakfast",
-      "child-friendly"
-    ],
-    "b": "Amazing bakery — the sourdough and pastries are next level.",
-    "tip": "Expect queues at weekends.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "judges",
-    "n": "Judges",
-    "types": [
-      "bakery"
-    ],
-    "a": "Hastings, New Town",
-    "tags": [
-      "coffee-cake",
-      "breakfast",
-      "child-friendly"
-    ],
-    "b": "A solid neighbourhood bakery. Good bread, good pastries, no pretension.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "oak-bakery",
-    "n": "The Oak Bakery",
-    "types": [
-      "bakery"
-    ],
-    "a": "St Leonards",
-    "tags": [
-      "coffee-cake",
-      "child-friendly"
-    ],
-    "b": "Another great local bakery keeping St Leonards in sourdough.",
+    "b": "Modern European-style small plates packed with goodness and creativity. Many of its dishes feature ingredients foraged in Sussex.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -994,11 +25,10 @@
     ],
     "a": "Hastings",
     "tags": [
-      "child-friendly",
-      "dog-friendly",
-      "free-entry"
+      "outdoor",
+      "park"
     ],
-    "b": "Hastings' largest park at 109 acres — playground, miniature railway, café and woodland walks.",
+    "b": "Hastings largest park at 109 acres with a playground, miniature railway, café, and woodland walks. The lower park has formal gardens while upper areas offer tennis courts and nature trails.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1006,36 +36,322 @@
     "isFree": true
   },
   {
-    "slug": "hastings-country-park",
-    "n": "Hastings Country Park",
+    "slug": "arigato",
+    "n": "Arigato",
     "types": [
-      "park"
+      "restaurant"
     ],
-    "a": "Hastings, Fairlight",
+    "a": "St Leonards",
     "tags": [
-      "child-friendly",
+      "restaurant"
+    ],
+    "b": "Salmon teriyaki don, sashimi, gyoza and sake. Reliable and always good.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "arta",
+    "n": "Arta",
+    "types": [
+      "cafe"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "cafe",
+      "breakfast",
+      "coffee-cake"
+    ],
+    "b": "Levantine café in the Old Town, best known for its freshly baked flatbreads with toppings like za'atar and herb mix, Palestinian cheese, or beef with pickled olives and vegetables. Open Fri-Sun 11am-4pm.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "bar40",
+    "n": "Bar40",
+    "types": [
+      "bar"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "bar",
       "dog-friendly",
-      "free-entry",
+      "night-out"
+    ],
+    "b": "Great cocktails and small plates. A relaxed vibe that can go either way — quiet drink or big night. Closed on Mondays. Dogs welcome.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "bayte",
+    "n": "Bayte",
+    "types": [
+      "restaurant"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant",
+      "date-night",
+      "coffee-cake"
+    ],
+    "b": "Modern European restaurant with emphasis on local sourcing. Hand-rolled pasta, wood-fired plates, local produce, and morning coffee and cake.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "bexhill-leisure-centre",
+    "n": "Bexhill Leisure Centre",
+    "types": [
+      "gym",
+      "soft_play"
+    ],
+    "a": "Bexhill",
+    "tags": [
+      "sport",
+      "soft_play",
+      "birthday",
+      "indoor",
+      "swimming"
+    ],
+    "b": "Leisure centre with gym, fitness classes, soft play area, sports hall, swimming and café. Birthday party packages available. Ring ahead before coming to use soft play.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "boatyard",
+    "n": "Boatyard at Heist",
+    "types": [
+      "restaurant"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant",
+      "wine",
+      "date-night"
+    ],
+    "b": "A fish and seafood restaurant, oyster bar and natural wine bar set inside HEIST. Market in St Leonards-on-Sea.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "bonjour",
+    "n": "Bonjour",
+    "types": [
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "cafe",
+      "sea-views",
+      "breakfast"
+    ],
+    "b": "Cosy seafront café and restaurant with good coffee, pastries and tables outside.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "cactus-hound",
+    "n": "Cactus Hound",
+    "types": [
+      "bar"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "bar",
+      "night-out"
+    ],
+    "b": "Cocktails, Beers, Wines and a selection of over 40 Tequilas and Mezcals. Open Mic night every Tuesday.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "clambers-soft-play-4f26a4",
+    "n": "Clambers Soft Play",
+    "types": [
+      "soft_play"
+    ],
+    "a": "Hastings",
+    "tags": [
+      "soft_play",
+      "indoor",
+      "birthday"
+    ],
+    "b": "Indoor play centre close to Hastings Pier with free parking for customers.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "collected-fictions",
+    "n": "Collected Fictions",
+    "types": [
+      "bar"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "bar",
+      "wine",
+      "night-out"
+    ],
+    "b": "Craft Beer & Natural Wine Bottleshop and Bar. Intimate, knowledgeable, always pouring something interesting.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "coquina",
+    "n": "Coquina",
+    "types": [
+      "restaurant"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "restaurant",
+      "sea-views",
+      "date-night"
+    ],
+    "b": "Coquina is a restaurant and café inside Hastings Contemporary on Rock-a-Nore, serving Mediterranean-inspired food made with the best seasonal produce from across Sussex, Kent and the South Coast. The cooking is fresh, vibrant and comforting, and the sea views from the gallery are as much a reason to come as the plates. It works equally well for a quick bite or a proper sit-down meal. Because of its location inside the gallery, dogs can't be accommodated.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "dark-circles",
+    "n": "Dark Circles",
+    "types": [
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "cafe",
+      "coffee-cake"
+    ],
+    "b": "Half record shop and half coffee bar. New and used vinyl across most genres, a listening deck so you can try before you buy, and specialty coffee, smoothies and cold drinks while you dig.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "de-la-warr-pavilion-28ccd7",
+    "n": "De La Warr Pavilion",
+    "types": [
+      "gallery",
+      "museum"
+    ],
+    "a": "Bexhill",
+    "tags": [
+      "indoor",
+      "museum",
+      "free",
       "sea-views"
     ],
-    "b": "Wild clifftop country park with coastal walks, ancient woodland and the Bale House Visitor Centre café. One of the best walks on the coast.",
-    "tip": "Stop at the Bale House Visitor Centre for coffee and wildlife displays.",
+    "b": "Contemporary art galleries with free entry, performance spaces, cinema and café. Hosts exhibitions, live music, theatre and film screenings throughout the year, sea views from terrace.",
+    "tip": null,
     "booking": "walk-in",
     "sp": false,
     "isNew": false,
     "isFree": true
   },
   {
-    "slug": "hastings-adventure-golf",
-    "n": "Hastings Adventure Golf",
+    "slug": "electric-palace-cinema",
+    "n": "Electric Palace Cinema",
     "types": [
-      "playground"
+      "cinema"
     ],
-    "a": "Hastings Seafront",
+    "a": "Hastings Old Town",
     "tags": [
-      "child-friendly"
+      "indoor",
+      "birthday",
+      "cinema"
     ],
-    "b": "18-hole pirate-themed adventure golf on the seafront, open 364 days a year. Suitable for ages 3+. £9.25 per round.",
+    "b": "Independent community cinema in Hastings Old Town showing a mix of alternative films, family-friendly screenings and special events. The venue offers refreshments, a hearing loop and regular autism-friendly relaxed screenings, but has no step-free access.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "farmyard",
+    "n": "Farmyard",
+    "types": [
+      "restaurant"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant",
+      "wine",
+      "date-night"
+    ],
+    "b": "A eurocentric wine bar and bistro pouring natural wines, including their own, alongside plates built on local produce: Old Town fish, salt marsh lamb, well-aged Pevensey steaks, and plant-based dishes that are genuinely creative rather than an afterthought. The list runs to around 200 natural and biodynamic bottles with a changing blackboard by the glass. Sundays mean roasts. Come for a drink, stay for a feast, and book ahead because it fills.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "fika",
+    "n": "Fika",
+    "types": [
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "cafe",
+      "vegan-friendly",
+      "coffee-cake"
+    ],
+    "b": "Matcha, golden lattes, gorgeous cakes, soups and salads. Perfect spot for brunch.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "fisherwood-farm",
+    "n": "Fisherwood Farm",
+    "types": [
+      "farm"
+    ],
+    "a": "Hastings",
+    "tags": [
+      "outdoor",
+      "farm"
+    ],
+    "b": "A private alpaca and therapy pygmy goat experience in Robertsbridge near Hastings, offering exclusive farm visits with hand feeding, homemade food options and access to two acres of countryside. Guests meet alpacas Ollie and Ricardo, friendly sheep, chickens and special therapy pygmy goats in a calm, relaxed setting. All sessions are privately booked with exclusive use of the farm, cosy cabin and garden space.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1048,11 +364,12 @@
     "types": [
       "playground"
     ],
-    "a": "Hastings, The Stade",
+    "a": "Hastings",
     "tags": [
-      "child-friendly"
+      "attraction",
+      "indoor"
     ],
-    "b": "Classic seaside arcade — penny falls, crane grabbers and plenty for a rainy day. Open every day until late.",
+    "b": "Features classic seaside arcade games including popular Penny Falls to win tickets and prizes, crane grabbers to win soft toys, and a wide range of games perfect for a raindy day. Open every day all year round (except Christmas Day) until late. Level access throughout the venue. Free cash machines on site. Adjacent to public conveniences.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1060,73 +377,185 @@
     "isFree": false
   },
   {
-    "slug": "hastings-miniature-railway",
-    "n": "Hastings Miniature Railway",
+    "slug": "folks",
+    "n": "Folks",
+    "types": [
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "cafe",
+      "coffee-cake"
+    ],
+    "b": "Speciality coffee and pastries alongside a small, carefully chosen selection of goods. The art on the walls rotates, and there's a growing collection of books up on the mezzanine that you're welcome to borrow.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "forage-fleur",
+    "n": "Forage & Fleur",
+    "types": [
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "cafe",
+      "coffee-cake"
+    ],
+    "b": "A florist with a café, and a secret garden out the back. Wild, seasonal arrangements alongside plants, unusual antique planters and local gifts, plus cakes, coffee and teas while you browse. Keep an eye on the workshops.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "glow-baby-play-centre",
+    "n": "Glow Baby Play Centre",
+    "types": [
+      "play_cafe"
+    ],
+    "a": "Bexhill",
+    "tags": [
+      "play_cafe",
+      "send"
+    ],
+    "b": "Play café and children’s play centre at Chestnut Meadow in Bexhill-on-Sea, offering play sessions for babies and young children.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "goat-ledge",
+    "n": "Goat Ledge",
+    "types": [
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "cafe",
+      "sea-views",
+      "coffee-cake"
+    ],
+    "b": "A beach café and bar, doing locally caught fish baps, breakfast favourites from bacon to smoked haddock, and a seasonal menu alongside good coffee, beer and cocktails. Loaded Crab Fries all summer and a proper run of vegan options.Fire On The Beach next door for wood-fired plates, Wednesday to Sunday from midday. Baby Goat, the shell-covered kiosk, handles the ice cream. Watch their socials for live music.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "good-bean",
+    "n": "Good Bean at Goodmans",
+    "types": [
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "cafe",
+      "coffee-cake"
+    ],
+    "b": "Where else can you get a flat top and a flat white at the same time? A barbershop and coffee spot on the seafront doing both properly, traditional or modern, with a genuinely social room that hosts events and collaborations with other independent traders.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "graze",
+    "n": "Graze on The Grand",
+    "types": [
+      "bar"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "bar",
+      "sea-views"
+    ],
+    "b": "Part wine bar, part deli, part gallery, on the seafront. Wines sourced with real care alongside a seasonal food menu, charcuterie and British cheese platters to share.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "greyskull",
+    "n": "Greyskull",
+    "types": [
+      "cafe"
+    ],
+    "a": "Hastings",
+    "tags": [
+      "cafe",
+      "coffee-cake"
+    ],
+    "b": "A self-described gastro caff in St Andrew's Mews: speciality coffee looked, plus a brunch menu built around home-cured and smoked bacon and fire-cooked flavour. Events and live music turn up regularly, so check their socials.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "gurkha-chef",
+    "n": "Gurkha Chef",
+    "types": [
+      "restaurant",
+      "takeaway"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant",
+      "takeaway"
+    ],
+    "b": "Authentic Nepalese restaurant and takeaway. Order online via their website. The momo dumplings are always worth the wait.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "hanushka-coffee-house-george-street",
+    "n": "Hanushka Coffee House – George Street",
+    "types": [
+      "cafe"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "cafe",
+      "indoor",
+      "coffee-cake"
+    ],
+    "b": "Cosy Old Town coffee house filled with books, serving coffee, cakes and light food, with a small selection of toys for children.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "hastings-adventure-golf",
+    "n": "Hastings Adventure Golf",
     "types": [
       "playground"
     ],
     "a": "Hastings Seafront",
     "tags": [
-      "child-friendly"
+      "outdoor",
+      "attraction"
     ],
-    "b": "Running since 1948 along the seafront. Steam and diesel locomotives, £3 per ride. Open weekends May–Oct and daily in school holidays.",
+    "b": "18-hole pirate-themed adventure golf course open 364 days a year. Suitable for ages 3+, tickets £9.25.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "west-hill-cliff-railway",
-    "n": "West Hill Cliff Railway",
-    "types": [
-      "playground"
-    ],
-    "a": "Hastings Old Town",
-    "tags": [
-      "child-friendly",
-      "sea-views"
-    ],
-    "b": "Historic funicular from 1891 with original Victorian wooden carriages. Weekends 11am–4pm, £5.50 per ride.",
-    "tip": "Card payment only.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "fisherwood-farm",
-    "n": "Fisherwood Farm",
-    "types": [
-      "farm"
-    ],
-    "a": "Near Hastings, Robertsbridge",
-    "tags": [
-      "child-friendly"
-    ],
-    "b": "Private alpaca and therapy pygmy goat experience. Exclusive farm visits with hand feeding, homemade food and two acres of countryside.",
-    "tip": "All sessions privately booked in advance.",
-    "booking": "book-ahead",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "hastings-castle",
-    "n": "Hastings Castle",
-    "types": [
-      "museum",
-      "park"
-    ],
-    "a": "Hastings, West Hill",
-    "tags": [
-      "child-friendly",
-      "sea-views"
-    ],
-    "b": "A clifftop castle ruin, the 1066 story and panoramic views across the bay. Open daily 10am–5pm.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": true,
     "isNew": false,
     "isFree": false
   },
@@ -1136,64 +565,128 @@
     "types": [
       "museum"
     ],
-    "a": "Hastings, Rock-a-Nore",
+    "a": "Hastings Seafront",
     "tags": [
-      "child-friendly"
+      "indoor",
+      "attraction"
     ],
-    "b": "Sharks, rays and tropical fish with interactive displays and feeding demonstrations. Right on the seafront.",
-    "tip": "Under 18s entry £15.65.",
+    "b": "Aquarium with sharks, rays and tropical fish, interactive displays and feeding demonstrations throughout the day. Under 18s entry £15.65.",
+    "tip": null,
     "booking": "walk-in",
     "sp": false,
     "isNew": false,
     "isFree": false
   },
   {
-    "slug": "smugglers-adventure",
-    "n": "Smugglers Adventure",
+    "slug": "hastings-castle-1066-story",
+    "n": "Hastings Castle",
     "types": [
       "museum"
     ],
-    "a": "Hastings, West Hill",
+    "a": "Hastings West Hill",
     "tags": [
-      "child-friendly"
+      "outdoor",
+      "museum"
     ],
-    "b": "Journey through St Clements Caves exploring smuggling history in atmospheric underground tunnels. Ages 4+.",
-    "tip": "£11.50 entry.",
+    "b": "A historic castle ruin, clifftop panorama and open air events space. Open every day, 10am - 5pm, last entry 4:30pm. Check the website for their rotating list of events: live music, talks and workshops.",
+    "tip": null,
     "booking": "walk-in",
     "sp": false,
     "isNew": false,
     "isFree": false
   },
   {
-    "slug": "fishermens-museum",
-    "n": "Hastings Fishermen's Museum",
+    "slug": "hastings-contemporary-741cf8",
+    "n": "Hastings Contemporary",
     "types": [
-      "museum"
+      "cafe",
+      "gallery",
+      "museum",
+      "restaurant"
     ],
-    "a": "Hastings, The Stade",
+    "a": "Hastings Seafront",
     "tags": [
-      "child-friendly",
-      "free-entry"
+      "museum",
+      "indoor",
+      "cafe",
+      "restaurant",
+      "sea-views"
     ],
-    "b": "Small museum dedicated to Hastings' fishing industry and maritime history, in the former Fishermen's Church.",
-    "tip": "Free entry, donations welcome.",
+    "b": "Contemporary art gallery with changing exhibitions, includes restaurant and café with sea views. Under 18s go free, open Wed-Sun 11am-5pm.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "hastings-country-park",
+    "n": "Hastings Country Park",
+    "types": [
+      "park"
+    ],
+    "a": "Hastings",
+    "tags": [
+      "park",
+      "dog-friendly"
+    ],
+    "b": "Wild clifftop country park",
+    "tip": null,
     "booking": "walk-in",
     "sp": false,
     "isNew": false,
     "isFree": true
   },
   {
-    "slug": "hastings-museum",
+    "slug": "hastings-fishermen-s-museum",
+    "n": "Hastings Fishermen's Museum",
+    "types": [
+      "museum"
+    ],
+    "a": "Hastings Seafront",
+    "tags": [
+      "museum",
+      "indoor",
+      "free"
+    ],
+    "b": "Small independent museum dedicated to the fishing industry and maritime history of Hastings, housed in the former Fishermen's Church of St Nicholas built in 1854. Admission free, donations welcome.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": true
+  },
+  {
+    "slug": "hastings-miniature-railway",
+    "n": "Hastings Miniature Railway",
+    "types": [
+      "playground"
+    ],
+    "a": "Hastings Seafront",
+    "tags": [
+      "attraction",
+      "outdoor"
+    ],
+    "b": "Miniature railway operating since 1948 running along the seafront from Rock-a-Nore to Marine Parade. Features steam and diesel locomotives, £3 per ride, open daily in school holidays and weekends May-Oct.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "hastings-museum-art-gallery",
     "n": "Hastings Museum & Art Gallery",
     "types": [
       "museum"
     ],
     "a": "Hastings",
     "tags": [
-      "child-friendly",
-      "free-entry"
+      "museum",
+      "indoor",
+      "free"
     ],
-    "b": "Local museum with a global collection and child-friendly spaces. Free entry, open Tue–Sat 10am–5pm.",
+    "b": "Local museum with global collection, child-friendly spaces and free entry. Open Tues-Sat 10am-5pm, Sun 11am-4:30pm, closed Mondays.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1201,35 +694,20 @@
     "isFree": true
   },
   {
-    "slug": "mechanical-making",
-    "n": "Mechanical Making Space",
+    "slug": "heist-market",
+    "n": "Heist Market",
     "types": [
-      "workshop"
+      "cafe",
+      "restaurant"
     ],
-    "a": "Hastings Old Town",
+    "a": "St Leonards",
     "tags": [
-      "child-friendly",
-      "free-entry"
+      "restaurant",
+      "cafe",
+      "indoor",
+      "night-out"
     ],
-    "b": "Hands-on mechanical art studio and automata space. Explore kinetic artworks and tinker with mechanisms.",
-    "tip": "Open Saturdays 11am–4pm, other days by appointment.",
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": true
-  },
-  {
-    "slug": "electric-palace",
-    "n": "Electric Palace Cinema",
-    "types": [
-      "cinema"
-    ],
-    "a": "Hastings Old Town",
-    "tags": [
-      "child-friendly",
-      "send"
-    ],
-    "b": "Independent community cinema in the Old Town with family screenings, autism-friendly relaxed screenings and special events.",
+    "b": "Indoor family-friendly street food market in St Leonards-on-Sea with multiple independent food and drink vendors serving: pizza, burgers, Chinese/Nepalese and Mexican. Open every day.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1237,53 +715,72 @@
     "isFree": false
   },
   {
-    "slug": "hastings-contemporary",
-    "n": "Hastings Contemporary",
+    "slug": "imperial",
+    "n": "Imperial",
     "types": [
-      "gallery"
+      "pub"
     ],
-    "a": "Hastings, Rock-a-Nore",
+    "a": "Hastings New Town",
     "tags": [
-      "child-friendly",
-      "sea-views"
+      "pub",
+      "night-out"
     ],
-    "b": "Contemporary art gallery with changing exhibitions and sea views from the terrace. Restaurant and café on site. Under 18s go free.",
-    "tip": "Open Wed–Sun 11am–5pm.",
+    "b": "The original Brewing Brothers venue, open since 2016, with a 2.5bbl brew house out the back and a wood-fired pizza oven up front. Three cask lines and ten keg, plus decent wine and spirits, alongside an ever-changing menu of signature pizzas. Check their Instagram for events and opening hours.",
+    "tip": null,
     "booking": "walk-in",
-    "sp": true,
+    "sp": false,
     "isNew": false,
     "isFree": false
   },
   {
-    "slug": "de-la-warr",
-    "n": "De La Warr Pavilion",
+    "slug": "judges",
+    "n": "Judges",
     "types": [
-      "gallery"
+      "bakery",
+      "cafe"
     ],
-    "a": "Bexhill-on-Sea",
+    "a": "Hastings New Town",
     "tags": [
-      "child-friendly",
+      "bakery",
+      "coffee-cake"
+    ],
+    "b": "One of the oldest bakeries in Britain, baking in Hastings since 1826 and marking its bicentenary this year. Artisan loaves daily with seven sourdough varieties through the week, plus coffee, toasties, cakes and morning goods, and a proper grocery section at the back with fruit and veg, meats and cheeses.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "kassa",
+    "n": "Kassa",
+    "types": [
+      "restaurant"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant"
+    ],
+    "b": "Family-run Persian and Mediterranean home cooking near the seafront.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "bella-vista",
+    "n": "La Bella Vista",
+    "types": [
+      "restaurant"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant",
       "sea-views",
-      "free-entry"
+      "date-night"
     ],
-    "b": "Contemporary art galleries with free entry, performance spaces, cinema and café. Sea views from the terrace.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": true
-  },
-  {
-    "slug": "stade-hall",
-    "n": "Stade Hall",
-    "types": [
-      "workshop"
-    ],
-    "a": "Hastings, The Stade",
-    "tags": [
-      "child-friendly"
-    ],
-    "b": "Community arts and events venue hosting workshops, classes and family activities throughout the year.",
+    "b": "La Bella Vista is a contemporary Italian restaurant on the St Leonards seafront, with a seasonal menu that leans on fresh, local ingredients. Expect pasta alongside a strong seafood selection, and gluten-free options across the menu",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1291,16 +788,16 @@
     "isFree": false
   },
   {
-    "slug": "clambers",
-    "n": "Clambers Soft Play",
+    "slug": "laya",
+    "n": "Laya",
     "types": [
-      "soft_play"
+      "restaurant"
     ],
-    "a": "Hastings",
+    "a": "St Leonards",
     "tags": [
-      "child-friendly"
+      "restaurant"
     ],
-    "b": "Indoor play centre close to Hastings Pier with free parking for customers.",
+    "b": "Laya serves authentic Sri Lankan and South Indian food in St Leonards, with a menu that runs across vegetarian dishes and meat. The standout is the 12-item vegetarian thali: chapathi, a selection of chef-chosen curries, fragrant rice, fresh sambol, crispy papadams, cooling raita, rasam and a sweet to finish.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1308,16 +805,224 @@
     "isFree": false
   },
   {
-    "slug": "lets-go-play",
+    "slug": "let-s-go-play",
     "n": "Let's Go Play",
     "types": [
       "soft_play"
     ],
     "a": "Hastings",
     "tags": [
-      "child-friendly"
+      "indoor",
+      "soft_play",
+      "birthday"
     ],
-    "b": "Multi-level play zones — a circus fairground, a beach area for tots and babies, and a castle adventure zone.",
+    "b": "Kids soft play centre in Hastings featuring multi-level play zones with circus-inspired fairground, beach area for tots and babies, and castle adventure zone.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "liban-coast",
+    "n": "Liban Coast",
+    "types": [
+      "restaurant"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant"
+    ],
+    "b": "Family-run Lebanese and Syrian food that started as a stall at the Hastings street market in 2013 and built enough of a reputation to earn its own premises on Marine Court. Fresh, wholesome cooking from a chef of Syrian and Egyptian descent. The falafels are beautiful and the mezze is generous.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "lury",
+    "n": "Lury",
+    "types": [
+      "restaurant"
+    ],
+    "a": "Hastings New Town",
+    "tags": [
+      "restaurant",
+      "date-night"
+    ],
+    "b": "Lury is an intimate restaurant in Hastings serving modern British food through the lens of Sri Lanka's Burgher culinary heritage, a tradition in which European technique met the island's spice-rich ingredients. The menu is a set tasting menu of ten to twelve spectacular courses that change around the best produce available and shifts with the seasons.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "maker-baker",
+    "n": "Maker & Baker",
+    "types": [
+      "bakery",
+      "cafe"
+    ],
+    "a": "Hastings New Town",
+    "tags": [
+      "bakery",
+      "coffee-cake"
+    ],
+    "b": "A sourdough bakery on Robertson Street selling bread, pastries, cakes, sandwiches and coffee, with everything baked on site.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "mechanical-making-space",
+    "n": "Mechanical Making Space",
+    "types": [
+      "museum",
+      "workshop"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "indoor",
+      "museum"
+    ],
+    "b": "Hands-on mechanical art studio and automata space where visitors can explore kinetic artworks and tinker with mechanisms. Check the website for opening times.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": true
+  },
+  {
+    "slug": "my-tiny-town",
+    "n": "My Tiny Town",
+    "types": [
+      "cafe",
+      "play_cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "indoor",
+      "cafe",
+      "play_cafe",
+      "birthday"
+    ],
+    "b": "Indoor role-play café with mini shops and themed play areas. Daily play sessions, creative activities and birthday party bookings available.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "noahs-goat",
+    "n": "Noah's Goat",
+    "types": [
+      "bar",
+      "cafe"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "bar",
+      "cafe"
+    ],
+    "b": "Noah's Goat is an independent wine shop, wine bar and deli in Hastings Old Town. The range is eclectic with a particular emphasis on Italian, where their expertise lies, alongside unusual wines you won't find in the chains and a selection of high-quality English wine.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "porters",
+    "n": "Porters",
+    "types": [
+      "restaurant"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "restaurant",
+      "roast"
+    ],
+    "b": "A family-run bistro in a refurbished Grade II listed building at the bottom of the High Street, close to the fishing quarter and the seafront. Home-cooked food using local produce, and a wide selection of beers, wines and spirits. Live music every Wednesday and Sunday. Sunday roasts are a strong move here.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "pump-house-alexandra-park",
+    "n": "Pump House (Alexandra Park)",
+    "types": [
+      "cafe"
+    ],
+    "a": "Hastings",
+    "tags": [
+      "cafe",
+      "indoor",
+      "breakfast",
+      "coffee-cake"
+    ],
+    "b": "Family-friendly and dog friendly café and deli in Alexandra Park serving coffee, cakes and lunch. Accessible and open year-round.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "rituals",
+    "n": "Rituals",
+    "types": [
+      "bar"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "bar",
+      "sea-views",
+      "date-night"
+    ],
+    "b": "An independent neighbourhood bar serving inspired cocktails and beers on tap, with amazing sea views. Check their socials for their events programme with DJ nights, spoken word and more.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": true,
+    "isFree": false
+  },
+  {
+    "slug": "seed",
+    "n": "Seed",
+    "types": [
+      "bar"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "bar",
+      "night-out"
+    ],
+    "b": "A tapas bar in the Old Town mixing traditional Spanish cooking with contemporary flavours, with plenty on the menu for vegetarians as well as meat-eaters. Cosy inside, and there are tables outside for the sunny days. Good drinks, shareable plates, buzzy atmosphere.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "selkies",
+    "n": "Selkies",
+    "types": [
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "cafe",
+      "coffee-cake"
+    ],
+    "b": "Café, St Leonards",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1332,27 +1037,32 @@
     ],
     "a": "Hastings",
     "tags": [
-      "child-friendly",
+      "indoor",
+      "soft_play",
       "send"
     ],
-    "b": "SEND charity offering respite sessions, holiday clubs and multi-sensory activities for children with additional needs. Includes a bookable sensory room.",
+    "b": "Sussex-based SEND charity in Hastings offering respite sessions, holiday clubs and multi-sensory activities for children and young people with SEND and their parent carers. The venue includes a bookable sensory room and soft play area in a quiet residential setting.",
     "tip": null,
-    "booking": "book-ahead",
+    "booking": "walk-in",
     "sp": false,
     "isNew": false,
     "isFree": false
   },
   {
-    "slug": "my-tiny-town",
-    "n": "My Tiny Town",
+    "slug": "sleeper",
+    "n": "Sleeper",
     "types": [
-      "play_cafe"
+      "bakery",
+      "cafe"
     ],
     "a": "St Leonards",
     "tags": [
-      "child-friendly"
+      "cafe",
+      "bakery",
+      "breakfast",
+      "coffee-cake"
     ],
-    "b": "Indoor role-play café with mini shops and themed play areas. Daily sessions, creative activities and birthday parties.",
+    "b": "St Leonards institution, Sleeper is all about the bagels - hand rolled, boiled and baked each morning. Classics include egg mayo with truggle crisps and the New York style salt beef.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1360,17 +1070,17 @@
     "isFree": false
   },
   {
-    "slug": "glow-baby",
-    "n": "Glow Baby Play Centre",
+    "slug": "smugglers-adventure",
+    "n": "Smugglers Adventure",
     "types": [
-      "play_cafe"
+      "museum"
     ],
-    "a": "Bexhill-on-Sea",
+    "a": "Hastings West Hill",
     "tags": [
-      "child-friendly",
-      "send"
+      "indoor",
+      "attraction"
     ],
-    "b": "Play café and children's play centre in Bexhill, offering sessions for babies and young children.",
+    "b": "Journey through St Clements Caves exploring smuggling history. Entry £11.50, suitable for ages 4+.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1378,17 +1088,113 @@
     "isFree": false
   },
   {
-    "slug": "summerfields",
+    "slug": "sonnys",
+    "n": "Sonny's",
+    "types": [
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "cafe",
+      "breakfast",
+      "deli"
+    ],
+    "b": "A proper fishmonger doing fresh wet fish and expertly smoked deli products, with a small eating space tucked inside the Kings Road shop. Lunch runs Tuesday to Saturday: no formal menu, just a changing counter of freshly prepared cold dishes made with their own smoked fish, cured favourites and house deli sides. Eat in at one of the tables or take it away.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "st-clements",
+    "n": "St Clements",
+    "types": [
+      "restaurant"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant",
+      "date-night"
+    ],
+    "b": "A small independent seafood restaurant tucked into Mercatoria, the artist quarter. The menu changes with the daily catch from Hastings' beach-launched day boats, and everything is made from scratch, from the complimentary soda bread at the start to the ice creams at the end. A perfect bistro for a cosy date night, with great front of house and honest cooking.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "stade-hall-hastings",
+    "n": "Stade Hall",
+    "types": [
+      "workshop"
+    ],
+    "a": "Hastings Seafront",
+    "tags": [
+      "community-centre",
+      "indoor"
+    ],
+    "b": "Community arts and events venue hosting workshops, classes and family activities throughout the year.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "stooges",
+    "n": "Stooges",
+    "types": [
+      "cafe"
+    ],
+    "a": "Hastings New Town",
+    "tags": [
+      "cafe",
+      "coffee-cake",
+      "dog-friendly",
+      "vegan-friendly"
+    ],
+    "b": "A speciality coffee shop in the America Ground pouring single origin, traceable arabica roasted down the road in Lewes by Pharmacie and Taith, with teas from Postcard Teas. Cakes including vegan and gluten-free, veggie and vegan toasties, and beans, teas and brewing kit on the retail shelves. Sumisu Ramen takes over on Friday nights for ramen and gyoza, booking essential. Dogs very welcome.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "sturdee",
+    "n": "Sturdee On The Rocks",
+    "types": [
+      "cafe"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "cafe",
+      "sea-views",
+      "breakfast"
+    ],
+    "b": "When only a fry up will do, Sturdee on the Rocks has you covered with its Hangover Cure and Full English breakfasts, including a veggie one. There are other options too such as fried eggs with smoked salmon or a fruity granola bowl.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "summerfields-leisure-centre",
     "n": "Summerfields Leisure Centre",
     "types": [
-      "gym",
-      "swim_spot"
+      "gym"
     ],
     "a": "Hastings",
     "tags": [
-      "child-friendly"
+      "sport",
+      "indoor",
+      "swimming",
+      "birthday"
     ],
-    "b": "Leisure centre with swimming pools, gym, fitness classes and sports halls. Regular family swims and birthday packages.",
+    "b": "Leisure centre with swimming pools, gym, fitness classes, sports halls and café. Regular birthday party packages available, entry prices vary by activity.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
@@ -1396,52 +1202,264 @@
     "isFree": false
   },
   {
-    "slug": "bexhill-leisure",
-    "n": "Bexhill Leisure Centre",
+    "slug": "beacon",
+    "n": "The Beacon",
     "types": [
-      "gym",
-      "swim_spot",
-      "soft_play"
+      "restaurant"
     ],
-    "a": "Bexhill-on-Sea",
+    "a": "Hastings West Hill",
     "tags": [
+      "restaurant",
+      "sea-views",
+      "roast",
       "child-friendly"
     ],
-    "b": "Gym, soft play, swimming and sports hall. Birthday party packages available.",
-    "tip": "Ring ahead to confirm soft play availability.",
+    "b": "A quirky family home and business up on the West Hill, with a cosy eatery, a licensed bar, large secluded gardens and an allotment they call the Wilderness, where much of the veg comes from. Very child-friendly with an enclosed garden and gorgeous views. Finding it is part of the adventure: it sits in the band of trees between St Mary''s Terrace and Milward Road, reached by steps down from St Mary''s Terrace, steps up from Milward Road, or the bumpy lane from the West Hill. Use Google Maps rather than the postcode, which will send you to the wrong place. Open Friday from 4pm, Saturday 12 to 4 and Sunday 12 to 5.",
+    "tip": null,
     "booking": "walk-in",
     "sp": false,
     "isNew": false,
     "isFree": false
   },
   {
-    "slug": "y-centre",
+    "slug": "the-crown-hastings",
+    "n": "The Crown",
+    "types": [
+      "pub",
+      "restaurant"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "restaurant",
+      "indoor",
+      "roast",
+      "dog-friendly",
+      "vegan-friendly"
+    ],
+    "b": "Independent pub in Hastings Old Town serving modern British food, local beers and wines, and hosting regular community and family-friendly events.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "oak-bakery",
+    "n": "The Oak Bakery",
+    "types": [
+      "bakery",
+      "cafe"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "bakery"
+    ],
+    "b": "Sourdough specialists doing homemade bread, cakes and pastries, plus freshly filled sandwiches, rolls and wraps for lunch.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "the-piper",
+    "n": "The Piper",
+    "types": [
+      "music_venue",
+      "pub"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "pub",
+      "music_venue",
+      "night-out"
+    ],
+    "b": "Grassroots music venue and pub with packed events programme.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "prince-of-wales",
+    "n": "The Prince of Wales",
+    "types": [
+      "pub"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "pub"
+    ],
+    "b": "A warm, welcoming local on Western Road, taken on by The Hastings Project after a crowdfunder and now doubling as the home of their community work. A wide range of THP beers plus guests, drinks and snacks, with regular fundraisers, quizzes and beer-centric events. Mondays and Tuesdays the space is given over to local charities and community groups. Open Wednesday to Sunday, midday to 11pm.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "royal",
+    "n": "The Royal",
+    "types": [
+      "pub",
+      "restaurant"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant",
+      "pub",
+      "roast"
+    ],
+    "b": "A low-key, down-to-earth gastropub on a historic corner opposite Warrior Square station, in the Michelin Guide with a Bib Gourmand. Draft beers, real ales, decent wine and simple but elevated cooking built on seasonal produce, with a menu that changes often. Booking is recommended, but the bar stays open first come, first served for drinkers and walk-in diners.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "seadog",
+    "n": "The Seadog",
+    "types": [
+      "restaurant"
+    ],
+    "a": "Hastings New Town",
+    "tags": [
+      "restaurant",
+      "roast"
+    ],
+    "b": "The Seadog is a family-run pub by the station. The bar rotates cask ales, craft keg and Sussex brews, with a short cocktail list and wine chosen with food in mind. The kitchen is Kismet, a collaboration between Tonka and Three Souls in a Bowl, serving Indo-Asian small plates and bowls. Sundays are a big thing for roasts.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "the-yard",
+    "n": "The Yard",
+    "types": [
+      "market"
+    ],
+    "a": "Hastings",
+    "tags": [
+      "market"
+    ],
+    "b": "Markets and open studios on Waterworks Road",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": true
+  },
+  {
+    "slug": "three-faces",
+    "n": "Three Faces of Del Parc",
+    "types": [
+      "restaurant"
+    ],
+    "a": "St Leonards",
+    "tags": [
+      "restaurant",
+      "date-night"
+    ],
+    "b": "Spanish tapas built around sharing, and a chef's menu where they choose and you eat, a concept a customer gifted them 17 years ago in London before they moved down to Western Road. No à la carte, so you get what you get, and it's always brilliant.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "tonka",
+    "n": "Tonka",
+    "types": [
+      "cafe",
+      "restaurant"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "restaurant",
+      "cafe",
+      "vegan-friendly",
+      "wine"
+    ],
+    "b": "A neighbourhood restaurant in the Old Town doing bold, flavour-led cooking that draws on Mauritian and Asian traditions. Coffee, baked goods and lunch during the day, then the room shifts in the evening into somewhere more intimate for small plates and natural wine.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "west-hill-cliff-railway",
+    "n": "West Hill Cliff Railway",
+    "types": [
+      "playground"
+    ],
+    "a": "Hastings Old Town",
+    "tags": [
+      "attraction",
+      "indoor"
+    ],
+    "b": "Historic funicular railway from 1891 with original Victorian wooden carriages. Open Saturdays and Sundays 11am-4pm, £5.50 per ride, card payment only.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "westhill-kiosk",
+    "n": "West Hill Kiosk",
+    "types": [
+      "cafe"
+    ],
+    "a": "Hastings West Hill",
+    "tags": [
+      "cafe",
+      "sea-views",
+      "coffee-cake"
+    ],
+    "b": "A kiosk up on the West Hill serving breakfast, toasties, ice cream and hot and cold drinks, with pizza from 4pm on Fridays and Saturdays. Temporary, while the Castle and West Hill Cafe site is regenerated, but a very good reason to take the lift up.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": false,
+    "isFree": false
+  },
+  {
+    "slug": "winifreds",
+    "n": "Winifred's",
+    "types": [
+      "restaurant"
+    ],
+    "a": "Hastings Seafront",
+    "tags": [
+      "restaurant",
+      "date-night"
+    ],
+    "b": "Hyper-seasonal British produce served as small plates, casual rather than ceremonial. Pull up a stool at the kitchen bar for a quick lunch, or make an evening of it sharing plates and working through a curated list of local wines and beers. Big flavours, little fuss.",
+    "tip": null,
+    "booking": "walk-in",
+    "sp": false,
+    "isNew": true,
+    "isFree": false
+  },
+  {
+    "slug": "y-centre-hastings",
     "n": "Y Centre Hastings",
     "types": [
       "gym"
     ],
     "a": "St Leonards",
     "tags": [
-      "child-friendly"
+      "indoor",
+      "sport",
+      "birthday"
     ],
-    "b": "Community sports hall hosting classes and youth activities.",
-    "tip": null,
-    "booking": "walk-in",
-    "sp": false,
-    "isNew": false,
-    "isFree": false
-  },
-  {
-    "slug": "source-park",
-    "n": "The Source Park",
-    "types": [
-      "gym"
-    ],
-    "a": "Hastings, White Rock",
-    "tags": [
-      "child-friendly"
-    ],
-    "b": "Large indoor underground skatepark on the seafront with two parks, BMX and skate shop, and courtyard food and drink. Coaching for ages 4+.",
+    "b": "Community venue with a sports hall hosting classes and youth activities.",
     "tip": null,
     "booking": "walk-in",
     "sp": false,
