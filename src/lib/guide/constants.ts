@@ -37,6 +37,7 @@ export const GOOD_FOR: Record<string, string> = {
   "coffee-cake": "Coffee & cake",
   "sea-views": "Sea view",
   "dog-friendly": "Dog friendly",
+  free: "Free",
   "child-friendly": "Family friendly",
   "vegan-friendly": "Vegan options",
   wine: "Natural wine",
@@ -331,8 +332,15 @@ export const SECTION_GOODFOR: Record<string, string[]> = {
     "wine",
     "late-kitchen",
   ],
-  family: ["rainy-day", "buggy-friendly", "free-entry", "babyccinos", "send"],
-  culture: ["free-entry"],
+  family: [
+    "rainy-day",
+    "buggy-friendly",
+    "free-entry",
+    "babyccinos",
+    "send",
+    "child-friendly",
+  ],
+  culture: ["free-entry", "free"],
 };
 
 export const HOME_PLACE_TEASER_FALLBACK = [

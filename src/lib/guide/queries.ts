@@ -1,41 +1,73 @@
-import { FALLBACK_EVENTS } from "./constants";
 import { mapEventsToFeed, type EventRow } from "./events";
 import fallbackLinks from "./links.json";
 import fallbackVenues from "./venues.json";
+import { FALLBACK_EVENTS } from "./constants";
 import type { FeedEvent, GuideData, Venue, VenueLinks } from "./types";
 import { getBuildSupabase } from "../supabase/build";
 
+/** New Saltguide project: places.place_type → app type slug. */
+function placeTypeToSlug(value: unknown): string | null {
+  if (!value) return null;
+  const raw = String(value).trim();
+  if (!raw) return null;
+  const slug = raw.toLowerCase().replace(/-/g, "_");
+  const aliases: Record<string, string> = {
+    play_cafe: "play_cafe",
+    soft_play: "soft_play",
+    cafe: "cafe",
+  };
+  return aliases[slug] ?? slug;
+}
+
+/** Normalize DB tags to the guide's Good-for / type keys. */
+function normalizeTag(tag: string): string {
+  const t = tag.trim().toLowerCase();
+  const aliases: Record<string, string> = {
+    "sea-view": "sea-views",
+    "sunday-roast": "roast",
+    "vegan-options": "vegan-friendly",
+    "family-friendly": "child-friendly",
+    "natural-wine": "wine",
+    brunch: "breakfast",
+    "play-cafe": "play_cafe",
+    "soft-play": "soft_play",
+    "send-friendly": "send",
+  };
+  return aliases[t] ?? t;
+}
+
+function titleCaseArea(area: string): string {
+  return area
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(" ");
+}
+
 function venueDescription(row: Record<string, unknown>): string {
-  const long = row.description_long ? String(row.description_long).trim() : "";
-  const short = row.description_short
-    ? String(row.description_short).trim()
+  const salt = row.summary_saltguide
+    ? String(row.summary_saltguide).trim()
     : "";
-  // Place cards show the full blurb — prefer long, fall back to short.
+  const summary = row.summary ? String(row.summary).trim() : "";
+  const long = row.description_long
+    ? String(row.description_long).trim()
+    : "";
+  if (salt) return salt;
+  if (summary) return summary;
   if (long) return long;
-  if (short) return short;
-  return row.description ? String(row.description).trim() : "";
+  return "";
 }
 
 function textArray(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
   return value
     .map((v) => String(v ?? "").trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .map(normalizeTag);
 }
 
 function coverUrlFromRow(row: Record<string, unknown>): string | undefined {
-  for (const key of ["cover_image_url", "photo_url", "image_url"] as const) {
-    const v = row[key];
-    if (v) {
-      const t = String(v).trim();
-      if (t) return t;
-    }
-  }
-  return undefined;
-}
-
-function coverAltFromRow(row: Record<string, unknown>): string | undefined {
-  for (const key of ["cover_image_alt", "photo_alt", "image_alt"] as const) {
+  for (const key of ["image_url", "cover_image_url", "photo_url"] as const) {
     const v = row[key];
     if (v) {
       const t = String(v).trim();
@@ -46,16 +78,45 @@ function coverAltFromRow(row: Record<string, unknown>): string | undefined {
 }
 
 function mapRowToVenue(row: Record<string, unknown>): Venue {
+  const typeSlug = placeTypeToSlug(row.place_type);
+  const tags = textArray(row.tags);
+  const types = new Set<string>();
+  if (typeSlug) types.add(typeSlug);
+  for (const t of tags) {
+    // Tags that are also place types (restaurant, cafe, …)
+    if (
+      [
+        "restaurant",
+        "cafe",
+        "bar",
+        "pub",
+        "bakery",
+        "takeaway",
+        "museum",
+        "gallery",
+        "cinema",
+        "workshop",
+        "gym",
+        "park",
+        "farm",
+        "market",
+        "soft_play",
+        "play_cafe",
+        "music_venue",
+      ].includes(t)
+    ) {
+      types.add(t);
+    }
+  }
+
+  const areaRaw = row.area ? String(row.area).trim() : "";
+
   return {
     slug: String(row.slug ?? ""),
     n: String(row.name ?? ""),
-    types: Array.isArray(row.types) ? (row.types as string[]) : [],
-    a: String(row.area ?? ""),
-    tags: Array.isArray(row.tag_slugs)
-      ? (row.tag_slugs as string[])
-      : Array.isArray(row.tags)
-        ? (row.tags as string[])
-        : [],
+    types: [...types],
+    a: areaRaw ? titleCaseArea(areaRaw) : "",
+    tags,
     b: venueDescription(row),
     tip: row.tip ? String(row.tip) : null,
     booking: row.booking === "book-ahead" ? "book-ahead" : "walk-in",
@@ -63,9 +124,9 @@ function mapRowToVenue(row: Record<string, unknown>): Venue {
     isNew: Boolean(row.is_new),
     isFree: Boolean(row.is_free),
     coverImageUrl: coverUrlFromRow(row),
-    coverImageAlt: coverAltFromRow(row),
-    galleryImageUrls: textArray(row.gallery_image_urls),
-    isFeatured: Boolean(row.is_featured),
+    coverImageAlt: undefined,
+    galleryImageUrls: [],
+    isFeatured: false,
   };
 }
 
@@ -89,97 +150,58 @@ function buildLinksFromRows(
   return links;
 }
 
-// Live schema uses id + image_url (no slug / event_types / cover_* yet).
-// Optional richer columns are tried first, then we peel back so missing
-// migrations never wipe the whole feed.
-const EVENT_SELECTS = [
-  "id, slug, title, event_types, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, image_url, cover_image_url, cover_image_alt, price_label, recurrence_label, status, places(name, photo_url, cover_image_url, cover_image_alt)",
-  "id, title, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, image_url, price_label, recurrence_label, status, places(name, photo_url)",
-  "id, title, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, image_url, status, places(name, photo_url)",
-  "id, title, starts_at, ends_at, description_short, description_long, venue_freetext, is_salty_pick, is_free, booking_url, image_url, status",
-];
+const PLACES_SELECT =
+  "slug, name, place_type, area, summary, summary_saltguide, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, tags, image_url, show_on_saltguide";
+
+const EVENTS_SELECT =
+  "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, show_on_saltguide";
 
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
 ): Promise<FeedEvent[] | null> {
-  for (const select of EVENT_SELECTS) {
-    const { data, error } = await supabase
-      .from("events")
-      .select(select)
-      .eq("status", "published")
-      .order("starts_at");
-
-    if (error || !data?.length) continue;
-    const mapped = mapEventsToFeed(data as unknown as EventRow[]);
-    if (mapped?.length) return mapped;
-  }
-
-  // Fall through for empty-table logging below.
-
-  const lastSelect = EVENT_SELECTS[EVENT_SELECTS.length - 1];
-  const last = await supabase
+  const { data, error } = await supabase
     .from("events")
-    .select(lastSelect)
-    .eq("status", "published")
-    .order("starts_at");
+    .select(EVENTS_SELECT)
+    .eq("show_on_saltguide", true)
+    .eq("status", "approved")
+    .order("event_date");
 
-  if (last.error) {
-    console.warn("[guide] events query failed:", last.error.message);
+  if (error) {
+    console.warn("[guide] events query failed:", error.message);
     return null;
   }
-  if (!last.data?.length) {
-    console.warn("[guide] events: 0 published rows — using fallback feed");
-    return null;
+  if (!data?.length) {
+    console.warn(
+      "[guide] events: 0 rows with show_on_saltguide=true (approved)",
+    );
+    return [];
   }
-  return mapEventsToFeed(last.data as unknown as EventRow[]);
+  return mapEventsToFeed(data as unknown as EventRow[]) ?? [];
 }
-
-const PLACE_DIRECTORY_SELECTS = [
-  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, photo_url, cover_image_url, cover_image_alt, gallery_image_urls, is_featured, status",
-  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, photo_url, cover_image_url, cover_image_alt, status",
-  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, website_url, social_url, tag_slugs, photo_url, status",
-];
-
-const PLACES_SELECTS = [
-  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, photo_url, cover_image_url, cover_image_alt, gallery_image_urls, is_featured, status",
-  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, photo_url, cover_image_url, cover_image_alt, status",
-  "slug, name, types, area, description_short, description_long, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, photo_url, status",
-];
 
 async function fetchPlacesFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
 ): Promise<{ venues: Venue[]; links: Record<string, VenueLinks> } | null> {
-  const mapRows = (rows: Record<string, unknown>[]) => ({
-    venues: rows.map(mapRowToVenue),
+  const { data, error } = await supabase
+    .from("places")
+    .select(PLACES_SELECT)
+    .eq("show_on_saltguide", true)
+    .order("name");
+
+  if (error) {
+    console.warn("[guide] places query failed:", error.message);
+    return null;
+  }
+  if (!data?.length) {
+    console.warn("[guide] places: 0 rows with show_on_saltguide=true");
+    return null;
+  }
+
+  const rows = data as unknown as Record<string, unknown>[];
+  return {
+    venues: rows.map(mapRowToVenue).filter((v) => v.slug && v.n),
     links: buildLinksFromRows(rows),
-  });
-
-  for (const select of PLACE_DIRECTORY_SELECTS) {
-    const { data, error } = await supabase
-      .from("place_directory")
-      .select(select)
-      .eq("status", "published")
-      .order("name");
-
-    if (!error && data?.length) {
-      return mapRows(data as unknown as Record<string, unknown>[]);
-    }
-  }
-
-  for (const select of PLACES_SELECTS) {
-    const { data, error } = await supabase
-      .from("places")
-      .select(select)
-      .eq("status", "published")
-      .order("name");
-
-    if (!error && data?.length) {
-      return mapRows(data as unknown as Record<string, unknown>[]);
-    }
-  }
-
-  console.warn("[guide] places query returned no rows");
-  return null;
+  };
 }
 
 async function fetchFromSupabase(): Promise<GuideData | null> {
@@ -200,12 +222,9 @@ async function fetchFromSupabase(): Promise<GuideData | null> {
     return null;
   }
 
-  const events = eventsResult?.length ? eventsResult : FALLBACK_EVENTS;
+  const events = eventsResult ?? [];
   console.info(
-    `[guide] supabase: ${placesResult.venues.length} places, ${
-      eventsResult?.length ?? 0
-    } events` +
-      (eventsResult?.length ? "" : " (events using static fallback)"),
+    `[guide] supabase: ${placesResult.venues.length} places, ${events.length} events (show_on_saltguide)`,
   );
 
   return {

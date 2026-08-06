@@ -3,36 +3,32 @@ import type { EventCat, FeedEvent } from "./types";
 
 const TZ = "Europe/London";
 
-type PlaceJoin = {
-  name: string;
-  photo_url?: string | null;
-  cover_image_url?: string | null;
-  cover_image_alt?: string | null;
-};
-
 export type EventRow = {
   id?: string | number;
-  slug?: string | null;
   title: string;
-  event_types?: string[] | null;
-  starts_at: string;
-  ends_at: string | null;
-  description_short: string | null;
-  description_long: string | null;
-  venue_freetext: string | null;
-  is_salty_pick: boolean;
-  is_free: boolean | null;
-  booking_url: string | null;
+  description?: string | null;
+  external_url?: string | null;
   image_url?: string | null;
-  cover_image_url?: string | null;
-  cover_image_alt?: string | null;
-  price_label?: string | null;
-  recurrence_label?: string | null;
-  places: PlaceJoin | PlaceJoin[] | null;
+  event_date: string;
+  start_time?: string | null;
+  end_time?: string | null;
+  is_recurring?: boolean | null;
+  recurrence_pattern?: string | null;
+  recurrence_type?: string | null;
+  venue_name?: string | null;
+  place_name?: string | null;
+  is_free?: boolean | null;
+  price?: number | string | null;
+  type?: string | null;
+  theme_tags?: string[] | null;
+  vibe_tags?: string[] | null;
+  is_send_friendly?: boolean | null;
+  show_on_saltguide?: boolean | null;
+  status?: string | null;
 };
 
 const TYPE_TO_CAT: Record<string, EventCat> = {
-  // Music & Nights Out — gigs, DJ sets, club nights, quizzes, karaoke
+  // Music & Nights Out
   music: "music",
   gig: "music",
   night: "music",
@@ -44,7 +40,8 @@ const TYPE_TO_CAT: Record<string, EventCat> = {
   // Food & Drink
   food: "food",
   drink: "food",
-  // Arts & Culture — exhibitions, film, theatre, comedy, stage & screen
+  tasting: "food",
+  // Arts & Culture
   exhibition: "art",
   art: "art",
   culture: "art",
@@ -54,11 +51,13 @@ const TYPE_TO_CAT: Record<string, EventCat> = {
   theatre: "art",
   perform: "art",
   stage: "art",
+  event: "art",
   // Markets & Fairs
   market: "market",
   fair: "market",
-  // Workshops
+  // Workshops / classes
   workshop: "workshop",
+  class: "workshop",
   kids: "workshop",
   // Outdoors & Wellbeing
   outdoors: "outdoors",
@@ -68,136 +67,108 @@ const TYPE_TO_CAT: Record<string, EventCat> = {
   swim: "outdoors",
 };
 
-function londonParts(iso: string): {
-  y: number;
-  m: number;
-  d: number;
-  hour: number;
-  minute: number;
-} {
-  const parts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: TZ,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(new Date(iso));
-  const get = (type: string) =>
-    Number(parts.find((p) => p.type === type)?.value ?? 0);
-  return {
-    y: get("year"),
-    m: get("month"),
-    d: get("day"),
-    hour: get("hour"),
-    minute: get("minute"),
-  };
+function clockToLabel(clock: string): string {
+  const [hStr, mStr] = clock.split(":");
+  let h = Number(hStr);
+  const m = Number(mStr) || 0;
+  const suffix = h >= 12 ? "pm" : "am";
+  h = h % 12;
+  if (h === 0) h = 12;
+  return m === 0 ? `${h}${suffix}` : `${h}:${String(m).padStart(2, "0")}${suffix}`;
 }
 
-export function toDateISO(iso: string): string {
-  const { y, m, d } = londonParts(iso);
-  return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-}
-
-function hasMeaningfulTime(iso: string): boolean {
-  const { hour, minute } = londonParts(iso);
-  return !(hour === 0 && minute === 0);
-}
-
-function formatTimeShort(iso: string): string {
-  return new Intl.DateTimeFormat("en-GB", {
-    timeZone: TZ,
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  })
-    .format(new Date(iso))
-    .toLowerCase()
-    .replace(/\s/g, "");
-}
-
-function formatEventTime(startsAt: string, endsAt: string | null): string | undefined {
-  const startHasTime = hasMeaningfulTime(startsAt);
-  const endHasTime = endsAt ? hasMeaningfulTime(endsAt) : false;
-  if (!startHasTime && !endHasTime) return undefined;
-
-  const startTime = formatTimeShort(startsAt);
-  if (!endsAt || !endHasTime) {
-    return startHasTime ? startTime : undefined;
+function formatClockRange(
+  start: string | null | undefined,
+  end: string | null | undefined,
+): string | undefined {
+  const s = start?.trim();
+  const e = end?.trim();
+  if (!s && !e) return undefined;
+  if (s && e) {
+    const a = clockToLabel(s);
+    const b = clockToLabel(e);
+    return a === b ? a : `${a}–${b}`;
   }
-  const endTime = formatTimeShort(endsAt);
-  if (startTime === endTime) return startTime;
-  return `${startTime}–${endTime}`;
-}
-
-function resolvePlace(row: EventRow): PlaceJoin | undefined {
-  const places = row.places;
-  if (!places) return undefined;
-  return Array.isArray(places) ? places[0] : places;
+  if (s) return clockToLabel(s);
+  return e ? clockToLabel(e) : undefined;
 }
 
 function resolveVenue(row: EventRow): string | undefined {
-  const place = resolvePlace(row);
-  if (place?.name?.trim()) return place.name.trim();
-  const free = row.venue_freetext?.trim();
-  return free || undefined;
+  const place = row.place_name?.trim();
+  if (place) return place;
+  const venue = row.venue_name?.trim();
+  return venue || undefined;
 }
 
-function resolveCat(types: string[]): EventCat {
-  for (const t of types ?? []) {
+function resolveCat(row: EventRow): EventCat {
+  const tokens = [
+    row.type,
+    ...(row.theme_tags ?? []),
+    ...(row.vibe_tags ?? []),
+  ]
+    .filter(Boolean)
+    .map((t) => String(t).toLowerCase().trim());
+
+  for (const t of tokens) {
     if (TYPE_TO_CAT[t]) return TYPE_TO_CAT[t];
+    for (const [key, cat] of Object.entries(TYPE_TO_CAT)) {
+      if (t.includes(key)) return cat;
+    }
   }
   return "art";
 }
 
+function formatPrice(row: EventRow): string | undefined {
+  if (row.is_free) return "Free";
+  if (row.price == null || row.price === "") return undefined;
+  const n = typeof row.price === "number" ? row.price : Number(row.price);
+  if (!Number.isFinite(n)) return String(row.price);
+  if (n === 0) return "Free";
+  return Number.isInteger(n) ? `£${n}` : `£${n.toFixed(2)}`;
+}
+
+function formatRecurs(row: EventRow): string | undefined {
+  if (!row.is_recurring) return undefined;
+  const raw =
+    row.recurrence_pattern?.trim() || row.recurrence_type?.trim() || "";
+  if (!raw) return "RECURRING";
+  return raw.replace(/[_-]+/g, " ").toUpperCase();
+}
+
 function eventSlug(row: EventRow): string {
-  const fromSlug = row.slug?.trim();
-  if (fromSlug) return fromSlug;
   if (row.id != null) return String(row.id);
-  return `event-${toDateISO(row.starts_at)}-${row.title.trim().toLowerCase().replace(/\s+/g, "-")}`;
+  const date = row.event_date?.slice(0, 10) || "undated";
+  return `event-${date}-${row.title.trim().toLowerCase().replace(/\s+/g, "-")}`;
 }
 
 function mapRowToFeedEvent(row: EventRow): FeedEvent {
-  const short = row.description_short?.trim() || undefined;
-  const long = row.description_long?.trim() || undefined;
-  const types = row.event_types ?? [];
-  const family = types.some(
-    (t) => t === "kids" || t === "family" || t === "send",
-  );
-  const place = resolvePlace(row);
   const title = row.title.trim();
-  const imageUrl = pickCoverUrl(
-    row.cover_image_url,
-    row.image_url,
-    place?.cover_image_url,
-    place?.photo_url,
-  );
-  const imageAlt = imageUrl
-    ? pickCoverAlt(title, row.cover_image_alt, place?.cover_image_alt)
-    : undefined;
-  const price =
-    row.price_label?.trim() ||
-    (row.is_free ? "Free" : undefined);
-  const recurs = row.recurrence_label?.trim() || undefined;
+  const description = row.description?.trim() || undefined;
+  const imageUrl = pickCoverUrl(row.image_url);
+  const family =
+    Boolean(row.is_send_friendly) ||
+    (row.theme_tags ?? []).some((t) =>
+      /kids|family|send|child/i.test(String(t)),
+    ) ||
+    row.type === "class";
 
   return {
     slug: eventSlug(row),
-    dateISO: toDateISO(row.starts_at),
+    dateISO: String(row.event_date).slice(0, 10),
     title,
     venue: resolveVenue(row),
-    time: formatEventTime(row.starts_at, row.ends_at),
-    description: short || long,
-    detail: long && long !== short ? long : undefined,
-    cat: resolveCat(types),
+    time: formatClockRange(row.start_time, row.end_time),
+    description,
+    detail: undefined,
+    cat: resolveCat(row),
     free: Boolean(row.is_free),
-    pick: Boolean(row.is_salty_pick),
+    pick: false,
     family,
-    bookingUrl: row.booking_url?.trim() || undefined,
+    bookingUrl: row.external_url?.trim() || undefined,
     imageUrl,
-    imageAlt,
-    price,
-    recurs,
+    imageAlt: imageUrl ? pickCoverAlt(title) : undefined,
+    price: formatPrice(row),
+    recurs: formatRecurs(row),
   };
 }
 
@@ -205,7 +176,10 @@ export function mapEventsToFeed(rows: EventRow[]): FeedEvent[] | null {
   if (!rows.length) return null;
   return rows
     .map(mapRowToFeedEvent)
-    .sort((a, b) => a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title));
+    .sort(
+      (a, b) =>
+        a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title),
+    );
 }
 
 /** London calendar helpers for client filters. */
