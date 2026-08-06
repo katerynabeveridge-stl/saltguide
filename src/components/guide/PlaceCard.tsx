@@ -33,7 +33,7 @@ export default function PlaceCard({
 
   return (
     <article
-      className={`sg-place-card${venue.sp ? " pick" : ""}${isOpen ? " open" : ""}`}
+      className={`sg-place-card${isOpen ? " open" : ""}`}
       onClick={onToggle}
       onKeyDown={toggleKey}
       role="button"
@@ -146,9 +146,6 @@ function PlaceCopy({
       <div className="sg-place-copy-row">
         <div className="sg-place-copy-main">
           <div className="sg-venue-meta">
-            {venue.sp ? (
-              <span className="sg-venue-pick">★ Salt pick</span>
-            ) : null}
             {venue.isFeatured ? (
               <span className="sg-venue-featured">Featured</span>
             ) : null}
@@ -174,11 +171,6 @@ function PlaceCopy({
       {isOpen ? (
         <div className="sg-card-expand">
           {venue.b ? <p>{venue.b}</p> : null}
-          {venue.tip ? (
-            <div className="sg-venue-tip">
-              <span className="tip">Tip:</span> {venue.tip}
-            </div>
-          ) : null}
           <div className="sg-venue-links">
             {links.w ? (
               <a href={links.w} target="_blank" rel="noreferrer" onClick={stop}>

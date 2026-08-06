@@ -108,9 +108,9 @@ function mapRowToVenue(row: Record<string, unknown>): Venue {
     a: areaRaw ? titleCaseArea(areaRaw) : "",
     tags,
     b: venueDescription(row),
-    tip: row.tip ? String(row.tip) : null,
+    tip: null,
     booking: row.booking === "book-ahead" ? "book-ahead" : "walk-in",
-    sp: Boolean(row.is_salty_pick),
+    sp: false,
     isNew: Boolean(row.is_new),
     isFree: Boolean(row.is_free),
     coverImageUrl: coverUrlFromRow(row),
@@ -141,7 +141,7 @@ function buildLinksFromRows(
 }
 
 const PLACES_SELECT =
-  "slug, name, place_type, area, summary, tip, booking, is_salty_pick, is_new, is_free, website_url, social_url, tags, image_url, show_on_saltguide";
+  "slug, name, place_type, area, summary, booking, is_new, is_free, website_url, social_url, tags, image_url, show_on_saltguide";
 
 const EVENTS_SELECT =
   "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, show_on_saltguide";

@@ -40,7 +40,7 @@ export function placeImageUrls(venue: Venue): string[] {
 export function resolvePlaceMedia(venue: Venue): PlaceMedia {
   const urls = placeImageUrls(venue);
   const n = urls.length;
-  const elevate = Boolean(venue.sp || venue.isFeatured);
+  const elevate = Boolean(venue.isFeatured);
 
   let layout: PlaceMediaLayout;
   if (n === 0) layout = "icon";

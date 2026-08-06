@@ -60,14 +60,14 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
   }, [events, todayISO, picks]);
 
   const placeTeasers = useMemo((): PlaceTeaser[] => {
-    const salty = venues.filter((v) => v.sp).slice(0, 3);
-    if (!salty.length) {
+    const featured = venues.filter((v) => v.b).slice(0, 3);
+    if (!featured.length) {
       return HOME_PLACE_TEASER_FALLBACK.map((pl, i) => ({
         ...pl,
         c: PLACE_BG[i % PLACE_BG.length],
       }));
     }
-    return salty.map((v, i) => {
+    return featured.map((v, i) => {
       const primaryType = v.types[0] ?? "";
       return {
         name: v.n,
