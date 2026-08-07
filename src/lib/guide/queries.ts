@@ -144,7 +144,7 @@ const PLACES_SELECT =
   "slug, name, place_type, area, summary, booking, is_new, is_free, website_url, social_url, tags, image_url, show_on_saltguide";
 
 const EVENTS_SELECT =
-  "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, show_on_saltguide";
+  "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, show_on_pebbles, show_on_saltguide";
 
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
@@ -152,7 +152,7 @@ async function fetchEventsFromSupabase(
   const { data, error } = await supabase
     .from("events")
     .select(EVENTS_SELECT)
-    .eq("show_on_saltguide", true)
+    .eq("show_on_pebbles", true)
     .eq("status", "approved")
     .order("event_date");
 
@@ -162,7 +162,7 @@ async function fetchEventsFromSupabase(
   }
   if (!data?.length) {
     console.warn(
-      "[guide] events: 0 rows with show_on_saltguide=true (approved)",
+      "[guide] events: 0 rows with show_on_pebbles=true (approved)",
     );
     return [];
   }
@@ -214,7 +214,7 @@ async function fetchFromSupabase(): Promise<GuideData | null> {
 
   const events = eventsResult ?? [];
   console.info(
-    `[guide] supabase: ${placesResult.venues.length} places, ${events.length} events (show_on_saltguide)`,
+    `[guide] supabase: ${placesResult.venues.length} places, ${events.length} events (show_on_pebbles)`,
   );
 
   return {

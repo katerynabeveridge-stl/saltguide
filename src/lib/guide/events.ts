@@ -24,6 +24,7 @@ export type EventRow = {
   vibe_tags?: string[] | null;
   is_send_friendly?: boolean | null;
   show_on_saltguide?: boolean | null;
+  show_on_pebbles?: boolean | null;
   status?: string | null;
 };
 
