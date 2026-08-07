@@ -1,4 +1,4 @@
-import { mapEventsToFeed, type EventRow } from "./events";
+import { mapEventsToFeed, londonTodayISO, type EventRow } from "./events";
 import fallbackLinks from "./links.json";
 import fallbackVenues from "./venues.json";
 import { FALLBACK_EVENTS } from "./constants";
@@ -149,11 +149,13 @@ const EVENTS_SELECT =
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
 ): Promise<FeedEvent[] | null> {
+  const todayISO = londonTodayISO();
   const { data, error } = await supabase
     .from("events")
     .select(EVENTS_SELECT)
-    .eq("show_on_pebbles", true)
+    .or("show_on_pebbles.eq.true,show_on_saltguide.eq.true")
     .eq("status", "approved")
+    .gte("event_date", todayISO)
     .order("event_date");
 
   if (error) {
@@ -162,7 +164,7 @@ async function fetchEventsFromSupabase(
   }
   if (!data?.length) {
     console.warn(
-      "[guide] events: 0 rows with show_on_pebbles=true (approved)",
+      `[guide] events: 0 upcoming approved rows (show_on_pebbles|saltguide, from ${todayISO})`,
     );
     return [];
   }
@@ -214,7 +216,7 @@ async function fetchFromSupabase(): Promise<GuideData | null> {
 
   const events = eventsResult ?? [];
   console.info(
-    `[guide] supabase: ${placesResult.venues.length} places, ${events.length} events (show_on_pebbles)`,
+    `[guide] supabase: ${placesResult.venues.length} places, ${events.length} events (pebbles|saltguide, upcoming)`,
   );
 
   return {

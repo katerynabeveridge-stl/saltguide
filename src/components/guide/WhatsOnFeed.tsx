@@ -44,6 +44,8 @@ export default function WhatsOnFeed({ events }: Props) {
   );
 
   const matchWhen = (e: FeedEvent) => {
+    // Never list past events (client clock; covers days after a static build).
+    if (e.dateISO < todayISO) return false;
     if (when === "all") return true;
     if (when === "today") return e.dateISO === todayISO;
     if (when === "tomorrow") return e.dateISO === tomorrowISO;
