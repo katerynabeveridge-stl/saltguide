@@ -1,26 +1,11 @@
-import { DM_Serif_Display, Outfit } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./shell.css";
 
-const display = Outfit({
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-poppins",
   display: "swap",
-  weight: ["400", "500", "700", "800"],
-});
-
-const serif = DM_Serif_Display({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  display: "swap",
-  weight: ["400"],
-  style: ["normal", "italic"],
-});
-
-const body = Outfit({
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-  weight: ["400", "500", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export default function HomeLayout({
@@ -29,11 +14,8 @@ export default function HomeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`sg ${display.variable} ${serif.variable} ${body.variable}`}>
-      <div className="sg-bg" aria-hidden="true">
-        <img src="/salt-background.png" alt="" />
-        <div className="sg-bg-wash" />
-      </div>
+    <div className={`sg ${poppins.variable}`}>
+      <div className="sg-bg" aria-hidden="true" />
       {children}
     </div>
   );

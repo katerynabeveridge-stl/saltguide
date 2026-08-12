@@ -14,6 +14,7 @@ import {
   londonTodayISO,
   shortWeekdayDate,
 } from "../../lib/guide/events";
+import { placeImageUrls, placeTypeVisual } from "../../lib/guide/placeMedia";
 import type { FeedEvent, Venue } from "../../lib/guide/types";
 
 type Page = "whatson" | "places";
@@ -27,23 +28,14 @@ type Props = {
 type PlaceTeaser = {
   name: string;
   type: string;
+  area: string;
   icon: string;
-  c: string;
+  imageUrl?: string;
+  pick: boolean;
   line: string;
 };
 
 const PICK_BG = ["#F27BC0", "#C9B8F0", "#F5A54A"] as const;
-const PLACE_BG = ["#F5A54A", "#C9B8F0", "#F27BC0"] as const;
-
-const SECTION_COLORS: Record<string, string> = {
-  bar: "#F0785C",
-  pub: "#F0785C",
-  cinema: "#C9B8F0",
-  cafe: "#F5A54A",
-  restaurant: "#F5A54A",
-  museum: "#C9B8F0",
-  gallery: "#C9B8F0",
-};
 
 export default function HomeLanding({ events, venues, onNavigate }: Props) {
   const todayISO = londonTodayISO();
@@ -62,18 +54,24 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
   const placeTeasers = useMemo((): PlaceTeaser[] => {
     const featured = venues.filter((v) => v.b).slice(0, 3);
     if (!featured.length) {
-      return HOME_PLACE_TEASER_FALLBACK.map((pl, i) => ({
-        ...pl,
-        c: PLACE_BG[i % PLACE_BG.length],
+      return HOME_PLACE_TEASER_FALLBACK.map((pl) => ({
+        name: pl.name,
+        type: pl.type,
+        area: "",
+        icon: pl.icon,
+        pick: false,
+        line: pl.line,
       }));
     }
-    return featured.map((v, i) => {
+    return featured.map((v) => {
       const primaryType = v.types[0] ?? "";
       return {
         name: v.n,
         type: TYPE_LABEL[primaryType] || "Place",
-        icon: "📍",
-        c: SECTION_COLORS[primaryType] ?? PLACE_BG[i % PLACE_BG.length],
+        area: v.a,
+        icon: placeTypeVisual(v.types).icon,
+        imageUrl: placeImageUrls(v)[0],
+        pick: v.sp,
         line: v.b,
       };
     });
@@ -82,34 +80,40 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
   return (
     <>
       <section className="sg-home-hero">
-        <h1 className="sg-home-h1">
-          Your guide to Hastings{" "}
-          <span className="sg-home-h1-inline">
-            &amp; <span className="hl">St Leonards.</span>
-          </span>
-        </h1>
-        <p className="sg-home-lede">
-          What&apos;s on, local guides, and a Sunday email with the best of it.
-        </p>
-        <div className="sg-home-ctas">
-          <button
-            type="button"
-            className="sg-btn-primary"
-            onClick={() => onNavigate("whatson")}
-          >
-            SEE WHAT&apos;S ON
-          </button>
-          <button
-            type="button"
-            className="sg-btn-secondary"
-            onClick={() =>
-              document
-                .getElementById("signup")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            GET THE SUNDAY EMAIL
-          </button>
+        <div className="sg-home-hero-photo" aria-hidden />
+        <div className="sg-home-hero-scrim" aria-hidden />
+        <div className="sg-home-hero-inner">
+          <h1 className="sg-home-h1">
+            Your guide to
+            <br />
+            Hastings &amp; St Leonards.
+          </h1>
+          <p className="sg-home-lede">
+            What&apos;s on, local guides, and a Sunday email with the best of it.
+          </p>
+          <div className="sg-home-ctas">
+            <button
+              type="button"
+              className="sg-btn-primary"
+              onClick={() => onNavigate("whatson")}
+            >
+              See what&apos;s on
+            </button>
+            <button
+              type="button"
+              className="sg-btn-secondary"
+              onClick={() =>
+                document
+                  .getElementById("signup")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Get the Sunday email
+            </button>
+          </div>
+          <div className="sg-home-hero-note">
+            Free, every Sunday. 690 locals get it.
+          </div>
         </div>
       </section>
 
@@ -184,32 +188,58 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
       ) : null}
 
       <section className="sg-home-section">
-        <div className="sg-home-section-copy">
-          <h2 className="sg-home-h2">Places we rate</h2>
-          <p className="sg-home-sub">A taste of the full guide.</p>
+        <div className="sg-home-places-head">
+          <div className="sg-home-section-copy">
+            <h2 className="sg-home-h2">Where we&apos;d send a friend</h2>
+            <p className="sg-home-sub">
+              Ninety-odd places, visited and vouched for.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="sg-home-alllink"
+            onClick={() => onNavigate("places")}
+          >
+            All places →
+          </button>
         </div>
-        <div className="sg-place-stack">
+        <div className="sg-home-place-grid">
           {placeTeasers.map((pl) => (
-            <div
+            <button
               key={pl.name}
-              className="sg-place-teaser"
-              style={{ background: pl.c }}
+              type="button"
+              className="sg-home-place-card"
+              onClick={() => onNavigate("places")}
             >
-              <div className="sg-place-icon" aria-hidden>
-                {pl.icon}
+              <div className="sg-home-place-img">
+                {pl.imageUrl ? (
+                  <img src={pl.imageUrl} alt={pl.name} loading="lazy" decoding="async" />
+                ) : (
+                  <span className="sg-home-place-emoji" aria-hidden>
+                    {pl.icon}
+                  </span>
+                )}
+                {pl.pick ? (
+                  <span className="sg-home-place-pick">✳ SALT PICK</span>
+                ) : null}
               </div>
-              <div className="sg-place-name">{pl.name}</div>
-              <div className="sg-place-type">{pl.type}</div>
-              <div className="sg-place-line">{pl.line}</div>
-            </div>
+              <div className="sg-home-place-body">
+                <div className="sg-home-place-kind">
+                  {pl.type}
+                  {pl.area ? ` · ${pl.area}` : ""}
+                </div>
+                <h3 className="sg-home-place-name">{pl.name}</h3>
+                <p className="sg-home-place-line">{pl.line}</p>
+              </div>
+            </button>
           ))}
         </div>
         <button
           type="button"
-          className="sg-home-link sg-home-link-block"
+          className="sg-home-link sg-home-link-block sg-home-alllink-mobile"
           onClick={() => onNavigate("places")}
         >
-          Explore all places →
+          All places →
         </button>
       </section>
 
