@@ -111,9 +111,6 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
               Get the Sunday email
             </button>
           </div>
-          <div className="sg-home-hero-note">
-            Free, every Sunday. 690 locals get it.
-          </div>
         </div>
       </section>
 
