@@ -247,10 +247,7 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
       <section className="sg-home-section">
         <div className="sg-home-places-head">
           <div className="sg-home-section-copy">
-            <h2 className="sg-home-h2">Where we&apos;d send a friend</h2>
-            <p className="sg-home-sub">
-              Ninety-odd places, visited and vouched for.
-            </p>
+            <h2 className="sg-home-h2">Some of our favourite places</h2>
           </div>
           <button
             type="button"
