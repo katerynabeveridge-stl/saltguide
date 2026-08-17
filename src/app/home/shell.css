@@ -1863,8 +1863,8 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 .sg-home-place-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
 
@@ -1890,7 +1890,7 @@ body:has(.staging-banner) .sg-wrap {
 
 .sg-home-place-img {
   position: relative;
-  aspect-ratio: 4 / 3;
+  height: 200px;
   border-bottom: 2px solid var(--sg-ink);
   background: linear-gradient(140deg, #e8e2d4, #d6cfbe);
   display: flex;
@@ -1957,11 +1957,6 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 @media (min-width: 620px) {
-  .sg-home-place-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
   .sg-home-alllink {
     display: inline-block;
   }
