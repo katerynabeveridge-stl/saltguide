@@ -508,6 +508,10 @@ body:has(.staging-banner) .sg-wrap {
   color: rgba(22, 23, 15, 0.85);
 }
 
+.sg-card-expand .sg-venue-links {
+  margin-top: 0;
+}
+
 .sg-more {
   width: 100%;
   padding: 13px;
@@ -934,6 +938,35 @@ body:has(.staging-banner) .sg-wrap {
   cursor: default;
 }
 
+/* Multi-select trigger label (What's On). Unused by Places. */
+.sg-cat-select-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  text-align: left;
+}
+
+.sg-cat-menu-sep {
+  height: 1px;
+  margin: 6px 10px;
+  background: var(--sg-ink);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.sg-cat-menu .tick {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.sg-cat-menu-multi {
+  max-height: min(70vh, 480px);
+  overflow-y: auto;
+}
+
 .sg-pill-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -1270,11 +1303,14 @@ body:has(.staging-banner) .sg-wrap {
   background: rgba(250, 246, 236, 0.2);
 }
 
+.sg-place-inner {
+  padding: 14px;
+}
+
 .sg-place-body-row {
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  padding: 14px;
 }
 
 .sg-place-thumb {
@@ -1304,29 +1340,6 @@ body:has(.staging-banner) .sg-wrap {
 .sg-place-copy {
   flex: 1;
   min-width: 0;
-}
-
-.sg-place-copy-row {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-.sg-place-copy-main {
-  flex: 1;
-  min-width: 0;
-}
-
-.sg-place-copy .sg-card-expand {
-  margin-top: 12px;
-}
-
-.sg-place-copy .sg-venue-links {
-  margin-top: 12px;
-}
-
-.sg-place-copy-pad {
-  padding: 14px 16px 16px;
 }
 
 .sg-venue-meta {

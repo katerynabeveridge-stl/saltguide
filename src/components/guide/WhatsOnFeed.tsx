@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import {
   EVENT_CATS,
   PEBBLES_URL,
@@ -26,6 +26,11 @@ type Props = {
 
 type WhenFilter = "all" | "today" | "tomorrow" | "weekend" | string;
 
+const EVENT_CAT_LIST = Object.entries(EVENT_CATS) as [
+  EventCat,
+  (typeof EVENT_CATS)[string],
+][];
+
 export default function WhatsOnFeed({ events }: Props) {
   const [query, setQuery] = useState("");
   const [when, setWhen] = useState<WhenFilter>("all");
@@ -34,6 +39,7 @@ export default function WhatsOnFeed({ events }: Props) {
   const [familyOnly, setFamilyOnly] = useState(false);
   const [showCal, setShowCal] = useState(false);
   const [showSheet, setShowSheet] = useState(false);
+  const [showCatMenu, setShowCatMenu] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
 
   const todayISO = londonTodayISO();
@@ -55,13 +61,15 @@ export default function WhatsOnFeed({ events }: Props) {
   };
 
   const q = query.trim().toLowerCase();
+  const allTypesSelected =
+    cats.size === 0 || cats.size === EVENT_CAT_LIST.length;
   const list = useMemo(
     () =>
       events
         .filter(
           (e) =>
             matchWhen(e) &&
-            (cats.size === 0 || cats.has(e.cat)) &&
+            (allTypesSelected || cats.has(e.cat)) &&
             (!freeOnly || e.free) &&
             (!familyOnly || e.family) &&
             (!q ||
@@ -71,10 +79,13 @@ export default function WhatsOnFeed({ events }: Props) {
         )
         .sort(compareFeedEvents),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [events, when, cats, freeOnly, familyOnly, q, todayISO, tomorrowISO],
+    [events, when, cats, allTypesSelected, freeOnly, familyOnly, q, todayISO, tomorrowISO],
   );
 
-  const kindCount = cats.size + (freeOnly ? 1 : 0) + (familyOnly ? 1 : 0);
+  const kindCount =
+    (allTypesSelected ? 0 : cats.size) +
+    (freeOnly ? 1 : 0) +
+    (familyOnly ? 1 : 0);
   const isCustomDate =
     when !== "all" &&
     when !== "today" &&
@@ -88,6 +99,7 @@ export default function WhatsOnFeed({ events }: Props) {
     setFreeOnly(false);
     setFamilyOnly(false);
     setShowCal(false);
+    setShowCatMenu(false);
     setQuery("");
   };
 
@@ -97,6 +109,27 @@ export default function WhatsOnFeed({ events }: Props) {
     else next.add(k);
     setCats(next);
   };
+
+  const typeTriggerLabel = (() => {
+    const parts: string[] = [];
+    if (!allTypesSelected) {
+      for (const [k, v] of EVENT_CAT_LIST) {
+        if (cats.has(k)) parts.push(v.label);
+      }
+    }
+    if (familyOnly) parts.push("Family friendly");
+    if (freeOnly) parts.push("Free only");
+    return parts.length ? parts.join(", ") : "All types";
+  })();
+
+  useEffect(() => {
+    if (!showCatMenu) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowCatMenu(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showCatMenu]);
 
   const whenLabel =
     when === "all"
@@ -133,7 +166,10 @@ export default function WhatsOnFeed({ events }: Props) {
         <button
           type="button"
           className={`sg-filter-btn${kindCount > 0 ? " on" : ""}`}
-          onClick={() => setShowSheet(true)}
+          onClick={() => {
+            setShowCatMenu(false);
+            setShowSheet(true);
+          }}
         >
           <FilterIcon active={kindCount > 0} />
           FILTERS{kindCount > 0 ? ` · ${kindCount}` : ""}
@@ -189,12 +225,95 @@ export default function WhatsOnFeed({ events }: Props) {
         />
       ) : null}
 
+      <div className="sg-places-toolbar">
+        <div className="sg-cat-picker">
+          <button
+            type="button"
+            className="sg-cat-select"
+            aria-expanded={showCatMenu}
+            aria-haspopup="listbox"
+            aria-label="Filter by event type"
+            onClick={() => setShowCatMenu((v) => !v)}
+          >
+            <span className="sg-cat-select-label">{typeTriggerLabel}</span>
+            <span className="chev" aria-hidden>
+              ▾
+            </span>
+          </button>
+          {showCatMenu ? (
+            <ul
+              className="sg-cat-menu sg-cat-menu-multi"
+              role="listbox"
+              aria-multiselectable="true"
+              aria-label="Event types"
+            >
+              {EVENT_CAT_LIST.map(([k, v]) => {
+                const on = cats.has(k);
+                return (
+                  <li key={k}>
+                    <button
+                      type="button"
+                      role="option"
+                      aria-selected={on}
+                      className={on ? "on" : ""}
+                      onClick={() => toggleCat(k)}
+                    >
+                      {v.label}
+                      {on ? (
+                        <span className="tick" aria-hidden>
+                          ✓
+                        </span>
+                      ) : null}
+                    </button>
+                  </li>
+                );
+              })}
+              <li className="sg-cat-menu-sep" role="separator" />
+              <li>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={familyOnly}
+                  className={familyOnly ? "on" : ""}
+                  onClick={() => setFamilyOnly((v) => !v)}
+                >
+                  Family friendly
+                  {familyOnly ? (
+                    <span className="tick" aria-hidden>
+                      ✓
+                    </span>
+                  ) : null}
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={freeOnly}
+                  className={freeOnly ? "on" : ""}
+                  onClick={() => setFreeOnly((v) => !v)}
+                >
+                  Free only
+                  {freeOnly ? (
+                    <span className="tick" aria-hidden>
+                      ✓
+                    </span>
+                  ) : null}
+                </button>
+              </li>
+            </ul>
+          ) : null}
+        </div>
+      </div>
+
       <div className="sg-summary">
         <strong>{whenLabel}</strong>
         <span>
           {list.length} {list.length === 1 ? "event" : "events"}
-          {cats.size > 0 &&
-            ` · ${[...cats].map((k) => EVENT_CATS[k]?.label).join(", ")}`}
+          {!allTypesSelected &&
+            ` · ${EVENT_CAT_LIST.filter(([k]) => cats.has(k))
+              .map(([, v]) => v.label)
+              .join(", ")}`}
           {freeOnly && " · free"}
           {familyOnly && " · family friendly"}
           {q && ` · “${query.trim()}”`}
@@ -420,28 +539,26 @@ export default function WhatsOnFeed({ events }: Props) {
 
             <div className="sg-narrow-lbl">WHAT KIND OF THING?</div>
             <div className="sg-cat-grid">
-              {(Object.entries(EVENT_CATS) as [EventCat, (typeof EVENT_CATS)[string]][]).map(
-                ([k, v]) => {
-                  const on = cats.has(k);
-                  return (
-                    <button
-                      key={k}
-                      type="button"
-                      className={`sg-cat-btn${on ? " on" : ""}`}
-                      style={{ background: on ? v.c : undefined }}
-                      onClick={() => toggleCat(k)}
-                    >
-                      <span
-                        className="dot"
-                        style={{ background: v.c }}
-                        aria-hidden
-                      />
-                      {v.label}
-                      {on ? <span style={{ marginLeft: "auto" }}>✓</span> : null}
-                    </button>
-                  );
-                },
-              )}
+              {EVENT_CAT_LIST.map(([k, v]) => {
+                const on = cats.has(k);
+                return (
+                  <button
+                    key={k}
+                    type="button"
+                    className={`sg-cat-btn${on ? " on" : ""}`}
+                    style={{ background: on ? v.c : undefined }}
+                    onClick={() => toggleCat(k)}
+                  >
+                    <span
+                      className="dot"
+                      style={{ background: v.c }}
+                      aria-hidden
+                    />
+                    {v.label}
+                    {on ? <span style={{ marginLeft: "auto" }}>✓</span> : null}
+                  </button>
+                );
+              })}
             </div>
 
             <div className="sg-narrow-lbl">NARROW IT DOWN</div>
@@ -471,6 +588,15 @@ export default function WhatsOnFeed({ events }: Props) {
             </button>
           </div>
         </div>
+      ) : null}
+
+      {showCatMenu ? (
+        <button
+          type="button"
+          className="sg-cat-menu-scrim"
+          aria-label="Close type menu"
+          onClick={() => setShowCatMenu(false)}
+        />
       ) : null}
     </>
   );

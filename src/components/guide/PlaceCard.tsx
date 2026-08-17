@@ -72,127 +72,94 @@ export default function PlaceCard({
         </div>
       ) : null}
 
-      {media.layout === "thumb" ? (
+      <div className="sg-place-inner">
         <div className="sg-place-body-row">
-          <div className="sg-place-thumb">
-            <img
-              src={media.leadUrl}
-              alt={venue.coverImageAlt ?? venue.n}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <PlaceCopy
-            venue={venue}
-            links={links}
-            mapsUrl={mapsUrl}
-            label={label}
-            isOpen={isOpen}
-          />
-        </div>
-      ) : null}
+          {media.layout === "thumb" ? (
+            <div className="sg-place-thumb">
+              <img
+                src={media.leadUrl}
+                alt={venue.coverImageAlt ?? venue.n}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ) : null}
 
-      {media.layout === "icon" ? (
-        <div className="sg-place-body-row">
-          <div
-            className="sg-place-icon-cell"
-            style={{ background: visual.c }}
+          {media.layout === "icon" ? (
+            <div
+              className="sg-place-icon-cell"
+              style={{ background: visual.c }}
+              aria-hidden
+            >
+              {visual.icon}
+            </div>
+          ) : null}
+
+          <div className="sg-place-copy">
+            <div className="sg-venue-meta">
+              {venue.isFeatured ? (
+                <span className="sg-venue-featured">Featured</span>
+              ) : null}
+              {label ? <span className="sg-venue-kind">{label}</span> : null}
+              {venue.isFree ? <span className="sg-venue-free">Free</span> : null}
+            </div>
+            <div className="sg-venue-name">{venue.n}</div>
+            <div className="sg-venue-area">
+              {venue.a}
+              {venue.booking === "book-ahead" ? " · Book ahead" : ""}
+            </div>
+            {!isOpen && venue.b ? (
+              <div className="sg-venue-body clamp2">{venue.b}</div>
+            ) : null}
+          </div>
+          <span
+            className={`sg-card-plus${isOpen ? " open" : ""}`}
             aria-hidden
           >
-            {visual.icon}
-          </div>
-          <PlaceCopy
-            venue={venue}
-            links={links}
-            mapsUrl={mapsUrl}
-            label={label}
-            isOpen={isOpen}
-          />
+            +
+          </span>
         </div>
-      ) : null}
 
-      {media.layout === "hero" || media.layout === "hero4" ? (
-        <div className="sg-place-copy sg-place-copy-pad">
-          <PlaceCopy
-            venue={venue}
-            links={links}
-            mapsUrl={mapsUrl}
-            label={label}
-            isOpen={isOpen}
-          />
-        </div>
-      ) : null}
+        {isOpen ? (
+          <div className="sg-card-expand">
+            {venue.b ? <p>{venue.b}</p> : null}
+            <PlaceLinks links={links} mapsUrl={mapsUrl} />
+          </div>
+        ) : null}
+      </div>
     </article>
   );
 }
 
-function PlaceCopy({
-  venue,
+function PlaceLinks({
   links,
   mapsUrl,
-  label,
-  isOpen,
 }: {
-  venue: Venue;
   links: VenueLinks;
   mapsUrl: string;
-  label: string;
-  isOpen: boolean;
 }) {
   const stop = (ev: MouseEvent) => ev.stopPropagation();
 
   return (
-    <>
-      <div className="sg-place-copy-row">
-        <div className="sg-place-copy-main">
-          <div className="sg-venue-meta">
-            {venue.isFeatured ? (
-              <span className="sg-venue-featured">Featured</span>
-            ) : null}
-            {label ? <span className="sg-venue-kind">{label}</span> : null}
-            {venue.isFree ? <span className="sg-venue-free">Free</span> : null}
-          </div>
-          <div className="sg-venue-name">{venue.n}</div>
-          <div className="sg-venue-area">
-            {venue.a}
-            {venue.booking === "book-ahead" ? " · Book ahead" : ""}
-          </div>
-          {!isOpen && venue.b ? (
-            <div className="sg-venue-body clamp2">{venue.b}</div>
-          ) : null}
-        </div>
-        <span
-          className={`sg-card-plus${isOpen ? " open" : ""}`}
-          aria-hidden
-        >
-          +
-        </span>
-      </div>
-      {isOpen ? (
-        <div className="sg-card-expand">
-          {venue.b ? <p>{venue.b}</p> : null}
-          <div className="sg-venue-links">
-            {links.w ? (
-              <a href={links.w} target="_blank" rel="noreferrer" onClick={stop}>
-                Website →
-              </a>
-            ) : null}
-            {links.ig ? (
-              <a
-                href={`https://instagram.com/${links.ig}`}
-                target="_blank"
-                rel="noreferrer"
-                onClick={stop}
-              >
-                @{links.ig}
-              </a>
-            ) : null}
-            <a href={mapsUrl} target="_blank" rel="noreferrer" onClick={stop}>
-              Maps →
-            </a>
-          </div>
-        </div>
+    <div className="sg-venue-links">
+      {links.w ? (
+        <a href={links.w} target="_blank" rel="noreferrer" onClick={stop}>
+          Website →
+        </a>
       ) : null}
-    </>
+      {links.ig ? (
+        <a
+          href={`https://instagram.com/${links.ig}`}
+          target="_blank"
+          rel="noreferrer"
+          onClick={stop}
+        >
+          @{links.ig}
+        </a>
+      ) : null}
+      <a href={mapsUrl} target="_blank" rel="noreferrer" onClick={stop}>
+        Maps →
+      </a>
+    </div>
   );
 }
