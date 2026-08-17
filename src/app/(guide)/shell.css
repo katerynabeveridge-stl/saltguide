@@ -963,12 +963,6 @@ body:has(.staging-banner) .sg-wrap {
   pointer-events: none;
 }
 
-.sg-cat-menu .tick {
-  flex-shrink: 0;
-  font-size: 13px;
-  font-weight: 800;
-}
-
 .sg-cat-menu-multi {
   max-height: min(70vh, 480px);
   overflow-y: auto;

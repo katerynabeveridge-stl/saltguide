@@ -191,10 +191,18 @@ export default function WhatsOnFeed({ events }: Props) {
   };
 
   const toggleCat = (k: EventCat) => {
+    if (allTypesSelected) {
+      setCats(new Set([k]));
+      return;
+    }
     const next = new Set(cats);
     if (next.has(k)) next.delete(k);
     else next.add(k);
-    setCats(next);
+    setCats(next.size === EVENT_CAT_LIST.length ? new Set() : next);
+  };
+
+  const selectAllTypes = () => {
+    setCats(new Set());
   };
 
   const toggleDraftCat = (k: EventCat) => {
@@ -338,8 +346,19 @@ export default function WhatsOnFeed({ events }: Props) {
               aria-multiselectable="true"
               aria-label="Event types"
             >
+              <li>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={allTypesSelected}
+                  className={allTypesSelected ? "on" : ""}
+                  onClick={selectAllTypes}
+                >
+                  All types
+                </button>
+              </li>
               {EVENT_CAT_LIST.map(([k, v]) => {
-                const on = cats.has(k);
+                const on = !allTypesSelected && cats.has(k);
                 return (
                   <li key={k}>
                     <button
@@ -350,11 +369,6 @@ export default function WhatsOnFeed({ events }: Props) {
                       onClick={() => toggleCat(k)}
                     >
                       {v.label}
-                      {on ? (
-                        <span className="tick" aria-hidden>
-                          ✓
-                        </span>
-                      ) : null}
                     </button>
                   </li>
                 );
@@ -369,11 +383,6 @@ export default function WhatsOnFeed({ events }: Props) {
                   onClick={() => setFamilyOnly((v) => !v)}
                 >
                   Family friendly
-                  {familyOnly ? (
-                    <span className="tick" aria-hidden>
-                      ✓
-                    </span>
-                  ) : null}
                 </button>
               </li>
               <li>
@@ -385,11 +394,6 @@ export default function WhatsOnFeed({ events }: Props) {
                   onClick={() => setFreeOnly((v) => !v)}
                 >
                   Free only
-                  {freeOnly ? (
-                    <span className="tick" aria-hidden>
-                      ✓
-                    </span>
-                  ) : null}
                 </button>
               </li>
             </ul>
