@@ -9,6 +9,7 @@ import {
   type GuidePageId,
 } from "../../lib/guide/paths";
 import type { GuideData } from "../../lib/guide/types";
+import GuideFooter from "./GuideFooter";
 import HomeLanding from "./HomeLanding";
 import PlacesDirectory from "./PlacesDirectory";
 import WhatsOnFeed from "./WhatsOnFeed";
@@ -84,6 +85,22 @@ export default function SaltGuideApp({ data, initialPage = "home" }: Props) {
           <span className="sg-coming">COMING SOON ✳</span>
         </div>
       ) : null}
+
+      {page === "terms" ? (
+        <div className="sg-soon-page">
+          <h2 className="sg-h2">Terms and conditions.</h2>
+          <p>This policy is coming soon.</p>
+        </div>
+      ) : null}
+
+      {page === "privacy" ? (
+        <div className="sg-soon-page">
+          <h2 className="sg-h2">Privacy policy.</h2>
+          <p>This policy is coming soon.</p>
+        </div>
+      ) : null}
+
+      <GuideFooter />
     </div>
   );
 }

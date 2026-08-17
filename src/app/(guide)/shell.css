@@ -2110,19 +2110,63 @@ body:has(.staging-banner) .sg-wrap {
   text-decoration: none;
 }
 
-.sg-home-footer {
+.sg-footer {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 2px solid var(--sg-ink);
+  text-align: center;
+}
+
+.sg-footer-made {
   font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
   font-size: 13px;
   letter-spacing: 0.1em;
   color: rgba(20, 22, 27, 0.55);
-  text-align: center;
-  margin-top: 36px;
-  margin-bottom: 8px;
+  margin: 0 0 16px;
 }
 
-.sg-home-footer .star {
+.sg-footer-made .star {
   color: var(--sg-ink);
+}
+
+.sg-footer-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.sg-footer-nav a {
+  font-family: var(--font-display), Outfit, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--sg-ink);
+  text-decoration: none;
+}
+
+.sg-footer-nav a:hover {
+  text-decoration: underline;
+}
+
+.sg-footer-nav a:focus-visible {
+  outline: 3px solid var(--sg-ink);
+  outline-offset: 2px;
+}
+
+.sg-footer-ig {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--sg-ink);
+}
+
+.sg-footer-ig svg {
+  display: block;
 }
 
 .sg-home-pick-sheet-badges {

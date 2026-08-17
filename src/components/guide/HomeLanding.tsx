@@ -340,11 +340,6 @@ export default function HomeLanding({ events, venues, links }: Props) {
           has baby groups, classes and days out, bump to age 11.
         </p>
       </section>
-
-      <p className="sg-home-footer">
-        SALTGUIDE <span className="star">✳</span> MADE IN ST LEONARDS
-      </p>
-
     </>
   );
 }
