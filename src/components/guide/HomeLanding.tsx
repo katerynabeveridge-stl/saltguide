@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import {
-  EVENT_CATS,
   HOME_PLACE_TEASER_FALLBACK,
   PEBBLES_URL,
   SUBSTACK_ABOUT_URL,
@@ -15,6 +14,7 @@ import { GUIDE_PATH } from "../../lib/guide/paths";
 import {
   addDaysISO,
   eventBadgeLabel,
+  eventCardStyle,
   homeTopEvents,
   homeWeekStrip,
   londonTodayISO,
@@ -142,7 +142,7 @@ export default function HomeLanding({ events, venues, links }: Props) {
             <h2 className="sg-home-h2">Top events coming up</h2>
           </div>
           {topEvents.map((e) => {
-            const c = EVENT_CATS[e.cat] ?? EVENT_CATS.art;
+            const { visual: c, showCategoryBadge } = eventCardStyle(e);
             const dLabel = eventBadgeLabel(e, todayISO, tomorrowISO);
             const isOpen = openPick === e.slug;
             return (
@@ -170,10 +170,12 @@ export default function HomeLanding({ events, venues, links }: Props) {
                   <div className="sg-card-body">
                     <div className="sg-badges">
                       <span className="sg-badge-date">{dLabel}</span>
-                      <span className="sg-badge-cat">
-                        <i style={{ background: c.c }} />
-                        {c.label}
-                      </span>
+                      {showCategoryBadge ? (
+                        <span className="sg-badge-cat">
+                          <i style={{ background: c.c }} />
+                          {c.label}
+                        </span>
+                      ) : null}
                       {e.pick ? (
                         <span className="sg-badge-pick">✳ PICK</span>
                       ) : null}

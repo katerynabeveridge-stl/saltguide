@@ -11,6 +11,7 @@ import {
   addDaysISO,
   compareFeedEvents,
   eventBadgeLabel,
+  eventCardStyle,
   londonTodayISO,
   longDayName,
   matchesWhatsOnKind,
@@ -32,6 +33,12 @@ const EVENT_CAT_LIST = Object.entries(EVENT_CATS) as [
   EventCat,
   (typeof EVENT_CATS)[string],
 ][];
+
+function eventSearchText(e: FeedEvent): string {
+  const { visual, showCategoryBadge } = eventCardStyle(e);
+  const catLabel = showCategoryBadge ? visual.label : "";
+  return `${e.title} ${e.venue ?? ""} ${e.description ?? ""} ${catLabel}`;
+}
 
 export default function WhatsOnFeed({ events }: Props) {
   const [query, setQuery] = useState("");
@@ -83,10 +90,7 @@ export default function WhatsOnFeed({ events }: Props) {
               familyOnly,
               freeOnly,
             ) &&
-            (!q ||
-              `${e.title} ${e.venue ?? ""} ${e.description ?? ""} ${EVENT_CATS[e.cat]?.label ?? ""}`
-                .toLowerCase()
-                .includes(q)),
+            (!q || eventSearchText(e).toLowerCase().includes(q)),
         )
         .sort(compareFeedEvents),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,10 +126,7 @@ export default function WhatsOnFeed({ events }: Props) {
             draftFamilyOnly,
             draftFreeOnly,
           ) &&
-          (!q ||
-            `${e.title} ${e.venue ?? ""} ${e.description ?? ""} ${EVENT_CATS[e.cat]?.label ?? ""}`
-              .toLowerCase()
-              .includes(q)),
+          (!q || eventSearchText(e).toLowerCase().includes(q)),
       ).length,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -433,7 +434,7 @@ export default function WhatsOnFeed({ events }: Props) {
       ) : null}
 
       {list.map((e, i) => {
-        const c = EVENT_CATS[e.cat] ?? EVENT_CATS.art;
+        const { visual: c, showCategoryBadge } = eventCardStyle(e);
         const dLabel = eventBadgeLabel(e, todayISO, tomorrowISO);
         const isOpen = open === e.slug;
         return (
@@ -461,10 +462,12 @@ export default function WhatsOnFeed({ events }: Props) {
                 <div className="sg-card-body">
                   <div className="sg-badges">
                     <span className="sg-badge-date">{dLabel}</span>
-                    <span className="sg-badge-cat">
-                      <i style={{ background: c.c }} />
-                      {c.label}
-                    </span>
+                    {showCategoryBadge ? (
+                      <span className="sg-badge-cat">
+                        <i style={{ background: c.c }} />
+                        {c.label}
+                      </span>
+                    ) : null}
                     {e.pick ? (
                       <span className="sg-badge-pick">✳ PICK</span>
                     ) : null}

@@ -291,6 +291,21 @@ export const EVENT_CAT_TO_SALTGUIDE: Record<EventCat, string> = {
   outdoors: "outdoors-wellbeing",
 };
 
+/** DB `saltguide_category` slug → EVENT_CATS key. Inverse of EVENT_CAT_TO_SALTGUIDE. */
+export const SALTGUIDE_TO_EVENT_CAT: Record<string, EventCat> = Object.fromEntries(
+  (Object.entries(EVENT_CAT_TO_SALTGUIDE) as [EventCat, string][]).map(
+    ([cat, slug]) => [slug, cat],
+  ),
+);
+
+/** Known DB slug → EVENT_CATS id. Null if missing/unknown — do not guess. */
+export function eventCatFromSaltguide(
+  slug: string | null | undefined,
+): EventCat | null {
+  if (!slug) return null;
+  return SALTGUIDE_TO_EVENT_CAT[slug] ?? null;
+}
+
 export const TYPE_LABEL: Record<string, string> = {
   restaurant: "Restaurant",
   cafe: "Café",

@@ -1,4 +1,8 @@
-import { EVENT_CAT_TO_SALTGUIDE } from "./constants";
+import {
+  EVENT_CATS,
+  EVENT_CAT_TO_SALTGUIDE,
+  eventCatFromSaltguide,
+} from "./constants";
 import { pickCoverAlt, pickCoverUrl } from "./images";
 import type { EventCat, FeedEvent } from "./types";
 
@@ -161,6 +165,22 @@ export function compareFeedEvents(a: FeedEvent, b: FeedEvent): number {
   return (
     a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title)
   );
+}
+
+/**
+ * Card tint/icon + whether to show the category chip.
+ * Colour follows `saltguide_category` when known so the pill matches the label;
+ * otherwise keep the type/tag heuristic for tint only (no badge).
+ */
+export function eventCardStyle(
+  event: Pick<FeedEvent, "cat" | "saltguideCategory">,
+): {
+  visual: (typeof EVENT_CATS)[string];
+  showCategoryBadge: boolean;
+} {
+  const fromDb = eventCatFromSaltguide(event.saltguideCategory);
+  const visual = EVENT_CATS[fromDb ?? event.cat] ?? EVENT_CATS.art;
+  return { visual, showCategoryBadge: fromDb != null };
 }
 
 function mapRowToFeedEvent(row: EventRow): FeedEvent {
