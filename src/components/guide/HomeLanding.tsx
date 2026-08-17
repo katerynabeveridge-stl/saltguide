@@ -163,7 +163,6 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
         <section className="sg-home-section">
           <div className="sg-home-week">
             <div className="sg-home-week-title">Also on this week</div>
-            <div className="sg-home-week-sub">The quick version. No fluff.</div>
             {weekStrip.map((e) => (
               <div key={e.slug} className="sg-home-week-row">
                 <span className="d">{shortWeekdayDate(e.dateISO)}</span>
