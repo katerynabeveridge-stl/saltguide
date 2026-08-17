@@ -15,6 +15,7 @@ import {
   presentTags,
 } from "../../lib/guide/filters";
 import type { Category, CtxState, Venue, VenueLinks } from "../../lib/guide/types";
+import FilterSheet from "./FilterSheet";
 import PlaceCard from "./PlaceCard";
 
 type Props = {
@@ -86,10 +87,13 @@ export default function PlacesDirectory({ venues, links }: Props) {
     [ctx, draftSub, draftTags],
   );
   const sheetTags = useMemo(() => presentTags(sheetCtx), [sheetCtx]);
-  const draftPreviewCount = useMemo(
-    () => applyCtxFilter(sheetCtx).length,
-    [sheetCtx],
-  );
+  const draftPreviewCount = useMemo(() => {
+    const items = applyCtxFilter(sheetCtx);
+    if (!q) return items.length;
+    return items.filter((v) =>
+      venueSearchHaystack(v, ctx.catId).toLowerCase().includes(q),
+    ).length;
+  }, [sheetCtx, q, ctx.catId]);
 
   const filterCount = (ctx.sub ? 1 : 0) + ctx.tags.length;
   const anyFilter = filterCount > 0 || q.length > 0;
@@ -125,9 +129,12 @@ export default function PlacesDirectory({ venues, links }: Props) {
     setShowSheet(false);
   }, [draftSub, draftTags]);
 
-  const clearDraft = useCallback(() => {
+  const closeSheet = useCallback(() => setShowSheet(false), []);
+
+  const clearSheet = useCallback(() => {
     setDraftSub(null);
     setDraftTags([]);
+    setCtx((prev) => ({ ...prev, sub: null, tags: [] }));
   }, []);
 
   const clearAll = useCallback(() => {
@@ -264,89 +271,56 @@ export default function PlacesDirectory({ venues, links }: Props) {
       )}
 
       {showSheet ? (
-        <div
-          className="sg-sheet-backdrop"
-          onClick={() => setShowSheet(false)}
-          role="presentation"
+        <FilterSheet
+          onClose={closeSheet}
+          onClearAll={clearSheet}
+          onApply={applySheet}
+          applyLabel={`Show results · ${draftPreviewCount}`}
         >
-          <div
-            className="sg-sheet"
-            onClick={(ev) => ev.stopPropagation()}
-            role="dialog"
-            aria-label="Filters"
-          >
-            <div className="sg-sheet-handle" />
-            <div className="sg-sheet-head">
-              <h3>Filters</h3>
-            </div>
+          {subtypes.length ? (
+            <>
+              <div className="sg-narrow-lbl">TYPE · pick one</div>
+              <div className="sg-pill-wrap">
+                {subtypes.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    className={`sg-pill${draftSub === s.id ? " on" : ""}`}
+                    onClick={() =>
+                      setDraftSub(draftSub === s.id ? null : s.id)
+                    }
+                  >
+                    {s.short}
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : null}
 
-            {subtypes.length ? (
-              <>
-                <div className="sg-narrow-lbl">TYPE · pick one</div>
-                <div className="sg-pill-wrap">
-                  {subtypes.map((s) => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      className={`sg-pill${draftSub === s.id ? " on" : ""}`}
-                      onClick={() =>
-                        setDraftSub(draftSub === s.id ? null : s.id)
-                      }
-                    >
-                      {s.short}
-                    </button>
-                  ))}
-                </div>
-              </>
-            ) : null}
+          {sheetTags.length ? (
+            <>
+              <div className="sg-narrow-lbl">
+                {ctx.catId === "eatdrink" ? "GOOD FOR" : "FILTER"} · pick any
+              </div>
+              <div className="sg-pill-wrap">
+                {sheetTags.map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`sg-pill${draftTags.includes(t) ? " on" : ""}`}
+                    onClick={() => toggleDraftTag(t)}
+                  >
+                    {GOOD_FOR[t] || t}
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : null}
 
-            {sheetTags.length ? (
-              <>
-                <div className="sg-narrow-lbl">
-                  {ctx.catId === "eatdrink" ? "GOOD FOR" : "FILTER"} · pick any
-                </div>
-                <div className="sg-pill-wrap">
-                  {sheetTags.map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      className={`sg-pill${draftTags.includes(t) ? " on" : ""}`}
-                      onClick={() => toggleDraftTag(t)}
-                    >
-                      {GOOD_FOR[t] || t}
-                    </button>
-                  ))}
-                </div>
-              </>
-            ) : null}
-
-            {!subtypes.length && !sheetTags.length ? (
-              <p className="sg-sheet-empty">
-                No filters for this section yet.
-              </p>
-            ) : null}
-
-            <div className="sg-sheet-foot">
-              <button
-                type="button"
-                className="sg-sheet-clear"
-                onClick={clearDraft}
-              >
-                Clear
-              </button>
-              <button
-                type="button"
-                className="sg-sheet-apply"
-                onClick={applySheet}
-              >
-                Show places
-                {draftSub || draftTags.length
-                  ? ` · ${draftPreviewCount}`
-                  : ""}
-              </button>
-            </div>
-          </div>
-        </div>
+          {!subtypes.length && !sheetTags.length ? (
+            <p className="sg-sheet-empty">No filters for this section yet.</p>
+          ) : null}
+        </FilterSheet>
       ) : null}
 
       {showCatMenu ? (

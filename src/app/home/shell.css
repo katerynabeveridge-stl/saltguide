@@ -673,10 +673,11 @@ body:has(.staging-banner) .sg-wrap {
 .sg-sheet-head .clear {
   background: transparent;
   border: none;
-  text-decoration: underline;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--sg-ink);
+  line-height: 1;
+  padding: 4px 2px;
 }
 
 .sg-cat-grid {

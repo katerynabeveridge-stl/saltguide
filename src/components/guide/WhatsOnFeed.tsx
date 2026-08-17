@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import {
   EVENT_CATS,
   PEBBLES_URL,
@@ -18,6 +18,7 @@ import {
 } from "../../lib/guide/events";
 import { tint } from "../../lib/guide/images";
 import type { EventCat, FeedEvent } from "../../lib/guide/types";
+import FilterSheet from "./FilterSheet";
 import ListingThumb from "./ListingThumb";
 
 type Props = {
@@ -39,8 +40,13 @@ export default function WhatsOnFeed({ events }: Props) {
   const [familyOnly, setFamilyOnly] = useState(false);
   const [showCal, setShowCal] = useState(false);
   const [showSheet, setShowSheet] = useState(false);
+  const [showSheetCal, setShowSheetCal] = useState(false);
   const [showCatMenu, setShowCatMenu] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
+  const [draftWhen, setDraftWhen] = useState<WhenFilter>("all");
+  const [draftCats, setDraftCats] = useState<Set<EventCat>>(new Set());
+  const [draftFreeOnly, setDraftFreeOnly] = useState(false);
+  const [draftFamilyOnly, setDraftFamilyOnly] = useState(false);
 
   const todayISO = londonTodayISO();
   const tomorrowISO = addDaysISO(todayISO, 1);
@@ -50,14 +56,14 @@ export default function WhatsOnFeed({ events }: Props) {
     [events],
   );
 
-  const matchWhen = (e: FeedEvent) => {
+  const matchWhen = (e: FeedEvent, w: WhenFilter = when) => {
     // Never list past events (client clock; covers days after a static build).
     if (e.dateISO < todayISO) return false;
-    if (when === "all") return true;
-    if (when === "today") return e.dateISO === todayISO;
-    if (when === "tomorrow") return e.dateISO === tomorrowISO;
-    if (when === "weekend") return weekend.includes(e.dateISO);
-    return e.dateISO === when;
+    if (w === "all") return true;
+    if (w === "today") return e.dateISO === todayISO;
+    if (w === "tomorrow") return e.dateISO === tomorrowISO;
+    if (w === "weekend") return weekend.includes(e.dateISO);
+    return e.dateISO === w;
   };
 
   const q = query.trim().toLowerCase();
@@ -91,7 +97,78 @@ export default function WhatsOnFeed({ events }: Props) {
     when !== "today" &&
     when !== "tomorrow" &&
     when !== "weekend";
+  const draftIsCustomDate =
+    draftWhen !== "all" &&
+    draftWhen !== "today" &&
+    draftWhen !== "tomorrow" &&
+    draftWhen !== "weekend";
   const anyFilter = when !== "all" || kindCount > 0 || q.length > 0;
+  const draftAllTypesSelected =
+    draftCats.size === 0 || draftCats.size === EVENT_CAT_LIST.length;
+  const draftPreviewCount = useMemo(
+    () =>
+      events.filter(
+        (e) =>
+          matchWhen(e, draftWhen) &&
+          (draftAllTypesSelected || draftCats.has(e.cat)) &&
+          (!draftFreeOnly || e.free) &&
+          (!draftFamilyOnly || e.family) &&
+          (!q ||
+            `${e.title} ${e.venue ?? ""} ${e.description ?? ""} ${EVENT_CATS[e.cat]?.label ?? ""}`
+              .toLowerCase()
+              .includes(q)),
+      ).length,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      events,
+      draftWhen,
+      draftCats,
+      draftAllTypesSelected,
+      draftFreeOnly,
+      draftFamilyOnly,
+      q,
+      todayISO,
+      tomorrowISO,
+    ],
+  );
+
+  const closeSheet = useCallback(() => {
+    setShowSheet(false);
+    setShowSheetCal(false);
+  }, []);
+
+  const openSheet = useCallback(() => {
+    setDraftWhen(when);
+    setDraftCats(new Set(cats));
+    setDraftFreeOnly(freeOnly);
+    setDraftFamilyOnly(familyOnly);
+    setShowSheetCal(false);
+    setShowCatMenu(false);
+    setShowSheet(true);
+  }, [when, cats, freeOnly, familyOnly]);
+
+  const applySheet = useCallback(() => {
+    setWhen(draftWhen);
+    setCats(draftCats);
+    setFreeOnly(draftFreeOnly);
+    setFamilyOnly(draftFamilyOnly);
+    setShowCal(false);
+    setShowSheet(false);
+    setShowSheetCal(false);
+  }, [draftWhen, draftCats, draftFreeOnly, draftFamilyOnly]);
+
+  const clearSheet = useCallback(() => {
+    setDraftWhen("all");
+    setDraftCats(new Set());
+    setDraftFreeOnly(false);
+    setDraftFamilyOnly(false);
+    setShowSheetCal(false);
+    setWhen("all");
+    setCats(new Set());
+    setFreeOnly(false);
+    setFamilyOnly(false);
+    setShowCal(false);
+  }, []);
 
   const clearAll = () => {
     setWhen("all");
@@ -108,6 +185,13 @@ export default function WhatsOnFeed({ events }: Props) {
     if (next.has(k)) next.delete(k);
     else next.add(k);
     setCats(next);
+  };
+
+  const toggleDraftCat = (k: EventCat) => {
+    const next = new Set(draftCats);
+    if (next.has(k)) next.delete(k);
+    else next.add(k);
+    setDraftCats(next);
   };
 
   const typeTriggerLabel = (() => {
@@ -166,13 +250,10 @@ export default function WhatsOnFeed({ events }: Props) {
         <button
           type="button"
           className={`sg-filter-btn${kindCount > 0 ? " on" : ""}`}
-          onClick={() => {
-            setShowCatMenu(false);
-            setShowSheet(true);
-          }}
+          onClick={openSheet}
         >
           <FilterIcon active={kindCount > 0} />
-          FILTERS{kindCount > 0 ? ` · ${kindCount}` : ""}
+          Filters{kindCount > 0 ? ` · ${kindCount}` : ""}
         </button>
       </div>
 
@@ -466,128 +547,105 @@ export default function WhatsOnFeed({ events }: Props) {
       </div>
 
       {showSheet ? (
-        <div
-          className="sg-sheet-backdrop"
-          onClick={() => setShowSheet(false)}
-          role="presentation"
+        <FilterSheet
+          onClose={closeSheet}
+          onClearAll={clearSheet}
+          onApply={applySheet}
+          applyLabel={`Show results · ${draftPreviewCount}`}
         >
-          <div
-            className="sg-sheet"
-            onClick={(ev) => ev.stopPropagation()}
-            role="dialog"
-            aria-label="Filters"
-          >
-            <div className="sg-sheet-handle" />
-            <div className="sg-sheet-head">
-              <h3>Filters</h3>
-              {anyFilter ? (
-                <button type="button" className="clear" onClick={clearAll}>
-                  Clear filters
-                </button>
-              ) : null}
-            </div>
+          <div className="sg-narrow-lbl">WHEN</div>
+          <div className="sg-row sg-sheet-when">
+            {(
+              [
+                ["today", "Today"],
+                ["tomorrow", "Tomorrow"],
+                ["weekend", "This weekend"],
+              ] as const
+            ).map(([k, label]) => (
+              <button
+                key={k}
+                type="button"
+                className={`sg-pill${draftWhen === k ? " on" : ""}`}
+                onClick={() => {
+                  setDraftWhen(draftWhen === k ? "all" : k);
+                  setShowSheetCal(false);
+                }}
+              >
+                {label}
+              </button>
+            ))}
+            <button
+              type="button"
+              className={`sg-pill${draftIsCustomDate || showSheetCal ? " on" : ""}`}
+              onClick={() => {
+                if (draftIsCustomDate) {
+                  setDraftWhen("all");
+                  setShowSheetCal(false);
+                } else {
+                  setShowSheetCal(!showSheetCal);
+                }
+              }}
+            >
+              📅{" "}
+              {draftIsCustomDate ? shortDateLabel(draftWhen) : "Pick a date"}
+              {draftIsCustomDate ? " ✕" : ""}
+            </button>
+          </div>
 
-            <div className="sg-narrow-lbl">WHEN</div>
-            <div className="sg-row sg-sheet-when">
-              {(
-                [
-                  ["today", "Today"],
-                  ["tomorrow", "Tomorrow"],
-                  ["weekend", "This weekend"],
-                ] as const
-              ).map(([k, label]) => (
+          {showSheetCal ? (
+            <MonthCalendar
+              selected={draftIsCustomDate ? draftWhen : null}
+              todayISO={todayISO}
+              eventDates={eventDates}
+              onSelect={(d) => {
+                setDraftWhen(draftIsCustomDate && draftWhen === d ? "all" : d);
+                setShowSheetCal(false);
+              }}
+            />
+          ) : null}
+
+          <div className="sg-narrow-lbl">WHAT KIND OF THING?</div>
+          <div className="sg-cat-grid">
+            {EVENT_CAT_LIST.map(([k, v]) => {
+              const on = draftCats.has(k);
+              return (
                 <button
                   key={k}
                   type="button"
-                  className={`sg-pill${when === k ? " on" : ""}`}
-                  onClick={() => {
-                    setWhen(when === k ? "all" : k);
-                    setShowCal(false);
-                  }}
+                  className={`sg-cat-btn${on ? " on" : ""}`}
+                  style={{ background: on ? v.c : undefined }}
+                  onClick={() => toggleDraftCat(k)}
                 >
-                  {label}
+                  <span
+                    className="dot"
+                    style={{ background: v.c }}
+                    aria-hidden
+                  />
+                  {v.label}
+                  {on ? <span style={{ marginLeft: "auto" }}>✓</span> : null}
                 </button>
-              ))}
-              <button
-                type="button"
-                className={`sg-pill${isCustomDate || showCal ? " on" : ""}`}
-                onClick={() => {
-                  if (isCustomDate) {
-                    setWhen("all");
-                    setShowCal(false);
-                  } else {
-                    setShowCal(!showCal);
-                  }
-                }}
-              >
-                📅 {isCustomDate ? shortDateLabel(when) : "Pick a date"}
-                {isCustomDate ? " ✕" : ""}
-              </button>
-            </div>
+              );
+            })}
+          </div>
 
-            {showCal ? (
-              <MonthCalendar
-                selected={isCustomDate ? when : null}
-                todayISO={todayISO}
-                eventDates={eventDates}
-                onSelect={(d) => {
-                  setWhen(isCustomDate && when === d ? "all" : d);
-                  setShowCal(false);
-                }}
-              />
-            ) : null}
-
-            <div className="sg-narrow-lbl">WHAT KIND OF THING?</div>
-            <div className="sg-cat-grid">
-              {EVENT_CAT_LIST.map(([k, v]) => {
-                const on = cats.has(k);
-                return (
-                  <button
-                    key={k}
-                    type="button"
-                    className={`sg-cat-btn${on ? " on" : ""}`}
-                    style={{ background: on ? v.c : undefined }}
-                    onClick={() => toggleCat(k)}
-                  >
-                    <span
-                      className="dot"
-                      style={{ background: v.c }}
-                      aria-hidden
-                    />
-                    {v.label}
-                    {on ? <span style={{ marginLeft: "auto" }}>✓</span> : null}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="sg-narrow-lbl">NARROW IT DOWN</div>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <button
-                type="button"
-                className={`sg-pill${freeOnly ? " on" : ""}`}
-                onClick={() => setFreeOnly(!freeOnly)}
-              >
-                🏷️ Free only{freeOnly ? " ✓" : ""}
-              </button>
-              <button
-                type="button"
-                className={`sg-pill${familyOnly ? " on" : ""}`}
-                onClick={() => setFamilyOnly(!familyOnly)}
-              >
-                👨‍👩‍👧 Family friendly{familyOnly ? " ✓" : ""}
-              </button>
-            </div>
-
+          <div className="sg-narrow-lbl">NARROW IT DOWN</div>
+          <div className="sg-pill-wrap">
             <button
               type="button"
-              className="sg-show-btn"
-              onClick={() => setShowSheet(false)}
+              className={`sg-pill${draftFreeOnly ? " on" : ""}`}
+              onClick={() => setDraftFreeOnly(!draftFreeOnly)}
             >
-              SHOW {list.length} {list.length === 1 ? "EVENT" : "EVENTS"}
+              🏷️ Free only{draftFreeOnly ? " ✓" : ""}
+            </button>
+            <button
+              type="button"
+              className={`sg-pill${draftFamilyOnly ? " on" : ""}`}
+              onClick={() => setDraftFamilyOnly(!draftFamilyOnly)}
+            >
+              👨‍👩‍👧 Family friendly{draftFamilyOnly ? " ✓" : ""}
             </button>
           </div>
-        </div>
+        </FilterSheet>
       ) : null}
 
       {showCatMenu ? (
