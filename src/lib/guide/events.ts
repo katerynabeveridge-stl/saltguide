@@ -165,12 +165,7 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
   const title = row.title.trim();
   const description = row.description?.trim() || undefined;
   const imageUrl = pickCoverUrl(row.image_url);
-  const family =
-    Boolean(row.is_send_friendly) ||
-    (row.theme_tags ?? []).some((t) =>
-      /kids|family|send|child/i.test(String(t)),
-    ) ||
-    row.type === "class";
+  const family = Boolean(row.is_send_friendly);
 
   return {
     slug: eventSlug(row),
