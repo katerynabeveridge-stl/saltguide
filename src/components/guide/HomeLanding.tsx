@@ -242,8 +242,9 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
       <section id="signup" className="sg-nl sg-nl-home">
         <div className="t">The Sunday Email.</div>
         <p>
-          The week ahead in Hastings &amp; St Leonards, every Sunday. Free, on
-          Substack. Join 600+ locals.
+          What&apos;s worth doing in the week ahead, here and just beyond, plus
+          new openings and bite-sized local news. Free, every Sunday at 7pm,
+          join 740+ subscribers.
         </p>
         <a
           className="sg-nl-cta"
