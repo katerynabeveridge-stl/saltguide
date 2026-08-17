@@ -40,10 +40,16 @@
   background: var(--sg-bg);
 }
 
-/* Paint the page background on the body too, so the guide's cream shows in
-   areas the fixed .sg-bg layer can't cover on mobile (Safari toolbar collapse
-   and overscroll). Scoped to guide pages so the coming-soon page stays navy. */
+/* Paint the page background on the root elements too, so the guide's beige
+   shows in areas the fixed .sg-bg layer can't cover on mobile (Safari toolbar
+   collapse and overscroll). Scoped to guide pages so the coming-soon page
+   keeps its navy. */
+html:has(.sg),
 body:has(.sg) {
+  background-color: var(--sg-bg);
+}
+
+.sg {
   background-color: var(--sg-bg);
 }
 
