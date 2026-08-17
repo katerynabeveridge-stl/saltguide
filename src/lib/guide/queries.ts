@@ -146,17 +146,39 @@ const PLACES_SELECT =
 const EVENTS_SELECT =
   "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, is_top_event, show_on_pebbles, show_on_saltguide";
 
+/** Same as EVENTS_SELECT without is_top_event — that column may not exist yet. */
+const EVENTS_SELECT_WITHOUT_TOP =
+  "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, show_on_pebbles, show_on_saltguide";
+
+function isMissingColumnError(
+  error: { code?: string; message?: string },
+  column: string,
+): boolean {
+  const message = error.message ?? "";
+  if (!message.includes(column)) return false;
+  return error.code === "42703" || /does not exist/i.test(message);
+}
+
 async function fetchEventsFromSupabase(
   supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
 ): Promise<FeedEvent[] | null> {
   const todayISO = londonTodayISO();
-  const { data, error } = await supabase
-    .from("events")
-    .select(EVENTS_SELECT)
-    .eq("show_on_saltguide", true)
-    .eq("status", "approved")
-    .gte("event_date", todayISO)
-    .order("event_date");
+  const query = (select: string) =>
+    supabase
+      .from("events")
+      .select(select)
+      .eq("show_on_saltguide", true)
+      .eq("status", "approved")
+      .gte("event_date", todayISO)
+      .order("event_date");
+
+  let { data, error } = await query(EVENTS_SELECT);
+  if (error && isMissingColumnError(error, "is_top_event")) {
+    console.warn(
+      "[guide] events.is_top_event missing; retrying without that column",
+    );
+    ({ data, error } = await query(EVENTS_SELECT_WITHOUT_TOP));
+  }
 
   if (error) {
     console.warn("[guide] events query failed:", error.message);
