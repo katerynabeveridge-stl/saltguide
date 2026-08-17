@@ -1,9 +1,10 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { mapEventsToFeed, londonTodayISO, type EventRow } from "./events";
+import { pickCoverUrl } from "./images";
 import fallbackLinks from "./links.json";
 import fallbackVenues from "./venues.json";
 import { FALLBACK_EVENTS } from "./constants";
 import type { FeedEvent, GuideData, Venue, VenueLinks } from "./types";
-import { getBuildSupabase } from "../supabase/build";
 
 /** New Saltguide project: places.place_type → app type slug. */
 function placeTypeToSlug(value: unknown): string | null {
@@ -57,17 +58,14 @@ function textArray(value: unknown): string[] {
 }
 
 function coverUrlFromRow(row: Record<string, unknown>): string | undefined {
-  for (const key of ["image_url", "cover_image_url", "photo_url"] as const) {
-    const v = row[key];
-    if (v) {
-      const t = String(v).trim();
-      if (t) return t;
-    }
-  }
-  return undefined;
+  return pickCoverUrl(
+    typeof row.image_url === "string" ? row.image_url : null,
+    typeof row.cover_image_url === "string" ? row.cover_image_url : null,
+    typeof row.photo_url === "string" ? row.photo_url : null,
+  );
 }
 
-function mapRowToVenue(row: Record<string, unknown>): Venue {
+export function mapRowToVenue(row: Record<string, unknown>): Venue {
   const typeSlug = placeTypeToSlug(row.place_type);
   const tags = textArray(row.tags);
   const types = new Set<string>();
@@ -166,7 +164,7 @@ function isMissingColumnError(
 }
 
 async function fetchEventsFromSupabase(
-  supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
+  supabase: SupabaseClient,
 ): Promise<FeedEvent[] | null> {
   const todayISO = londonTodayISO();
   const query = (select: string) =>
@@ -209,7 +207,7 @@ async function fetchEventsFromSupabase(
 }
 
 async function fetchPlacesFromSupabase(
-  supabase: NonNullable<ReturnType<typeof getBuildSupabase>>,
+  supabase: SupabaseClient,
 ): Promise<{ venues: Venue[]; links: Record<string, VenueLinks> } | null> {
   const { data, error } = await supabase
     .from("places")
@@ -233,15 +231,9 @@ async function fetchPlacesFromSupabase(
   };
 }
 
-async function fetchFromSupabase(): Promise<GuideData | null> {
-  const supabase = getBuildSupabase();
-  if (!supabase) {
-    console.warn(
-      "[guide] missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY",
-    );
-    return null;
-  }
-
+async function fetchFromSupabase(
+  supabase: SupabaseClient,
+): Promise<GuideData | null> {
   const [placesResult, eventsResult] = await Promise.all([
     fetchPlacesFromSupabase(supabase),
     fetchEventsFromSupabase(supabase),
@@ -263,7 +255,13 @@ async function fetchFromSupabase(): Promise<GuideData | null> {
   };
 }
 
-function fallbackData(): GuideData {
+export const EMPTY_GUIDE_DATA: GuideData = {
+  venues: [],
+  links: {},
+  events: [],
+};
+
+export function fallbackGuideData(): GuideData {
   console.warn("[guide] using static venues.json + FALLBACK_EVENTS");
   return {
     venues: fallbackVenues as Venue[],
@@ -272,9 +270,18 @@ function fallbackData(): GuideData {
   };
 }
 
-export async function fetchGuideData(): Promise<GuideData> {
+export async function fetchGuideData(
+  supabase: SupabaseClient | null,
+): Promise<GuideData> {
+  if (!supabase) {
+    console.warn(
+      "[guide] missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    );
+    return fallbackGuideData();
+  }
+
   try {
-    const fromDb = await fetchFromSupabase();
+    const fromDb = await fetchFromSupabase(supabase);
     if (fromDb?.venues.length) {
       return fromDb;
     }
@@ -284,5 +291,5 @@ export async function fetchGuideData(): Promise<GuideData> {
       err instanceof Error ? err.message : err,
     );
   }
-  return fallbackData();
+  return fallbackGuideData();
 }

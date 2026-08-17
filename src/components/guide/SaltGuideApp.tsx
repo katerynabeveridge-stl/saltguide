@@ -8,14 +8,16 @@ import {
   guidePageFromPathname,
   type GuidePageId,
 } from "../../lib/guide/paths";
+import { EMPTY_GUIDE_DATA } from "../../lib/guide/queries";
 import type { GuideData } from "../../lib/guide/types";
+import { useGuideData } from "../../lib/guide/useGuideData";
 import GuideFooter from "./GuideFooter";
 import HomeLanding from "./HomeLanding";
 import PlacesDirectory from "./PlacesDirectory";
 import WhatsOnFeed from "./WhatsOnFeed";
 
 type Props = {
-  data: GuideData;
+  data?: GuideData;
   initialPage?: GuidePageId;
 };
 
@@ -25,10 +27,17 @@ const NAV: [GuidePageId, string][] = [
   ["about", "About"],
 ];
 
-export default function SaltGuideApp({ data, initialPage = "home" }: Props) {
+export default function SaltGuideApp({
+  data: initialData = EMPTY_GUIDE_DATA,
+  initialPage = "home",
+}: Props) {
   const pathname = usePathname();
   const page = guidePageFromPathname(pathname) ?? initialPage;
+  const { data, loading } = useGuideData(initialData);
   const { venues, links, events } = data;
+
+  const needsList = page === "home" || page === "whatson" || page === "places";
+  const showLoading = loading && needsList;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,13 +74,21 @@ export default function SaltGuideApp({ data, initialPage = "home" }: Props) {
         ) : null}
       </header>
 
-      {page === "home" ? (
+      {showLoading ? (
+        <div className="sg-empty" role="status" aria-live="polite">
+          Loading…
+        </div>
+      ) : null}
+
+      {page === "home" && !showLoading ? (
         <HomeLanding events={events} venues={venues} links={links} />
       ) : null}
 
-      {page === "whatson" ? <WhatsOnFeed events={events} /> : null}
+      {page === "whatson" && !showLoading ? (
+        <WhatsOnFeed events={events} />
+      ) : null}
 
-      {page === "places" ? (
+      {page === "places" && !showLoading ? (
         <PlacesDirectory venues={venues} links={links} />
       ) : null}
 
