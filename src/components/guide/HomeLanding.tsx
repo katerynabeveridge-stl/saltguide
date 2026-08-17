@@ -37,6 +37,13 @@ type PlaceTeaser = {
 
 const PICK_BG = ["#F27BC0", "#C9B8F0", "#F5A54A"] as const;
 
+/** Places shown in the home "Where we'd send a friend" section, in order. */
+const HOME_PLACE_SLUGS = [
+  "goat-ledge",
+  "hastings-castle-1066-story",
+  "the-crown-hastings",
+] as const;
+
 export default function HomeLanding({ events, venues, onNavigate }: Props) {
   const todayISO = londonTodayISO();
   const [openPick, setOpenPick] = useState<FeedEvent | null>(null);
@@ -52,8 +59,11 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
   }, [events, todayISO, picks]);
 
   const placeTeasers = useMemo((): PlaceTeaser[] => {
-    const featured = venues.filter((v) => v.b).slice(0, 3);
-    if (!featured.length) {
+    const bySlug = new Map(venues.map((v) => [v.slug, v]));
+    const selected = HOME_PLACE_SLUGS.map((slug) => bySlug.get(slug)).filter(
+      (v): v is Venue => Boolean(v),
+    );
+    if (!selected.length) {
       return HOME_PLACE_TEASER_FALLBACK.map((pl) => ({
         name: pl.name,
         type: pl.type,
@@ -63,7 +73,7 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
         line: pl.line,
       }));
     }
-    return featured.map((v) => {
+    return selected.map((v) => {
       const primaryType = v.types[0] ?? "";
       return {
         name: v.n,
