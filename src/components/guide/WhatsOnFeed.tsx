@@ -13,6 +13,7 @@ import {
   eventBadgeLabel,
   londonTodayISO,
   longDayName,
+  matchesWhatsOnKind,
   shortDateLabel,
   weekendISODates,
 } from "../../lib/guide/events";
@@ -75,9 +76,13 @@ export default function WhatsOnFeed({ events }: Props) {
         .filter(
           (e) =>
             matchWhen(e) &&
-            (allTypesSelected || cats.has(e.cat)) &&
-            (!freeOnly || e.free) &&
-            (!familyOnly || e.family) &&
+            matchesWhatsOnKind(
+              e,
+              cats,
+              allTypesSelected,
+              familyOnly,
+              freeOnly,
+            ) &&
             (!q ||
               `${e.title} ${e.venue ?? ""} ${e.description ?? ""} ${EVENT_CATS[e.cat]?.label ?? ""}`
                 .toLowerCase()
@@ -110,9 +115,13 @@ export default function WhatsOnFeed({ events }: Props) {
       events.filter(
         (e) =>
           matchWhen(e, draftWhen) &&
-          (draftAllTypesSelected || draftCats.has(e.cat)) &&
-          (!draftFreeOnly || e.free) &&
-          (!draftFamilyOnly || e.family) &&
+          matchesWhatsOnKind(
+            e,
+            draftCats,
+            draftAllTypesSelected,
+            draftFamilyOnly,
+            draftFreeOnly,
+          ) &&
           (!q ||
             `${e.title} ${e.venue ?? ""} ${e.description ?? ""} ${EVENT_CATS[e.cat]?.label ?? ""}`
               .toLowerCase()

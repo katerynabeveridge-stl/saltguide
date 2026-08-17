@@ -1,4 +1,4 @@
-import type { Category, CuratedGuide, FeedEvent } from "./types";
+import type { Category, CuratedGuide, EventCat, FeedEvent } from "./types";
 
 export const TYPE_SECTION: Record<string, string[]> = {
   restaurant: ["eatdrink"],
@@ -201,10 +201,12 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     time: "7pm–midnight",
     description: "Vinyl, small plates and natural wine until midnight on the Marina.",
     cat: "music",
+    saltguideCategory: "music-nights-out",
     free: true,
     pick: true,
     top: false,
     family: false,
+    pebbles: false,
   },
   {
     slug: "midsummer-ceilidh",
@@ -214,10 +216,12 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     time: "7pm",
     description: "Live band, caller, everyone welcome — bring soft shoes.",
     cat: "music",
+    saltguideCategory: "music-nights-out",
     free: true,
     pick: false,
     top: false,
     family: true,
+    pebbles: true,
   },
   {
     slug: "hastings-contemporary-late",
@@ -227,10 +231,12 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     time: "6pm",
     description: "Curator's tour of the new show.",
     cat: "art",
+    saltguideCategory: "arts-culture",
     free: false,
     pick: false,
     top: false,
     family: false,
+    pebbles: false,
     bookingUrl: "https://saltguide.substack.com",
   },
   {
@@ -240,10 +246,12 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     venue: "Source Park",
     description: "Sushi and sake, walk-ins only.",
     cat: "food",
+    saltguideCategory: "food-drink",
     free: false,
     pick: false,
     top: false,
     family: false,
+    pebbles: false,
   },
   {
     slug: "stade-saturdays",
@@ -252,10 +260,12 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     venue: "Seafront",
     description: "Free family arts on the seafront, every weekend through summer.",
     cat: "outdoors",
+    saltguideCategory: "outdoors-wellbeing",
     free: true,
     pick: false,
     top: false,
     family: true,
+    pebbles: true,
   },
 ];
 
@@ -269,6 +279,16 @@ export const EVENT_CATS: Record<
   market: { label: "Markets & Fairs", c: "#C8F135", icon: "🧺" },
   workshop: { label: "Workshops", c: "#F0785C", icon: "✂️" },
   outdoors: { label: "Outdoors & Wellbeing", c: "#C9B8F0", icon: "🌊" },
+};
+
+/** Button key → `events.saltguide_category` (exact DB values). */
+export const EVENT_CAT_TO_SALTGUIDE: Record<EventCat, string> = {
+  music: "music-nights-out",
+  food: "food-drink",
+  art: "arts-culture",
+  market: "markets-fairs",
+  workshop: "workshops",
+  outdoors: "outdoors-wellbeing",
 };
 
 export const TYPE_LABEL: Record<string, string> = {

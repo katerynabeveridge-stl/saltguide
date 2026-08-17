@@ -1,3 +1,4 @@
+import { EVENT_CAT_TO_SALTGUIDE } from "./constants";
 import { pickCoverAlt, pickCoverUrl } from "./images";
 import type { EventCat, FeedEvent } from "./types";
 
@@ -26,6 +27,7 @@ export type EventRow = {
   is_top_event?: boolean | null;
   show_on_saltguide?: boolean | null;
   show_on_pebbles?: boolean | null;
+  saltguide_category?: string | null;
   status?: string | null;
 };
 
@@ -166,6 +168,7 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
   const description = row.description?.trim() || undefined;
   const imageUrl = pickCoverUrl(row.image_url);
   const family = Boolean(row.is_send_friendly);
+  const saltguideCategory = row.saltguide_category?.trim() || null;
 
   return {
     slug: eventSlug(row),
@@ -177,16 +180,46 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
     detail: undefined,
     type: row.type?.trim() || null,
     cat: resolveCat(row),
+    saltguideCategory,
     free: Boolean(row.is_free),
     pick: false,
     top: Boolean(row.is_top_event),
     family,
+    pebbles: Boolean(row.show_on_pebbles),
     bookingUrl: row.external_url?.trim() || undefined,
     imageUrl,
     imageAlt: imageUrl ? pickCoverAlt(title) : undefined,
     price: formatPrice(row),
     recurs: formatRecurs(row),
   };
+}
+
+/**
+ * What's On type/family/free filters.
+ * Categories OR together; Family (`show_on_pebbles`) and Free (`is_free`) AND with that.
+ * Empty / all-six category selection applies no category constraint (NULL categories stay visible).
+ */
+export function matchesWhatsOnKind(
+  event: Pick<FeedEvent, "saltguideCategory" | "pebbles" | "free">,
+  selectedCats: Set<EventCat>,
+  allTypesSelected: boolean,
+  familyOnly: boolean,
+  freeOnly: boolean,
+): boolean {
+  if (!allTypesSelected) {
+    const allowed = new Set(
+      [...selectedCats].map((cat) => EVENT_CAT_TO_SALTGUIDE[cat]),
+    );
+    if (
+      !event.saltguideCategory ||
+      !allowed.has(event.saltguideCategory)
+    ) {
+      return false;
+    }
+  }
+  if (familyOnly && !event.pebbles) return false;
+  if (freeOnly && !event.free) return false;
+  return true;
 }
 
 export function mapEventsToFeed(rows: EventRow[]): FeedEvent[] | null {

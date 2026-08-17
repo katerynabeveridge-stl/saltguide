@@ -144,11 +144,17 @@ const PLACES_SELECT =
   "slug, name, place_type, area, summary, booking, is_new, is_free, website_url, social_url, tags, image_url, show_on_saltguide";
 
 const EVENTS_SELECT =
-  "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, is_top_event, show_on_pebbles, show_on_saltguide";
+  "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, is_top_event, show_on_pebbles, show_on_saltguide, saltguide_category";
 
-/** Same as EVENTS_SELECT without is_top_event — that column may not exist yet. */
-const EVENTS_SELECT_WITHOUT_TOP =
-  "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, show_on_pebbles, show_on_saltguide";
+/** Columns that may not exist yet on older deploys. */
+const OPTIONAL_EVENT_COLUMNS = ["is_top_event", "saltguide_category"] as const;
+
+function withoutSelectColumn(select: string, column: string): string {
+  return select
+    .split(", ")
+    .filter((part) => part !== column)
+    .join(", ");
+}
 
 function isMissingColumnError(
   error: { code?: string; message?: string },
@@ -172,12 +178,21 @@ async function fetchEventsFromSupabase(
       .gte("event_date", todayISO)
       .order("event_date");
 
-  let { data, error } = await query(EVENTS_SELECT);
-  if (error && isMissingColumnError(error, "is_top_event")) {
-    console.warn(
-      "[guide] events.is_top_event missing; retrying without that column",
+  let select = EVENTS_SELECT;
+  let { data, error } = await query(select);
+  while (error) {
+    const currentError = error;
+    const missing = OPTIONAL_EVENT_COLUMNS.find(
+      (column) =>
+        isMissingColumnError(currentError, column) &&
+        select.split(", ").includes(column),
     );
-    ({ data, error } = await query(EVENTS_SELECT_WITHOUT_TOP));
+    if (!missing) break;
+    console.warn(
+      `[guide] events.${missing} missing; retrying without that column`,
+    );
+    select = withoutSelectColumn(select, missing);
+    ({ data, error } = await query(select));
   }
 
   if (error) {

@@ -80,12 +80,18 @@ export type FeedEvent = {
   detail?: string;
   /** Raw DB `type` (e.g. exhibition, music, class). */
   type?: string | null;
+  /** Heuristic tint/icon from type/tags — not used for What's On type filters. */
   cat: EventCat;
+  /** DB `events.saltguide_category`. Null if unmapped or the column is missing. */
+  saltguideCategory: string | null;
   free: boolean;
   pick: boolean;
   /** Flagged via events.is_top_event — shown in the home "Top events coming up" section. */
   top: boolean;
+  /** DB `events.is_send_friendly` — Millie / SEND-friendly badge. */
   family: boolean;
+  /** DB `events.show_on_pebbles` — What's On family-friendly filter. */
+  pebbles: boolean;
   bookingUrl?: string;
   imageUrl?: string;
   imageAlt?: string;
