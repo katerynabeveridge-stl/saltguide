@@ -94,14 +94,14 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
           <div className="sg-home-ctas">
             <button
               type="button"
-              className="sg-btn-primary"
+              className="sg-hero-cta sg-hero-cta-primary"
               onClick={() => onNavigate("whatson")}
             >
               See what&apos;s on
             </button>
             <button
               type="button"
-              className="sg-btn-secondary"
+              className="sg-hero-cta sg-hero-cta-secondary"
               onClick={() =>
                 document
                   .getElementById("signup")
