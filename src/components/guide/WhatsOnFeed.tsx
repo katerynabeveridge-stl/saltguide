@@ -494,9 +494,8 @@ export default function WhatsOnFeed({ events }: Props) {
                       target="_blank"
                       rel="noreferrer"
                       onClick={(ev) => ev.stopPropagation()}
-                      style={{ background: c.c }}
                     >
-                      MORE INFO ↗
+                      MORE INFO
                     </a>
                   ) : (
                     <a
@@ -505,9 +504,8 @@ export default function WhatsOnFeed({ events }: Props) {
                       target="_blank"
                       rel="noreferrer"
                       onClick={(ev) => ev.stopPropagation()}
-                      style={{ background: c.c }}
                     >
-                      MORE INFO ↗
+                      MORE INFO
                     </a>
                   )}
                 </div>

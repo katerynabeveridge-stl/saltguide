@@ -522,7 +522,8 @@ body:has(.staging-banner) .sg-wrap {
   padding: 13px;
   border-radius: 12px;
   border: 2px solid var(--sg-ink);
-  color: var(--sg-ink);
+  background: var(--sg-ink);
+  color: var(--sg-green);
   box-shadow: var(--sg-shadow-sm);
   font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
