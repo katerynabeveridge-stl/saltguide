@@ -9,6 +9,7 @@ import {
 } from "../../lib/guide/constants";
 import {
   addDaysISO,
+  compareFeedEvents,
   eventBadgeLabel,
   londonTodayISO,
   longDayName,
@@ -68,7 +69,7 @@ export default function WhatsOnFeed({ events }: Props) {
                 .toLowerCase()
                 .includes(q)),
         )
-        .sort((a, b) => a.dateISO.localeCompare(b.dateISO)),
+        .sort(compareFeedEvents),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [events, when, cats, freeOnly, familyOnly, q, todayISO, tomorrowISO],
   );

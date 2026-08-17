@@ -142,6 +142,24 @@ function eventSlug(row: EventRow): string {
   return `event-${date}-${row.title.trim().toLowerCase().replace(/\s+/g, "-")}`;
 }
 
+export function isExhibitionEvent(
+  event: Pick<FeedEvent, "type"> | Pick<EventRow, "type">,
+): boolean {
+  return String(event.type ?? "")
+    .trim()
+    .toLowerCase() === "exhibition";
+}
+
+/** Exhibitions first, then by date, then title. */
+export function compareFeedEvents(a: FeedEvent, b: FeedEvent): number {
+  const aEx = isExhibitionEvent(a);
+  const bEx = isExhibitionEvent(b);
+  if (aEx !== bEx) return aEx ? -1 : 1;
+  return (
+    a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title)
+  );
+}
+
 function mapRowToFeedEvent(row: EventRow): FeedEvent {
   const title = row.title.trim();
   const description = row.description?.trim() || undefined;
@@ -161,6 +179,7 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
     time: formatClockRange(row.start_time, row.end_time),
     description,
     detail: undefined,
+    type: row.type?.trim() || null,
     cat: resolveCat(row),
     free: Boolean(row.is_free),
     pick: false,
@@ -175,12 +194,7 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
 
 export function mapEventsToFeed(rows: EventRow[]): FeedEvent[] | null {
   if (!rows.length) return null;
-  return rows
-    .map(mapRowToFeedEvent)
-    .sort(
-      (a, b) =>
-        a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title),
-    );
+  return rows.map(mapRowToFeedEvent).sort(compareFeedEvents);
 }
 
 /** London calendar helpers for client filters. */
@@ -268,10 +282,7 @@ export function homeHighlightEvents(
 ): { dayISO: string; events: FeedEvent[] } | null {
   const upcoming = events
     .filter((e) => e.dateISO >= todayISO)
-    .sort(
-      (a, b) =>
-        a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title),
-    );
+    .sort(compareFeedEvents);
 
   if (!upcoming.length) return null;
 
@@ -282,6 +293,9 @@ export function homeHighlightEvents(
   const dayEvents = upcoming
     .filter((e) => e.dateISO === targetDay)
     .sort((a, b) => {
+      const aEx = isExhibitionEvent(a);
+      const bEx = isExhibitionEvent(b);
+      if (aEx !== bEx) return aEx ? -1 : 1;
       if (a.pick !== b.pick) return a.pick ? -1 : 1;
       return a.title.localeCompare(b.title);
     })
@@ -298,10 +312,7 @@ export function homeWeekPicks(
 ): FeedEvent[] {
   const upcoming = events
     .filter((e) => e.dateISO >= todayISO)
-    .sort(
-      (a, b) =>
-        a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title),
-    );
+    .sort(compareFeedEvents);
 
   const picks = upcoming.filter((e) => e.pick);
   const rest = upcoming.filter((e) => !e.pick);
@@ -323,10 +334,7 @@ export function homeWeekStrip(
         e.dateISO <= endISO &&
         !excludeSlugs.has(e.slug),
     )
-    .sort(
-      (a, b) =>
-        a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title),
-    )
+    .sort(compareFeedEvents)
     .slice(0, limit);
 }
 

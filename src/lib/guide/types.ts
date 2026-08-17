@@ -78,6 +78,8 @@ export type FeedEvent = {
   time?: string;
   description?: string;
   detail?: string;
+  /** Raw DB `type` (e.g. exhibition, music, class). */
+  type?: string | null;
   cat: EventCat;
   free: boolean;
   pick: boolean;
