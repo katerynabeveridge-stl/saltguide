@@ -8,7 +8,7 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-export default function HomeLayout({
+export default function GuideLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

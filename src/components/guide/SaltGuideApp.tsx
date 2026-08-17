@@ -1,48 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import {
+  GUIDE_PATH,
+  guidePageFromPathname,
+  type GuidePageId,
+} from "../../lib/guide/paths";
 import type { GuideData } from "../../lib/guide/types";
 import HomeLanding from "./HomeLanding";
 import PlacesDirectory from "./PlacesDirectory";
 import WhatsOnFeed from "./WhatsOnFeed";
 
-type Page = "home" | "whatson" | "places" | "about";
-
 type Props = {
   data: GuideData;
+  initialPage?: GuidePageId;
 };
 
-const NAV: [Page, string][] = [
+const NAV: [GuidePageId, string][] = [
   ["whatson", "What's On"],
   ["places", "Places"],
   ["about", "About"],
 ];
 
-export default function SaltGuideApp({ data }: Props) {
-  const [page, setPage] = useState<Page>("home");
+export default function SaltGuideApp({ data, initialPage = "home" }: Props) {
+  const pathname = usePathname();
+  const page = guidePageFromPathname(pathname) ?? initialPage;
   const { venues, links, events } = data;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   return (
     <div className="sg-wrap">
       <header className="sg-header">
         <div className="sg-header-top">
-          <button
-            type="button"
-            className="sg-brand"
-            onClick={() => setPage("home")}
-          >
+          <Link href={GUIDE_PATH.home} className="sg-brand">
             SALT<mark>GUIDE</mark>
-          </button>
+          </Link>
           <nav className="sg-nav" aria-label="Main">
             {NAV.map(([k, label]) => (
-              <button
+              <Link
                 key={k}
-                type="button"
+                href={GUIDE_PATH[k]}
                 className={page === k ? "on" : ""}
-                onClick={() => setPage(k)}
               >
                 {label}
-              </button>
+              </Link>
             ))}
           </nav>
         </div>
@@ -59,11 +65,7 @@ export default function SaltGuideApp({ data }: Props) {
       </header>
 
       {page === "home" ? (
-        <HomeLanding
-          events={events}
-          venues={venues}
-          onNavigate={(next) => setPage(next)}
-        />
+        <HomeLanding events={events} venues={venues} links={links} />
       ) : null}
 
       {page === "whatson" ? <WhatsOnFeed events={events} /> : null}

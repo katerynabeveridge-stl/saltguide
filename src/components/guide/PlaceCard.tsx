@@ -131,14 +131,15 @@ export default function PlaceCard({
   );
 }
 
-function PlaceLinks({
+export function PlaceLinks({
   links,
   mapsUrl,
 }: {
   links: VenueLinks;
-  mapsUrl: string;
+  mapsUrl?: string;
 }) {
   const stop = (ev: MouseEvent) => ev.stopPropagation();
+  if (!links.w && !links.ig && !mapsUrl) return null;
 
   return (
     <div className="sg-venue-links">
@@ -157,9 +158,11 @@ function PlaceLinks({
           @{links.ig}
         </a>
       ) : null}
-      <a href={mapsUrl} target="_blank" rel="noreferrer" onClick={stop}>
-        Maps →
-      </a>
+      {mapsUrl ? (
+        <a href={mapsUrl} target="_blank" rel="noreferrer" onClick={stop}>
+          Maps →
+        </a>
+      ) : null}
     </div>
   );
 }

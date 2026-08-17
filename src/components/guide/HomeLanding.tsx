@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import {
   EVENT_CATS,
@@ -9,6 +11,7 @@ import {
   SUBSTACK_URL,
   TYPE_LABEL,
 } from "../../lib/guide/constants";
+import { GUIDE_PATH } from "../../lib/guide/paths";
 import {
   addDaysISO,
   eventBadgeLabel,
@@ -19,15 +22,14 @@ import {
 } from "../../lib/guide/events";
 import { tint } from "../../lib/guide/images";
 import { placeImageUrls, placeTypeVisual } from "../../lib/guide/placeMedia";
-import type { FeedEvent, Venue } from "../../lib/guide/types";
+import type { FeedEvent, Venue, VenueLinks } from "../../lib/guide/types";
 import ListingThumb from "./ListingThumb";
-
-type Page = "whatson" | "places";
+import { PlaceLinks } from "./PlaceCard";
 
 type Props = {
   events: FeedEvent[];
   venues: Venue[];
-  onNavigate: (page: Page) => void;
+  links: Record<string, VenueLinks>;
 };
 
 type PlaceTeaser = {
@@ -38,6 +40,8 @@ type PlaceTeaser = {
   imageUrl?: string;
   pick: boolean;
   line: string;
+  links: VenueLinks;
+  mapsUrl?: string;
 };
 
 /** Places shown in the home "Where we'd send a friend" section, in order. */
@@ -47,7 +51,8 @@ const HOME_PLACE_SLUGS = [
   "the-crown-hastings",
 ] as const;
 
-export default function HomeLanding({ events, venues, onNavigate }: Props) {
+export default function HomeLanding({ events, venues, links }: Props) {
+  const router = useRouter();
   const todayISO = londonTodayISO();
   const tomorrowISO = addDaysISO(todayISO, 1);
   const [openPick, setOpenPick] = useState<string | null>(null);
@@ -75,10 +80,12 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
         icon: pl.icon,
         pick: false,
         line: pl.line,
+        links: {},
       }));
     }
     return selected.map((v) => {
       const primaryType = v.types[0] ?? "";
+      const mapsQ = encodeURIComponent(`${v.n}, ${v.a}, East Sussex`);
       return {
         name: v.n,
         type: TYPE_LABEL[primaryType] || "Place",
@@ -87,9 +94,11 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
         imageUrl: placeImageUrls(v)[0],
         pick: v.sp,
         line: v.b,
+        links: links[v.slug] || {},
+        mapsUrl: `https://maps.google.com/?q=${mapsQ}`,
       };
     });
-  }, [venues]);
+  }, [venues, links]);
 
   return (
     <>
@@ -106,13 +115,12 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
             What&apos;s on, local guides, and a Sunday email with the best of it.
           </p>
           <div className="sg-home-ctas">
-            <button
-              type="button"
+            <Link
+              href={GUIDE_PATH.whatson}
               className="sg-hero-cta sg-hero-cta-primary"
-              onClick={() => onNavigate("whatson")}
             >
               See what&apos;s on
-            </button>
+            </Link>
             <button
               type="button"
               className="sg-hero-cta sg-hero-cta-secondary"
@@ -224,21 +232,24 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
           <div className="sg-home-week">
             <div className="sg-home-week-title">Also coming up</div>
             {weekStrip.map((e) => (
-              <div key={e.slug} className="sg-home-week-row">
+              <Link
+                key={e.slug}
+                href={GUIDE_PATH.whatson}
+                className="sg-home-week-row"
+              >
                 <span className="d">{shortWeekdayDate(e.dateISO)}</span>
                 <span className="sep"> · </span>
                 <span className="v">{e.venue || "TBC"}</span>
                 <span className="sep"> · </span>
                 <span className="n">{e.title}</span>
-              </div>
+              </Link>
             ))}
-            <button
-              type="button"
+            <Link
+              href={GUIDE_PATH.whatson}
               className="sg-home-link sg-home-week-link"
-              onClick={() => onNavigate("whatson")}
             >
               See all events →
-            </button>
+            </Link>
           </div>
         </section>
       ) : null}
@@ -248,21 +259,24 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
           <div className="sg-home-section-copy">
             <h2 className="sg-home-h2">Some of our favourite places</h2>
           </div>
-          <button
-            type="button"
-            className="sg-home-alllink"
-            onClick={() => onNavigate("places")}
-          >
+          <Link href={GUIDE_PATH.places} className="sg-home-alllink">
             All places →
-          </button>
+          </Link>
         </div>
         <div className="sg-home-place-grid">
           {placeTeasers.map((pl) => (
-            <button
+            <article
               key={pl.name}
-              type="button"
               className="sg-home-place-card"
-              onClick={() => onNavigate("places")}
+              onClick={() => router.push(GUIDE_PATH.places)}
+              onKeyDown={(ev) => {
+                if (ev.key === "Enter" || ev.key === " ") {
+                  ev.preventDefault();
+                  router.push(GUIDE_PATH.places);
+                }
+              }}
+              role="button"
+              tabIndex={0}
             >
               <div className="sg-home-place-img">
                 {pl.imageUrl ? (
@@ -282,18 +296,20 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
                   {pl.area ? ` · ${pl.area}` : ""}
                 </div>
                 <h3 className="sg-home-place-name">{pl.name}</h3>
-                <p className="sg-home-place-line">{pl.line}</p>
+                {pl.line ? (
+                  <p className="sg-home-place-line clamp2">{pl.line}</p>
+                ) : null}
+                <PlaceLinks links={pl.links} mapsUrl={pl.mapsUrl} />
               </div>
-            </button>
+            </article>
           ))}
         </div>
-        <button
-          type="button"
+        <Link
+          href={GUIDE_PATH.places}
           className="sg-home-link sg-home-link-block sg-home-alllink-mobile"
-          onClick={() => onNavigate("places")}
         >
           All places →
-        </button>
+        </Link>
       </section>
 
       <section id="signup" className="sg-nl sg-nl-home">
