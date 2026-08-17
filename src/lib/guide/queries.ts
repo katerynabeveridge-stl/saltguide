@@ -153,7 +153,7 @@ async function fetchEventsFromSupabase(
   const { data, error } = await supabase
     .from("events")
     .select(EVENTS_SELECT)
-    .or("show_on_pebbles.eq.true,show_on_saltguide.eq.true")
+    .eq("show_on_saltguide", true)
     .eq("status", "approved")
     .gte("event_date", todayISO)
     .order("event_date");
@@ -164,7 +164,7 @@ async function fetchEventsFromSupabase(
   }
   if (!data?.length) {
     console.warn(
-      `[guide] events: 0 upcoming approved rows (show_on_pebbles|saltguide, from ${todayISO})`,
+      `[guide] events: 0 upcoming approved rows (show_on_saltguide, from ${todayISO})`,
     );
     return [];
   }
@@ -216,7 +216,7 @@ async function fetchFromSupabase(): Promise<GuideData | null> {
 
   const events = eventsResult ?? [];
   console.info(
-    `[guide] supabase: ${placesResult.venues.length} places, ${events.length} events (pebbles|saltguide, upcoming)`,
+    `[guide] supabase: ${placesResult.venues.length} places, ${events.length} events (saltguide, upcoming)`,
   );
 
   return {
