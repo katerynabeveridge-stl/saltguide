@@ -59,7 +59,7 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
 
   const weekStrip = useMemo(() => {
     const exclude = new Set(topEvents.map((p) => p.slug));
-    return homeWeekStrip(events, todayISO, exclude, 5);
+    return homeWeekStrip(events, todayISO, exclude, 8);
   }, [events, todayISO, topEvents]);
 
   const placeTeasers = useMemo((): PlaceTeaser[] => {
@@ -222,7 +222,7 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
       {weekStrip.length ? (
         <section className="sg-home-section">
           <div className="sg-home-week">
-            <div className="sg-home-week-title">Also on this week</div>
+            <div className="sg-home-week-title">Also coming up</div>
             {weekStrip.map((e) => (
               <div key={e.slug} className="sg-home-week-row">
                 <span className="d">{shortWeekdayDate(e.dateISO)}</span>

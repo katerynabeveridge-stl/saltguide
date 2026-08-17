@@ -336,22 +336,19 @@ export function homeTopEvents(
     .slice(0, limit);
 }
 
-/** Compact “also on this week” strip — next 7 days, excluding carousel slugs. */
+/**
+ * Home “Also coming up” strip — upcoming Saltguide events, soonest first,
+ * excluding slugs already shown in Top events. No week or category window.
+ */
 export function homeWeekStrip(
   events: FeedEvent[],
   todayISO: string,
   excludeSlugs: Set<string>,
-  limit = 5,
+  limit = 8,
 ): FeedEvent[] {
-  const endISO = addDaysISO(todayISO, 6);
   return events
-    .filter(
-      (e) =>
-        e.dateISO >= todayISO &&
-        e.dateISO <= endISO &&
-        !excludeSlugs.has(e.slug),
-    )
-    .sort(compareFeedEvents)
+    .filter((e) => e.dateISO >= todayISO && !excludeSlugs.has(e.slug))
+    .sort((a, b) => a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title))
     .slice(0, limit);
 }
 
