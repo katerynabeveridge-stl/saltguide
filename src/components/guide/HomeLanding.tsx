@@ -12,7 +12,7 @@ import {
 import {
   addDaysISO,
   eventBadgeLabel,
-  homeWeekPicks,
+  homeTopEvents,
   homeWeekStrip,
   londonTodayISO,
   shortWeekdayDate,
@@ -52,15 +52,15 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
   const tomorrowISO = addDaysISO(todayISO, 1);
   const [openPick, setOpenPick] = useState<string | null>(null);
 
-  const picks = useMemo(
-    () => homeWeekPicks(events, todayISO, 3),
+  const topEvents = useMemo(
+    () => homeTopEvents(events, todayISO, 5),
     [events, todayISO],
   );
 
   const weekStrip = useMemo(() => {
-    const exclude = new Set(picks.map((p) => p.slug));
+    const exclude = new Set(topEvents.map((p) => p.slug));
     return homeWeekStrip(events, todayISO, exclude, 5);
-  }, [events, todayISO, picks]);
+  }, [events, todayISO, topEvents]);
 
   const placeTeasers = useMemo((): PlaceTeaser[] => {
     const bySlug = new Map(venues.map((v) => [v.slug, v]));
@@ -128,13 +128,12 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
         </div>
       </section>
 
-      {picks.length ? (
+      {topEvents.length ? (
         <section className="sg-home-section">
           <div className="sg-home-section-copy">
-            <h2 className="sg-home-h2">This week&apos;s picks</h2>
-            <p className="sg-home-sub">Three things worth planning around.</p>
+            <h2 className="sg-home-h2">Top events coming up</h2>
           </div>
-          {picks.map((e) => {
+          {topEvents.map((e) => {
             const c = EVENT_CATS[e.cat] ?? EVENT_CATS.art;
             const dLabel = eventBadgeLabel(e, todayISO, tomorrowISO);
             const isOpen = openPick === e.slug;

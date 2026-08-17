@@ -203,6 +203,7 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     cat: "music",
     free: true,
     pick: true,
+    top: false,
     family: false,
   },
   {
@@ -215,6 +216,7 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     cat: "music",
     free: true,
     pick: false,
+    top: false,
     family: true,
   },
   {
@@ -227,6 +229,7 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     cat: "art",
     free: false,
     pick: false,
+    top: false,
     family: false,
     bookingUrl: "https://saltguide.substack.com",
   },
@@ -239,6 +242,7 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     cat: "food",
     free: false,
     pick: false,
+    top: false,
     family: false,
   },
   {
@@ -250,6 +254,7 @@ export const FALLBACK_EVENTS: FeedEvent[] = [
     cat: "outdoors",
     free: true,
     pick: false,
+    top: false,
     family: true,
   },
 ];

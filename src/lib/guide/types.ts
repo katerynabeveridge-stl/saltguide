@@ -83,6 +83,8 @@ export type FeedEvent = {
   cat: EventCat;
   free: boolean;
   pick: boolean;
+  /** Flagged via events.is_top_event — shown in the home "Top events coming up" section. */
+  top: boolean;
   family: boolean;
   bookingUrl?: string;
   imageUrl?: string;

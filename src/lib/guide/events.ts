@@ -23,6 +23,7 @@ export type EventRow = {
   theme_tags?: string[] | null;
   vibe_tags?: string[] | null;
   is_send_friendly?: boolean | null;
+  is_top_event?: boolean | null;
   show_on_saltguide?: boolean | null;
   show_on_pebbles?: boolean | null;
   status?: string | null;
@@ -183,6 +184,7 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
     cat: resolveCat(row),
     free: Boolean(row.is_free),
     pick: false,
+    top: Boolean(row.is_top_event),
     family,
     bookingUrl: row.external_url?.trim() || undefined,
     imageUrl,
@@ -317,6 +319,21 @@ export function homeWeekPicks(
   const picks = upcoming.filter((e) => e.pick);
   const rest = upcoming.filter((e) => !e.pick);
   return [...picks, ...rest].slice(0, limit);
+}
+
+/**
+ * Home "Top events coming up": events flagged is_top_event, upcoming only,
+ * soonest first, capped at `limit`. Past events are excluded.
+ */
+export function homeTopEvents(
+  events: FeedEvent[],
+  todayISO: string,
+  limit = 5,
+): FeedEvent[] {
+  return events
+    .filter((e) => e.top && e.dateISO >= todayISO)
+    .sort((a, b) => a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title))
+    .slice(0, limit);
 }
 
 /** Compact “also on this week” strip — next 7 days, excluding carousel slugs. */
