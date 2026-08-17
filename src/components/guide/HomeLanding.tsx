@@ -6,16 +6,21 @@ import {
   HOME_PLACE_TEASER_FALLBACK,
   PEBBLES_URL,
   SUBSTACK_ABOUT_URL,
+  SUBSTACK_URL,
   TYPE_LABEL,
 } from "../../lib/guide/constants";
 import {
+  addDaysISO,
+  eventBadgeLabel,
   homeWeekPicks,
   homeWeekStrip,
   londonTodayISO,
   shortWeekdayDate,
 } from "../../lib/guide/events";
+import { tint } from "../../lib/guide/images";
 import { placeImageUrls, placeTypeVisual } from "../../lib/guide/placeMedia";
 import type { FeedEvent, Venue } from "../../lib/guide/types";
+import ListingThumb from "./ListingThumb";
 
 type Page = "whatson" | "places";
 
@@ -35,8 +40,6 @@ type PlaceTeaser = {
   line: string;
 };
 
-const PICK_BG = ["#F27BC0", "#C9B8F0", "#F5A54A"] as const;
-
 /** Places shown in the home "Where we'd send a friend" section, in order. */
 const HOME_PLACE_SLUGS = [
   "goat-ledge",
@@ -46,7 +49,8 @@ const HOME_PLACE_SLUGS = [
 
 export default function HomeLanding({ events, venues, onNavigate }: Props) {
   const todayISO = londonTodayISO();
-  const [openPick, setOpenPick] = useState<FeedEvent | null>(null);
+  const tomorrowISO = addDaysISO(todayISO, 1);
+  const [openPick, setOpenPick] = useState<string | null>(null);
 
   const picks = useMemo(
     () => homeWeekPicks(events, todayISO, 3),
@@ -130,42 +134,89 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
             <h2 className="sg-home-h2">This week&apos;s picks</h2>
             <p className="sg-home-sub">Three things worth planning around.</p>
           </div>
-          <div className="sg-home-picks-rail">
-            {picks.map((e, i) => {
-              const c = EVENT_CATS[e.cat] ?? EVENT_CATS.art;
-              const bg = PICK_BG[i % PICK_BG.length];
-              return (
-                <button
-                  key={e.slug}
-                  type="button"
-                  className="sg-home-pick"
-                  style={{ background: bg }}
-                  onClick={() => setOpenPick(e)}
-                >
-                  <div className="sg-home-pick-top">
-                    <span className="sg-home-pick-date">
-                      {shortWeekdayDate(e.dateISO).toUpperCase()}
-                    </span>
-                    {e.pick ? (
-                      <span className="sg-home-pick-tag">✳ PICK</span>
-                    ) : (
-                      <span className="sg-home-pick-tag muted">{c.label}</span>
-                    )}
+          {picks.map((e) => {
+            const c = EVENT_CATS[e.cat] ?? EVENT_CATS.art;
+            const dLabel = eventBadgeLabel(e, todayISO, tomorrowISO);
+            const isOpen = openPick === e.slug;
+            return (
+              <div
+                key={e.slug}
+                className="sg-card"
+                style={{ background: tint(c.c, 0.9) }}
+                onClick={() => setOpenPick(isOpen ? null : e.slug)}
+                onKeyDown={(ev) => {
+                  if (ev.key === "Enter" || ev.key === " ") {
+                    ev.preventDefault();
+                    setOpenPick(isOpen ? null : e.slug);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="sg-card-inner">
+                  <ListingThumb
+                    imageUrl={e.imageUrl}
+                    imageAlt={e.imageAlt}
+                    fallbackColor={c.c}
+                    fallbackIcon={c.icon}
+                  />
+                  <div className="sg-card-body">
+                    <div className="sg-badges">
+                      <span className="sg-badge-date">{dLabel}</span>
+                      <span className="sg-badge-cat">
+                        <i style={{ background: c.c }} />
+                        {c.label}
+                      </span>
+                      {e.pick ? (
+                        <span className="sg-badge-pick">✳ PICK</span>
+                      ) : null}
+                      {e.family ? (
+                        <span className="sg-badge-family">
+                          👨‍👩‍👧 Family friendly
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="sg-card-title">{e.title}</div>
+                    {e.venue || e.time || e.price ? (
+                      <div className="sg-card-meta">
+                        {e.venue}
+                        {e.venue && e.time ? " · " : null}
+                        {e.time}
+                        {(e.venue || e.time) && e.price ? " · " : null}
+                        {e.price ? <strong>{e.price}</strong> : null}
+                      </div>
+                    ) : null}
+                    {!isOpen && e.description ? (
+                      <div className="sg-card-desc clamp2">{e.description}</div>
+                    ) : null}
                   </div>
-                  <div className="sg-home-pick-emoji" aria-hidden>
-                    {c.icon}
+                  <span
+                    className={`sg-card-plus${isOpen ? " open" : ""}`}
+                    aria-hidden
+                  >
+                    +
+                  </span>
+                </div>
+                {isOpen ? (
+                  <div className="sg-card-expand">
+                    <p>
+                      {e.detail || e.description || "More details coming soon."}
+                    </p>
+                    <a
+                      className="sg-more"
+                      href={e.bookingUrl || SUBSTACK_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(ev) => ev.stopPropagation()}
+                      style={{ background: c.c }}
+                    >
+                      MORE INFO ↗
+                    </a>
                   </div>
-                  <div className="sg-home-pick-title">{e.title}</div>
-                  {e.venue ? (
-                    <div className="sg-home-pick-venue">{e.venue}</div>
-                  ) : null}
-                  {e.description ? (
-                    <div className="sg-home-pick-blurb">{e.description}</div>
-                  ) : null}
-                </button>
-              );
-            })}
-          </div>
+                ) : null}
+              </div>
+            );
+          })}
         </section>
       ) : null}
 
@@ -281,44 +332,6 @@ export default function HomeLanding({ events, venues, onNavigate }: Props) {
         SALTGUIDE <span className="star">✳</span> MADE IN ST LEONARDS
       </p>
 
-      {openPick ? (
-        <div
-          className="sg-sheet-backdrop"
-          onClick={() => setOpenPick(null)}
-          role="presentation"
-        >
-          <div
-            className="sg-sheet sg-home-pick-sheet"
-            onClick={(ev) => ev.stopPropagation()}
-            role="dialog"
-            aria-label={openPick.title}
-          >
-            <div className="sg-sheet-handle" />
-            <div className="sg-home-pick-sheet-badges">
-              <span className="sg-home-pick-date">
-                {shortWeekdayDate(openPick.dateISO).toUpperCase()}
-              </span>
-              {openPick.pick ? (
-                <span className="sg-home-pick-tag">✳ SALT PICK</span>
-              ) : null}
-            </div>
-            <div className="sg-home-pick-sheet-title">{openPick.title}</div>
-            {openPick.venue ? (
-              <div className="sg-home-pick-sheet-venue">{openPick.venue}</div>
-            ) : null}
-            <p className="sg-home-pick-sheet-body">
-              {openPick.detail || openPick.description || "More details coming soon."}
-            </p>
-            <button
-              type="button"
-              className="sg-btn-primary sg-home-pick-sheet-close"
-              onClick={() => setOpenPick(null)}
-            >
-              CLOSE
-            </button>
-          </div>
-        </div>
-      ) : null}
     </>
   );
 }
