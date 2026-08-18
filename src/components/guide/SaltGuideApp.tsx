@@ -65,7 +65,7 @@ export default function SaltGuideApp({
         {page === "whatson" ? (
           <>
             <h1 className="sg-h1">
-              What&apos;s <span className="hl">on</span>
+              What&apos;s <span className="hl">On</span>.
             </h1>
             <p className="sg-lede" style={{ marginBottom: 22 }}>
               This week and beyond in Hastings &amp; St Leonards.

@@ -9,9 +9,12 @@ import {
 } from "../../lib/guide/constants";
 import {
   addDaysISO,
-  compareFeedEvents,
+  compareFeedEventsByDate,
   eventBadgeLabel,
   eventCardStyle,
+  eventCoversDate,
+  eventIsUpcoming,
+  isExhibitionEvent,
   londonTodayISO,
   longDayName,
   matchesWhatsOnKind,
@@ -59,25 +62,39 @@ export default function WhatsOnFeed({ events }: Props) {
   const todayISO = londonTodayISO();
   const tomorrowISO = addDaysISO(todayISO, 1);
   const weekend = weekendISODates();
-  const eventDates = useMemo(
-    () => new Set(events.map((e) => e.dateISO)),
-    [events],
-  );
+  const eventDates = useMemo(() => {
+    const dates = new Set<string>();
+    for (const e of events) {
+      dates.add(e.dateISO);
+      if (
+        e.endISO &&
+        e.endISO > e.dateISO &&
+        eventCoversDate(e, e.endISO)
+      ) {
+        let d = e.dateISO;
+        for (let i = 0; i < 366 && d <= e.endISO; i += 1) {
+          dates.add(d);
+          d = addDaysISO(d, 1);
+        }
+      }
+    }
+    return dates;
+  }, [events]);
 
   const matchWhen = (e: FeedEvent, w: WhenFilter = when) => {
     // Never list past events (client clock; covers days after a static build).
-    if (e.dateISO < todayISO) return false;
+    if (!eventIsUpcoming(e, todayISO)) return false;
     if (w === "all") return true;
-    if (w === "today") return e.dateISO === todayISO;
-    if (w === "tomorrow") return e.dateISO === tomorrowISO;
-    if (w === "weekend") return weekend.includes(e.dateISO);
-    return e.dateISO === w;
+    if (w === "today") return eventCoversDate(e, todayISO);
+    if (w === "tomorrow") return eventCoversDate(e, tomorrowISO);
+    if (w === "weekend") return weekend.some((d) => eventCoversDate(e, d));
+    return eventCoversDate(e, w);
   };
 
   const q = query.trim().toLowerCase();
   const allTypesSelected =
     cats.size === 0 || cats.size === EVENT_CAT_LIST.length;
-  const list = useMemo(
+  const filtered = useMemo(
     () =>
       events
         .filter(
@@ -92,9 +109,17 @@ export default function WhatsOnFeed({ events }: Props) {
             ) &&
             (!q || eventSearchText(e).toLowerCase().includes(q)),
         )
-        .sort(compareFeedEvents),
+        .sort(compareFeedEventsByDate),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [events, when, cats, allTypesSelected, freeOnly, familyOnly, q, todayISO, tomorrowISO],
+  );
+  const exhibitions = useMemo(
+    () => filtered.filter(isExhibitionEvent),
+    [filtered],
+  );
+  const list = useMemo(
+    () => filtered.filter((e) => !isExhibitionEvent(e)),
+    [filtered],
   );
 
   const kindCount =
@@ -265,14 +290,6 @@ export default function WhatsOnFeed({ events }: Props) {
             </button>
           ) : null}
         </div>
-        <button
-          type="button"
-          className={`sg-filter-btn${kindCount > 0 ? " on" : ""}`}
-          onClick={openSheet}
-        >
-          <FilterIcon active={kindCount > 0} />
-          Filters{kindCount > 0 ? ` · ${kindCount}` : ""}
-        </button>
       </div>
 
       <div className="sg-row">
@@ -399,12 +416,21 @@ export default function WhatsOnFeed({ events }: Props) {
             </ul>
           ) : null}
         </div>
+
+        <button
+          type="button"
+          className={`sg-filter-btn${kindCount > 0 ? " on" : ""}`}
+          onClick={openSheet}
+        >
+          <FilterIcon active={kindCount > 0} />
+          More filters{kindCount > 0 ? ` · ${kindCount}` : ""}
+        </button>
       </div>
 
       <div className="sg-summary">
         <strong>{whenLabel}</strong>
         <span>
-          {list.length} {list.length === 1 ? "event" : "events"}
+          {filtered.length} {filtered.length === 1 ? "event" : "events"}
           {!allTypesSelected &&
             ` · ${EVENT_CAT_LIST.filter(([k]) => cats.has(k))
               .map(([, v]) => v.label)
@@ -430,103 +456,39 @@ export default function WhatsOnFeed({ events }: Props) {
         </div>
       ) : null}
 
-      {list.length === 0 ? (
+      {filtered.length === 0 ? (
         <div className="sg-empty">
           <h3>Nothing matches</h3>
           Try another date or clear a filter.
         </div>
       ) : null}
 
+      {exhibitions.length ? (
+        <div className="sg-exh-rail" aria-label="Exhibitions">
+          {exhibitions.map((e) => (
+            <FeedEventCard
+              key={e.slug}
+              event={e}
+              todayISO={todayISO}
+              tomorrowISO={tomorrowISO}
+              open={open}
+              setOpen={setOpen}
+              compact
+            />
+          ))}
+        </div>
+      ) : null}
+
       {list.map((e, i) => {
-        const { visual: c, showCategoryBadge } = eventCardStyle(e);
-        const dLabel = eventBadgeLabel(e, todayISO, tomorrowISO);
-        const isOpen = open === e.slug;
         return (
           <Fragment key={e.slug}>
-            <div
-              className="sg-card"
-              style={{ background: tint(c.c, 0.9) }}
-              onClick={() => setOpen(isOpen ? null : e.slug)}
-              onKeyDown={(ev) => {
-                if (ev.key === "Enter" || ev.key === " ") {
-                  ev.preventDefault();
-                  setOpen(isOpen ? null : e.slug);
-                }
-              }}
-              role="button"
-              tabIndex={0}
-            >
-              <div className="sg-card-inner">
-                <ListingThumb
-                  imageUrl={e.imageUrl}
-                  imageAlt={e.imageAlt}
-                  fallbackColor={c.c}
-                  fallbackIcon={c.icon}
-                />
-                <div className="sg-card-body">
-                  <div className="sg-badges">
-                    <span className="sg-badge-date">{dLabel}</span>
-                    {showCategoryBadge ? (
-                      <span className="sg-badge-cat">
-                        <i style={{ background: c.c }} />
-                        {c.label}
-                      </span>
-                    ) : null}
-                    {e.pick ? (
-                      <span className="sg-badge-pick">✳ PICK</span>
-                    ) : null}
-                    {e.family ? (
-                      <span className="sg-badge-family">👨‍👩‍👧 Family friendly</span>
-                    ) : null}
-                  </div>
-                  <div className="sg-card-title">{e.title}</div>
-                  {(e.venue || e.time || e.price) ? (
-                    <div className="sg-card-meta">
-                      {e.venue}
-                      {e.venue && e.time ? " · " : null}
-                      {e.time}
-                      {(e.venue || e.time) && e.price ? " · " : null}
-                      {e.price ? <strong>{e.price}</strong> : null}
-                    </div>
-                  ) : null}
-                  {!isOpen && e.description ? (
-                    <div className="sg-card-desc clamp2">{e.description}</div>
-                  ) : null}
-                </div>
-                <span
-                  className={`sg-card-plus${isOpen ? " open" : ""}`}
-                  aria-hidden
-                >
-                  +
-                </span>
-              </div>
-              {isOpen ? (
-                <div className="sg-card-expand">
-                  <p>{e.detail || e.description || "More details coming soon."}</p>
-                  {e.bookingUrl ? (
-                    <a
-                      className="sg-more"
-                      href={e.bookingUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(ev) => ev.stopPropagation()}
-                    >
-                      MORE INFO
-                    </a>
-                  ) : (
-                    <a
-                      className="sg-more"
-                      href={SUBSTACK_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(ev) => ev.stopPropagation()}
-                    >
-                      MORE INFO
-                    </a>
-                  )}
-                </div>
-              ) : null}
-            </div>
+            <FeedEventCard
+              event={e}
+              todayISO={todayISO}
+              tomorrowISO={tomorrowISO}
+              open={open}
+              setOpen={setOpen}
+            />
 
             {i === 3 ? (
               <div className="sg-nl-inline">
@@ -671,6 +633,100 @@ export default function WhatsOnFeed({ events }: Props) {
         />
       ) : null}
     </>
+  );
+}
+
+function FeedEventCard({
+  event: e,
+  todayISO,
+  tomorrowISO,
+  open,
+  setOpen,
+  compact = false,
+}: {
+  event: FeedEvent;
+  todayISO: string;
+  tomorrowISO: string;
+  open: string | null;
+  setOpen: (slug: string | null) => void;
+  compact?: boolean;
+}) {
+  const { visual: c, showCategoryBadge } = eventCardStyle(e);
+  const dLabel = eventBadgeLabel(e, todayISO, tomorrowISO);
+  const isOpen = open === e.slug;
+  return (
+    <div
+      className={`sg-card${compact ? " sg-exh-card" : ""}`}
+      style={{ background: tint(c.c, 0.9) }}
+      onClick={() => setOpen(isOpen ? null : e.slug)}
+      onKeyDown={(ev) => {
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          setOpen(isOpen ? null : e.slug);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
+      <div className="sg-card-inner">
+        <ListingThumb
+          imageUrl={e.imageUrl}
+          imageAlt={e.imageAlt}
+          fallbackColor={c.c}
+          fallbackIcon={c.icon}
+        />
+        <div className="sg-card-body">
+          <div className="sg-badges">
+            <span className="sg-badge-date">{dLabel}</span>
+            {!compact && showCategoryBadge ? (
+              <span className="sg-badge-cat">
+                <i style={{ background: c.c }} />
+                {c.label}
+              </span>
+            ) : null}
+            {!compact && e.pick ? (
+              <span className="sg-badge-pick">✳ PICK</span>
+            ) : null}
+            {!compact && e.family ? (
+              <span className="sg-badge-family">👨‍👩‍👧 Family friendly</span>
+            ) : null}
+          </div>
+          <div className="sg-card-title">{e.title}</div>
+          {compact && e.venue ? (
+            <div className="sg-card-meta">{e.venue}</div>
+          ) : null}
+          {!compact && (e.venue || e.time || e.price) ? (
+            <div className="sg-card-meta">
+              {e.venue}
+              {e.venue && e.time ? " · " : null}
+              {e.time}
+              {(e.venue || e.time) && e.price ? " · " : null}
+              {e.price ? <strong>{e.price}</strong> : null}
+            </div>
+          ) : null}
+          {!compact && !isOpen && e.description ? (
+            <div className="sg-card-desc clamp2">{e.description}</div>
+          ) : null}
+        </div>
+        <span className={`sg-card-plus${isOpen ? " open" : ""}`} aria-hidden>
+          +
+        </span>
+      </div>
+      {isOpen ? (
+        <div className="sg-card-expand">
+          <p>{e.detail || e.description || "More details coming soon."}</p>
+          <a
+            className="sg-more"
+            href={e.bookingUrl || SUBSTACK_URL}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(ev) => ev.stopPropagation()}
+          >
+            MORE INFO
+          </a>
+        </div>
+      ) : null}
+    </div>
   );
 }
 

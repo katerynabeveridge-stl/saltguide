@@ -167,6 +167,10 @@ body:has(.staging-banner) .sg-wrap {
   color: var(--sg-dim);
 }
 
+.sg-header .sg-lede {
+  font-style: italic;
+}
+
 .sg-h2 {
   font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
@@ -267,6 +271,7 @@ body:has(.staging-banner) .sg-wrap {
   font-weight: 800;
   font-size: 13px;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .sg-filter-btn.on {
@@ -320,6 +325,36 @@ body:has(.staging-banner) .sg-wrap {
 .sg-card:hover {
   transform: translate(-2px, -2px);
   box-shadow: 7px 7px 0 var(--sg-ink);
+}
+
+.sg-exh-rail {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: visible;
+  align-items: flex-start;
+  min-width: 0;
+  max-width: 100%;
+  padding: 4px 2px 18px;
+  margin: 0 0 10px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sg-exh-rail .sg-exh-card {
+  flex: 0 0 min(260px, 78vw);
+  width: min(260px, 78vw);
+  margin-bottom: 0;
+}
+
+.sg-exh-rail .sg-exh-card .sg-thumb {
+  flex-basis: 56px;
+  height: 56px;
+  font-size: 24px;
+}
+
+.sg-exh-rail .sg-exh-card .sg-card-title {
+  font-size: 16px;
 }
 
 .sg-card-inner {
