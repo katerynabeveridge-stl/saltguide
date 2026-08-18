@@ -142,10 +142,14 @@ const PLACES_SELECT =
   "slug, name, place_type, area, summary, booking, is_new, is_free, website_url, social_url, tags, image_url, show_on_saltguide";
 
 const EVENTS_SELECT =
-  "id, status, title, description, external_url, image_url, event_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, is_top_event, show_on_pebbles, show_on_saltguide, saltguide_category";
+  "id, status, title, description, external_url, image_url, event_date, recurrence_end_date, start_time, end_time, is_recurring, recurrence_pattern, recurrence_type, venue_name, place_name, is_free, price, type, theme_tags, vibe_tags, is_send_friendly, is_top_event, show_on_pebbles, show_on_saltguide, saltguide_category";
 
 /** Columns that may not exist yet on older deploys. */
-const OPTIONAL_EVENT_COLUMNS = ["is_top_event", "saltguide_category"] as const;
+const OPTIONAL_EVENT_COLUMNS = [
+  "recurrence_end_date",
+  "is_top_event",
+  "saltguide_category",
+] as const;
 
 function withoutSelectColumn(select: string, column: string): string {
   return select
@@ -167,30 +171,38 @@ async function fetchEventsFromSupabase(
   supabase: SupabaseClient,
 ): Promise<FeedEvent[] | null> {
   const todayISO = londonTodayISO();
-  const query = (select: string) =>
-    supabase
+  const query = (select: string, useEndDate: boolean) => {
+    const q = supabase
       .from("events")
       .select(select)
       .eq("show_on_saltguide", true)
-      .eq("status", "approved")
-      .gte("event_date", todayISO)
-      .order("event_date");
+      .eq("status", "approved");
+    const filtered = useEndDate
+      ? q.or(
+          `event_date.gte.${todayISO},recurrence_end_date.gte.${todayISO}`,
+        )
+      : q.gte("event_date", todayISO);
+    return filtered.order("event_date");
+  };
 
   let select = EVENTS_SELECT;
-  let { data, error } = await query(select);
+  let useEndDate = select.split(", ").includes("recurrence_end_date");
+  let { data, error } = await query(select, useEndDate);
   while (error) {
     const currentError = error;
     const missing = OPTIONAL_EVENT_COLUMNS.find(
       (column) =>
         isMissingColumnError(currentError, column) &&
-        select.split(", ").includes(column),
+        (select.split(", ").includes(column) ||
+          (column === "recurrence_end_date" && useEndDate)),
     );
     if (!missing) break;
     console.warn(
       `[guide] events.${missing} missing; retrying without that column`,
     );
     select = withoutSelectColumn(select, missing);
-    ({ data, error } = await query(select));
+    if (missing === "recurrence_end_date") useEndDate = false;
+    ({ data, error } = await query(select, useEndDate));
   }
 
   if (error) {

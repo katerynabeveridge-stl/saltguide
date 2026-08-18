@@ -73,6 +73,8 @@ export type EventCat =
 export type FeedEvent = {
   slug: string;
   dateISO: string;
+  /** Inclusive end from `events.recurrence_end_date`, if the row has one. */
+  endISO?: string;
   title: string;
   venue?: string;
   time?: string;

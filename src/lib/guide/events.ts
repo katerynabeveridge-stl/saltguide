@@ -17,6 +17,8 @@ export type EventRow = {
   event_date: string;
   start_time?: string | null;
   end_time?: string | null;
+  /** Inclusive span end when the listing is a date range (not weekly forever). */
+  recurrence_end_date?: string | null;
   is_recurring?: boolean | null;
   recurrence_pattern?: string | null;
   recurrence_type?: string | null;
@@ -137,8 +139,10 @@ function formatPrice(row: EventRow): string | undefined {
 
 function formatRecurs(row: EventRow): string | undefined {
   if (!row.is_recurring) return undefined;
+  const pattern = row.recurrence_pattern?.trim();
+  const type = row.recurrence_type?.trim();
   const raw =
-    row.recurrence_pattern?.trim() || row.recurrence_type?.trim() || "";
+    pattern || (type && type.toLowerCase() !== "none" ? type : "") || "";
   if (!raw) return "RECURRING";
   return raw.replace(/[_-]+/g, " ").toUpperCase();
 }
@@ -149,6 +153,70 @@ function eventSlug(row: EventRow): string {
   return `event-${date}-${row.title.trim().toLowerCase().replace(/\s+/g, "-")}`;
 }
 
+function sliceISODate(value: string | null | undefined): string | undefined {
+  const iso = value?.slice(0, 10);
+  return iso && /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : undefined;
+}
+
+/** Weekly / monthly / term-time — not a consecutive-day span. */
+function isPeriodicRecurrence(recurs: string | undefined): boolean {
+  return Boolean(recurs && /WEEKLY|MONTHLY|TERM/.test(recurs));
+}
+
+function isoDayDiff(startISO: string, endISO: string): number {
+  const [y1, m1, d1] = startISO.split("-").map(Number);
+  const [y2, m2, d2] = endISO.split("-").map(Number);
+  const a = Date.UTC(y1, m1 - 1, d1);
+  const b = Date.UTC(y2, m2 - 1, d2);
+  return Math.round((b - a) / 86400000);
+}
+
+/** Start → end inclusive day count when this is a real consecutive span. */
+function consecutiveSpanDays(
+  event: Pick<FeedEvent, "dateISO" | "endISO" | "recurs">,
+): number | null {
+  if (!event.endISO || event.endISO <= event.dateISO) return null;
+  if (isPeriodicRecurrence(event.recurs)) return null;
+  return isoDayDiff(event.dateISO, event.endISO) + 1;
+}
+
+function dayMonthUpper(dateISO: string): string {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    day: "numeric",
+    month: "short",
+  }).formatToParts(new Date(`${dateISO}T12:00:00Z`));
+  const d = parts.find((p) => p.type === "day")?.value ?? "";
+  const mo = (parts.find((p) => p.type === "month")?.value ?? "").toUpperCase();
+  return `${d} ${mo}`;
+}
+
+function weekdayUpper(dateISO: string): string {
+  return longDayName(dateISO).slice(0, 3).toUpperCase();
+}
+
+export function eventCoversDate(
+  event: Pick<FeedEvent, "dateISO" | "endISO" | "recurs">,
+  dateISO: string,
+): boolean {
+  const span = consecutiveSpanDays(event);
+  if (span && span >= 2 && event.endISO) {
+    return event.dateISO <= dateISO && event.endISO >= dateISO;
+  }
+  return event.dateISO === dateISO;
+}
+
+export function eventIsUpcoming(
+  event: Pick<FeedEvent, "dateISO" | "endISO" | "recurs">,
+  todayISO: string,
+): boolean {
+  const span = consecutiveSpanDays(event);
+  if (span && span >= 2 && event.endISO) {
+    return event.endISO >= todayISO;
+  }
+  return event.dateISO >= todayISO;
+}
+
 export function isExhibitionEvent(
   event: Pick<FeedEvent, "type"> | Pick<EventRow, "type">,
 ): boolean {
@@ -157,11 +225,16 @@ export function isExhibitionEvent(
     .toLowerCase() === "exhibition";
 }
 
-/** Exhibitions first, then by date, then title. */
+/** Exhibitions first, then by date, then title. Used on home, not the What's On stack. */
 export function compareFeedEvents(a: FeedEvent, b: FeedEvent): number {
   const aEx = isExhibitionEvent(a);
   const bEx = isExhibitionEvent(b);
   if (aEx !== bEx) return aEx ? -1 : 1;
+  return compareFeedEventsByDate(a, b);
+}
+
+/** Date then title — What's On list order (exhibitions are pulled into the rail). */
+export function compareFeedEventsByDate(a: FeedEvent, b: FeedEvent): number {
   return (
     a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title)
   );
@@ -189,10 +262,14 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
   const imageUrl = pickCoverUrl(row.image_url);
   const family = Boolean(row.is_send_friendly);
   const saltguideCategory = row.saltguide_category?.trim() || null;
+  const dateISO = String(row.event_date).slice(0, 10);
+  const endISO = sliceISODate(row.recurrence_end_date);
+  const recurs = formatRecurs(row);
 
   return {
     slug: eventSlug(row),
-    dateISO: String(row.event_date).slice(0, 10),
+    dateISO,
+    endISO: endISO && endISO > dateISO ? endISO : undefined,
     title,
     venue: resolveVenue(row),
     time: formatClockRange(row.start_time, row.end_time),
@@ -210,7 +287,7 @@ function mapRowToFeedEvent(row: EventRow): FeedEvent {
     imageUrl,
     imageAlt: imageUrl ? pickCoverAlt(title) : undefined,
     price: formatPrice(row),
-    recurs: formatRecurs(row),
+    recurs,
   };
 }
 
@@ -316,10 +393,17 @@ export function badgeDateLabel(dateISO: string, todayISO: string, tomorrowISO: s
 }
 
 export function eventBadgeLabel(
-  event: Pick<FeedEvent, "dateISO" | "recurs">,
+  event: Pick<FeedEvent, "dateISO" | "endISO" | "recurs">,
   todayISO: string,
   tomorrowISO: string,
 ): string {
+  const span = consecutiveSpanDays(event);
+  if (span && span > 2 && event.endISO) {
+    return `${dayMonthUpper(event.dateISO)} TO ${dayMonthUpper(event.endISO)}`;
+  }
+  if (span === 2 && event.endISO) {
+    return `${weekdayUpper(event.dateISO)} AND ${weekdayUpper(event.endISO)}`;
+  }
   if (event.recurs) return `↻ ${event.recurs}`;
   return badgeDateLabel(event.dateISO, todayISO, tomorrowISO);
 }
@@ -331,7 +415,7 @@ export function homeHighlightEvents(
   limit = 4,
 ): { dayISO: string; events: FeedEvent[] } | null {
   const upcoming = events
-    .filter((e) => e.dateISO >= todayISO)
+    .filter((e) => eventIsUpcoming(e, todayISO))
     .sort(compareFeedEvents);
 
   if (!upcoming.length) return null;
@@ -361,7 +445,7 @@ export function homeWeekPicks(
   limit = 3,
 ): FeedEvent[] {
   const upcoming = events
-    .filter((e) => e.dateISO >= todayISO)
+    .filter((e) => eventIsUpcoming(e, todayISO))
     .sort(compareFeedEvents);
 
   const picks = upcoming.filter((e) => e.pick);
@@ -379,7 +463,7 @@ export function homeTopEvents(
   limit = 5,
 ): FeedEvent[] {
   return events
-    .filter((e) => e.top && e.dateISO >= todayISO)
+    .filter((e) => e.top && eventIsUpcoming(e, todayISO))
     .sort((a, b) => a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title))
     .slice(0, limit);
 }
@@ -395,7 +479,7 @@ export function homeWeekStrip(
   limit = 8,
 ): FeedEvent[] {
   return events
-    .filter((e) => e.dateISO >= todayISO && !excludeSlugs.has(e.slug))
+    .filter((e) => eventIsUpcoming(e, todayISO) && !excludeSlugs.has(e.slug))
     .sort((a, b) => a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title))
     .slice(0, limit);
 }
