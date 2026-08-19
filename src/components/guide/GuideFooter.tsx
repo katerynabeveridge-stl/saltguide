@@ -40,6 +40,7 @@ export default function GuideFooter() {
       <p className="sg-footer-made">Made in Hastings</p>
       <nav className="sg-footer-nav" aria-label="Footer">
         <Link href={GUIDE_PATH.privacy}>Privacy policy</Link>
+        <Link href={GUIDE_PATH.terms}>Terms of Use</Link>
         <a
           href={INSTAGRAM_URL}
           target="_blank"

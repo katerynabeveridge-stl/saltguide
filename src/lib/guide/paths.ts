@@ -3,7 +3,8 @@ export type GuidePageId =
   | "whatson"
   | "places"
   | "about"
-  | "privacy";
+  | "privacy"
+  | "terms";
 
 /** Site-root paths for the guide (static export needs a page file per path). */
 export const GUIDE_PATH: Record<GuidePageId, string> = {
@@ -12,6 +13,7 @@ export const GUIDE_PATH: Record<GuidePageId, string> = {
   places: "/places",
   about: "/about",
   privacy: "/privacy",
+  terms: "/terms",
 };
 
 export function guidePageFromPathname(pathname: string): GuidePageId | undefined {
@@ -30,6 +32,8 @@ export function guidePageFromPathname(pathname: string): GuidePageId | undefined
       return "about";
     case "/privacy":
       return "privacy";
+    case "/terms":
+      return "terms";
     default:
       return undefined;
   }
