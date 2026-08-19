@@ -55,7 +55,6 @@ export default function WhatsOnFeed({ events }: Props) {
   const [showCatMenu, setShowCatMenu] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
   const [draftWhen, setDraftWhen] = useState<WhenFilter>("all");
-  const [draftCats, setDraftCats] = useState<Set<EventCat>>(new Set());
   const [draftFreeOnly, setDraftFreeOnly] = useState(false);
   const [draftFamilyOnly, setDraftFamilyOnly] = useState(false);
 
@@ -122,10 +121,9 @@ export default function WhatsOnFeed({ events }: Props) {
     [filtered],
   );
 
-  const kindCount =
-    (allTypesSelected ? 0 : cats.size) +
-    (freeOnly ? 1 : 0) +
-    (familyOnly ? 1 : 0);
+  const typeCount = allTypesSelected ? 0 : cats.size;
+  const filterCount =
+    (when !== "all" ? 1 : 0) + (freeOnly ? 1 : 0) + (familyOnly ? 1 : 0);
   const isCustomDate =
     when !== "all" &&
     when !== "today" &&
@@ -136,9 +134,7 @@ export default function WhatsOnFeed({ events }: Props) {
     draftWhen !== "today" &&
     draftWhen !== "tomorrow" &&
     draftWhen !== "weekend";
-  const anyFilter = when !== "all" || kindCount > 0 || q.length > 0;
-  const draftAllTypesSelected =
-    draftCats.size === 0 || draftCats.size === EVENT_CAT_LIST.length;
+  const anyFilter = typeCount > 0 || filterCount > 0 || q.length > 0;
   const draftPreviewCount = useMemo(
     () =>
       events.filter(
@@ -146,8 +142,8 @@ export default function WhatsOnFeed({ events }: Props) {
           matchWhen(e, draftWhen) &&
           matchesWhatsOnKind(
             e,
-            draftCats,
-            draftAllTypesSelected,
+            cats,
+            allTypesSelected,
             draftFamilyOnly,
             draftFreeOnly,
           ) &&
@@ -157,8 +153,8 @@ export default function WhatsOnFeed({ events }: Props) {
     [
       events,
       draftWhen,
-      draftCats,
-      draftAllTypesSelected,
+      cats,
+      allTypesSelected,
       draftFreeOnly,
       draftFamilyOnly,
       q,
@@ -174,32 +170,28 @@ export default function WhatsOnFeed({ events }: Props) {
 
   const openSheet = useCallback(() => {
     setDraftWhen(when);
-    setDraftCats(new Set(cats));
     setDraftFreeOnly(freeOnly);
     setDraftFamilyOnly(familyOnly);
     setShowSheetCal(false);
     setShowCatMenu(false);
     setShowSheet(true);
-  }, [when, cats, freeOnly, familyOnly]);
+  }, [when, freeOnly, familyOnly]);
 
   const applySheet = useCallback(() => {
     setWhen(draftWhen);
-    setCats(draftCats);
     setFreeOnly(draftFreeOnly);
     setFamilyOnly(draftFamilyOnly);
     setShowCal(false);
     setShowSheet(false);
     setShowSheetCal(false);
-  }, [draftWhen, draftCats, draftFreeOnly, draftFamilyOnly]);
+  }, [draftWhen, draftFreeOnly, draftFamilyOnly]);
 
   const clearSheet = useCallback(() => {
     setDraftWhen("all");
-    setDraftCats(new Set());
     setDraftFreeOnly(false);
     setDraftFamilyOnly(false);
     setShowSheetCal(false);
     setWhen("all");
-    setCats(new Set());
     setFreeOnly(false);
     setFamilyOnly(false);
     setShowCal(false);
@@ -230,23 +222,13 @@ export default function WhatsOnFeed({ events }: Props) {
     setCats(new Set());
   };
 
-  const toggleDraftCat = (k: EventCat) => {
-    const next = new Set(draftCats);
-    if (next.has(k)) next.delete(k);
-    else next.add(k);
-    setDraftCats(next);
-  };
-
   const typeTriggerLabel = (() => {
+    if (allTypesSelected) return "All types";
     const parts: string[] = [];
-    if (!allTypesSelected) {
-      for (const [k, v] of EVENT_CAT_LIST) {
-        if (cats.has(k)) parts.push(v.label);
-      }
+    for (const [k, v] of EVENT_CAT_LIST) {
+      if (cats.has(k)) parts.push(v.label);
     }
-    if (familyOnly) parts.push("Family friendly");
-    if (freeOnly) parts.push("Free only");
-    return parts.length ? parts.join(", ") : "All types";
+    return parts.join(", ") || "All types";
   })();
 
   useEffect(() => {
@@ -390,40 +372,17 @@ export default function WhatsOnFeed({ events }: Props) {
                   </li>
                 );
               })}
-              <li className="sg-cat-menu-sep" role="separator" />
-              <li>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={familyOnly}
-                  className={familyOnly ? "on" : ""}
-                  onClick={() => setFamilyOnly((v) => !v)}
-                >
-                  Family friendly
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={freeOnly}
-                  className={freeOnly ? "on" : ""}
-                  onClick={() => setFreeOnly((v) => !v)}
-                >
-                  Free only
-                </button>
-              </li>
             </ul>
           ) : null}
         </div>
 
         <button
           type="button"
-          className={`sg-filter-btn${kindCount > 0 ? " on" : ""}`}
+          className={`sg-filter-btn${filterCount > 0 ? " on" : ""}`}
           onClick={openSheet}
         >
-          <FilterIcon active={kindCount > 0} />
-          More filters{kindCount > 0 ? ` · ${kindCount}` : ""}
+          <FilterIcon active={filterCount > 0} />
+          Filters{filterCount > 0 ? ` · ${filterCount}` : ""}
         </button>
       </div>
 
@@ -579,30 +538,6 @@ export default function WhatsOnFeed({ events }: Props) {
               }}
             />
           ) : null}
-
-          <div className="sg-narrow-lbl">WHAT KIND OF THING?</div>
-          <div className="sg-cat-grid">
-            {EVENT_CAT_LIST.map(([k, v]) => {
-              const on = draftCats.has(k);
-              return (
-                <button
-                  key={k}
-                  type="button"
-                  className={`sg-cat-btn${on ? " on" : ""}`}
-                  style={{ background: on ? v.c : undefined }}
-                  onClick={() => toggleDraftCat(k)}
-                >
-                  <span
-                    className="dot"
-                    style={{ background: v.c }}
-                    aria-hidden
-                  />
-                  {v.label}
-                  {on ? <span style={{ marginLeft: "auto" }}>✓</span> : null}
-                </button>
-              );
-            })}
-          </div>
 
           <div className="sg-narrow-lbl">NARROW IT DOWN</div>
           <div className="sg-pill-wrap">
