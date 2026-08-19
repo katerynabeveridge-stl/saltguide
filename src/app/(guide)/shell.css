@@ -166,10 +166,6 @@ body:has(.staging-banner) .sg-wrap {
   color: var(--sg-dim);
 }
 
-.sg-whatson .sg-lede {
-  font-style: italic;
-}
-
 .sg-h2 {
   font-family: var(--font-display), Outfit, sans-serif;
   font-weight: 800;
@@ -782,7 +778,8 @@ body:has(.staging-banner) .sg-wrap {
 .sg-nl-inline {
   padding: 20px 18px;
   border-radius: 14px;
-  background: var(--sg-green);
+  background: var(--sg-ink);
+  color: var(--sg-bg);
   border: 2px solid var(--sg-ink);
   box-shadow: 5px 5px 0 var(--sg-ink);
   margin-bottom: 16px;
@@ -794,11 +791,18 @@ body:has(.staging-banner) .sg-wrap {
   font-size: 19px;
   line-height: 1.1;
   margin-bottom: 4px;
+  color: var(--sg-green);
 }
 
 .sg-nl-inline p {
   font-size: 14px;
   margin-bottom: 12px;
+  color: var(--sg-bg);
+}
+
+.sg-nl-inline .sg-nl-cta {
+  background: var(--sg-green);
+  color: var(--sg-ink);
 }
 
 .sg-nl {

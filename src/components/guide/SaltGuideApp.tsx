@@ -104,8 +104,7 @@ export default function SaltGuideApp({
       {page === "about" ? (
         <div className="sg-policy">
           <p>
-            Salt Guide and Pebbles List are made in St Leonards by people who
-            live here.
+            Salt Guide is made in Hastings by people who live here.
           </p>
           <p>
             It started with founder Kat, a mum of two who could never keep track
