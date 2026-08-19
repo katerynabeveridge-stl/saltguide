@@ -414,6 +414,11 @@ export function badgeDateLabel(dateISO: string, todayISO: string, tomorrowISO: s
   return `${day} ${d} ${mo}`;
 }
 
+function periodicRecursBadge(dateISO: string, recurs: string): string {
+  if (/\b(MON|TUE|WED|THU|FRI|SAT|SUN)/.test(recurs)) return recurs;
+  return `${weekdayUpper(dateISO)} ${recurs}`;
+}
+
 export function eventBadgeLabel(
   event: Pick<FeedEvent, "dateISO" | "endISO" | "recurs">,
   todayISO: string,
@@ -426,7 +431,13 @@ export function eventBadgeLabel(
   if (span === 2 && event.endISO) {
     return `${weekdayUpper(event.dateISO)} AND ${weekdayUpper(event.endISO)}`;
   }
-  if (event.recurs) return `↻ ${event.recurs}`;
+  if (event.recurs) {
+    // Weekly / monthly / term with no consecutive range: SAT WEEKLY
+    if (isPeriodicRecurrence(event.recurs)) {
+      return periodicRecursBadge(event.dateISO, event.recurs);
+    }
+    return `↻ ${event.recurs}`;
+  }
   return badgeDateLabel(event.dateISO, todayISO, tomorrowISO);
 }
 

@@ -705,6 +705,15 @@ function FilterIcon({ active }: { active: boolean }) {
   );
 }
 
+function shiftMonth(y: number, m: number, delta: number): { y: number; m: number } {
+  const dt = new Date(Date.UTC(y, m - 1 + delta, 1));
+  return { y: dt.getUTCFullYear(), m: dt.getUTCMonth() + 1 };
+}
+
+function monthKey(y: number, m: number): number {
+  return y * 12 + m;
+}
+
 function MonthCalendar({
   selected,
   todayISO,
@@ -716,7 +725,18 @@ function MonthCalendar({
   eventDates: Set<string>;
   onSelect: (d: string) => void;
 }) {
-  const [y, m] = todayISO.split("-").map(Number);
+  const [ty, tm] = todayISO.split("-").map(Number);
+  const startISO =
+    selected && selected >= todayISO ? selected : todayISO;
+  const [sy, sm] = startISO.split("-").map(Number);
+  const [{ y, m }, setView] = useState({ y: sy, m: sm });
+
+  const minKey = monthKey(ty, tm);
+  const maxKey = monthKey(ty, tm) + 12;
+  const viewKey = monthKey(y, m);
+  const canPrev = viewKey > minKey;
+  const canNext = viewKey < maxKey;
+
   const monthStart = new Date(Date.UTC(y, m - 1, 1));
   const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
   // Monday-first: UTC day 0=Sun → lead days
@@ -726,7 +746,6 @@ function MonthCalendar({
     ...Array(lead).fill(null),
     ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
   ];
-  const todayDay = parseInt(todayISO.slice(-2), 10);
   const monthLabel = new Intl.DateTimeFormat("en-GB", {
     month: "long",
     year: "numeric",
@@ -738,7 +757,27 @@ function MonthCalendar({
 
   return (
     <div className="sg-cal">
-      <div className="sg-cal-title">{monthLabel}</div>
+      <div className="sg-cal-head">
+        <button
+          type="button"
+          className="sg-cal-nav"
+          disabled={!canPrev}
+          aria-label="Previous month"
+          onClick={() => canPrev && setView(shiftMonth(y, m, -1))}
+        >
+          ‹
+        </button>
+        <div className="sg-cal-title">{monthLabel}</div>
+        <button
+          type="button"
+          className="sg-cal-nav"
+          disabled={!canNext}
+          aria-label="Next month"
+          onClick={() => canNext && setView(shiftMonth(y, m, 1))}
+        >
+          ›
+        </button>
+      </div>
       <div className="sg-cal-grid">
         {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
           <div key={`${d}-${i}`} className="sg-cal-dow">
@@ -749,7 +788,7 @@ function MonthCalendar({
           if (!n) return <div key={`b${i}`} />;
           const dIso = isoFor(n);
           const has = eventDates.has(dIso);
-          const past = n < todayDay;
+          const past = dIso < todayISO;
           const sel = selected === dIso;
           return (
             <button
