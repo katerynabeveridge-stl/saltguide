@@ -161,13 +161,6 @@ export default function PlacesDirectory({ venues, links }: Props) {
 
   return (
     <>
-      <div className="sg-places-intro">
-        <h1 className="sg-h1">Places.</h1>
-        <p className="sg-lede">
-          Our little black book of Hastings &amp; St Leonards.
-        </p>
-      </div>
-
       <div className="sg-search-bar">
         <div className="sg-search">
           <span aria-hidden>🔍</span>

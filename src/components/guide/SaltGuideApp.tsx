@@ -44,7 +44,7 @@ export default function SaltGuideApp({
   }, [page]);
 
   return (
-    <div className="sg-wrap">
+    <div className={page === "whatson" ? "sg-wrap sg-whatson" : "sg-wrap"}>
       <header className="sg-header">
         <div className="sg-header-top">
           <Link href={GUIDE_PATH.home} className="sg-brand">
@@ -67,8 +67,16 @@ export default function SaltGuideApp({
             <h1 className="sg-h1">
               What&apos;s <span className="hl">On</span>.
             </h1>
-            <p className="sg-lede" style={{ marginBottom: 22 }}>
+            <p className="sg-lede">
               This week and beyond in Hastings &amp; St Leonards.
+            </p>
+          </>
+        ) : null}
+        {page === "places" ? (
+          <>
+            <h1 className="sg-h1">Places.</h1>
+            <p className="sg-lede">
+              A guide to Hastings &amp; St Leonards.
             </p>
           </>
         ) : null}

@@ -162,12 +162,11 @@ body:has(.staging-banner) .sg-wrap {
 
 .sg-lede {
   font-family: var(--font-serif), "DM Serif Display", serif;
-  font-style: italic;
   font-size: 20px;
   color: var(--sg-dim);
 }
 
-.sg-header .sg-lede {
+.sg-whatson .sg-lede {
   font-style: italic;
 }
 
@@ -891,10 +890,6 @@ body:has(.staging-banner) .sg-wrap {
 }
 
 /* ——— Places ——— */
-.sg-places-intro {
-  margin: 12px 0 22px;
-}
-
 .sg-places-toolbar {
   display: flex;
   gap: 10px;
