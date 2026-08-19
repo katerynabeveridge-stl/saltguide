@@ -225,6 +225,28 @@ export function isExhibitionEvent(
     .toLowerCase() === "exhibition";
 }
 
+const FESTIVAL_RE = /festival/i;
+
+/** Festival if DB type is `festival`, or /festival/i appears in type or title. */
+export function isFestivalEvent(
+  event: Pick<FeedEvent, "type" | "title"> | Pick<EventRow, "type" | "title">,
+): boolean {
+  const type = String(event.type ?? "");
+  const title = String(event.title ?? "");
+  return (
+    type.trim().toLowerCase() === "festival" ||
+    FESTIVAL_RE.test(type) ||
+    FESTIVAL_RE.test(title)
+  );
+}
+
+/** What's On first section: exhibitions or festivals (no extra DB column). */
+export function isExhibitionOrFestivalEvent(
+  event: Pick<FeedEvent, "type" | "title"> | Pick<EventRow, "type" | "title">,
+): boolean {
+  return isExhibitionEvent(event) || isFestivalEvent(event);
+}
+
 /** Exhibitions first, then by date, then title. Used on home, not the What's On stack. */
 export function compareFeedEvents(a: FeedEvent, b: FeedEvent): number {
   const aEx = isExhibitionEvent(a);
@@ -233,7 +255,7 @@ export function compareFeedEvents(a: FeedEvent, b: FeedEvent): number {
   return compareFeedEventsByDate(a, b);
 }
 
-/** Date then title — What's On list order (exhibitions are pulled into the rail). */
+/** Date then title — What's On list order (exhibitions/festivals are pulled into the first section). */
 export function compareFeedEventsByDate(a: FeedEvent, b: FeedEvent): number {
   return (
     a.dateISO.localeCompare(b.dateISO) || a.title.localeCompare(b.title)

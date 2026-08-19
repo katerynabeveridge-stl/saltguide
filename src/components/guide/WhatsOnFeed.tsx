@@ -14,7 +14,7 @@ import {
   eventCardStyle,
   eventCoversDate,
   eventIsUpcoming,
-  isExhibitionEvent,
+  isExhibitionOrFestivalEvent,
   londonTodayISO,
   longDayName,
   matchesWhatsOnKind,
@@ -112,12 +112,12 @@ export default function WhatsOnFeed({ events }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [events, when, cats, allTypesSelected, freeOnly, familyOnly, q, todayISO, tomorrowISO],
   );
-  const exhibitions = useMemo(
-    () => filtered.filter(isExhibitionEvent),
+  const exhibitionsAndFestivals = useMemo(
+    () => filtered.filter(isExhibitionOrFestivalEvent),
     [filtered],
   );
   const list = useMemo(
-    () => filtered.filter((e) => !isExhibitionEvent(e)),
+    () => filtered.filter((e) => !isExhibitionOrFestivalEvent(e)),
     [filtered],
   );
 
@@ -422,51 +422,62 @@ export default function WhatsOnFeed({ events }: Props) {
         </div>
       ) : null}
 
-      {exhibitions.length ? (
-        <div className="sg-exh-rail" aria-label="Exhibitions">
-          {exhibitions.map((e) => (
-            <FeedEventCard
-              key={e.slug}
-              event={e}
-              todayISO={todayISO}
-              tomorrowISO={tomorrowISO}
-              open={open}
-              setOpen={setOpen}
-              compact
-            />
-          ))}
-        </div>
+      {exhibitionsAndFestivals.length ? (
+        <section
+          className="sg-feed-section"
+          aria-label="Upcoming exhibitions and festivals"
+        >
+          <h2 className="sg-feed-h2">Upcoming exhibitions and festivals</h2>
+          <div className="sg-exh-list">
+            {exhibitionsAndFestivals.map((e) => (
+              <FeedEventCard
+                key={e.slug}
+                event={e}
+                todayISO={todayISO}
+                tomorrowISO={tomorrowISO}
+                open={open}
+                setOpen={setOpen}
+                compact
+              />
+            ))}
+          </div>
+        </section>
       ) : null}
 
-      {list.map((e, i) => {
-        return (
-          <Fragment key={e.slug}>
-            <FeedEventCard
-              event={e}
-              todayISO={todayISO}
-              tomorrowISO={tomorrowISO}
-              open={open}
-              setOpen={setOpen}
-            />
+      {list.length ? (
+        <section className="sg-feed-section" aria-label="All upcoming events">
+          <h2 className="sg-feed-h2">All upcoming events</h2>
+          {list.map((e, i) => {
+            return (
+              <Fragment key={e.slug}>
+                <FeedEventCard
+                  event={e}
+                  todayISO={todayISO}
+                  tomorrowISO={tomorrowISO}
+                  open={open}
+                  setOpen={setOpen}
+                />
 
-            {i === 3 ? (
-              <div className="sg-nl-inline">
-                <div className="t">Never miss a week.</div>
-                <p>All of this in your inbox, every Sunday. Free.</p>
-                <a
-                  className="sg-nl-cta"
-                  href={SUBSTACK_ABOUT_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={(ev) => ev.stopPropagation()}
-                >
-                  SUBSCRIBE ↗
-                </a>
-              </div>
-            ) : null}
-          </Fragment>
-        );
-      })}
+                {i === 3 ? (
+                  <div className="sg-nl-inline">
+                    <div className="t">Never miss a week.</div>
+                    <p>All of this in your inbox, every Sunday. Free.</p>
+                    <a
+                      className="sg-nl-cta"
+                      href={SUBSTACK_ABOUT_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(ev) => ev.stopPropagation()}
+                    >
+                      SUBSCRIBE ↗
+                    </a>
+                  </div>
+                ) : null}
+              </Fragment>
+            );
+          })}
+        </section>
+      ) : null}
 
       <div className="sg-nl">
         <div className="t">Get this in your inbox.</div>
@@ -613,24 +624,21 @@ function FeedEventCard({
         <div className="sg-card-body">
           <div className="sg-badges">
             <span className="sg-badge-date">{dLabel}</span>
-            {!compact && showCategoryBadge ? (
+            {(!compact || isOpen) && showCategoryBadge ? (
               <span className="sg-badge-cat">
                 <i style={{ background: c.c }} />
                 {c.label}
               </span>
             ) : null}
-            {!compact && e.pick ? (
+            {(!compact || isOpen) && e.pick ? (
               <span className="sg-badge-pick">✳ PICK</span>
             ) : null}
-            {!compact && e.family ? (
+            {(!compact || isOpen) && e.family ? (
               <span className="sg-badge-family">👨‍👩‍👧 Family friendly</span>
             ) : null}
           </div>
           <div className="sg-card-title">{e.title}</div>
-          {compact && e.venue ? (
-            <div className="sg-card-meta">{e.venue}</div>
-          ) : null}
-          {!compact && (e.venue || e.time || e.price) ? (
+          {(!compact || isOpen) && (e.venue || e.time || e.price) ? (
             <div className="sg-card-meta">
               {e.venue}
               {e.venue && e.time ? " · " : null}
