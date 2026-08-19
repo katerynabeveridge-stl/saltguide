@@ -103,17 +103,26 @@ export default function SaltGuideApp({
         </div>
       ) : null}
 
-      {page === "terms" ? (
-        <div className="sg-soon-page">
-          <h2 className="sg-h2">Terms and conditions.</h2>
-          <p>This policy is coming soon.</p>
-        </div>
-      ) : null}
-
       {page === "privacy" ? (
-        <div className="sg-soon-page">
+        <div className="sg-policy">
           <h2 className="sg-h2">Privacy policy.</h2>
-          <p>This policy is coming soon.</p>
+          <p>
+            This site is Salt Guide. If you need to get in touch, email{" "}
+            <a href="mailto:hello@saltguide.co.uk">hello@saltguide.co.uk</a>.
+          </p>
+          <p>
+            Salt Guide is hosted by Cloudflare. We do not use Google Analytics.
+          </p>
+          <p>
+            Listings and other information on this site are gathered from public
+            sources. We are not responsible for third-party venues or events. We
+            do not endorse them, and we do not have partnerships with them unless
+            we specifically say that we do.
+          </p>
+          <p>
+            To remove or amend a listing, email{" "}
+            <a href="mailto:hello@saltguide.co.uk">hello@saltguide.co.uk</a>.
+          </p>
         </div>
       ) : null}
 

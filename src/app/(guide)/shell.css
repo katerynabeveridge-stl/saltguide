@@ -1561,6 +1561,27 @@ body:has(.staging-banner) .sg-wrap {
   white-space: nowrap;
 }
 
+.sg-policy {
+  padding: 28px 0 8px;
+}
+
+.sg-policy p {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--sg-ink);
+  margin: 0 0 16px;
+  max-width: 42em;
+}
+
+.sg-policy a {
+  color: var(--sg-ink);
+  font-weight: 700;
+}
+
+.sg-policy a:hover {
+  text-decoration: none;
+}
+
 .sg-soon-page {
   padding: 60px 0 40px;
   text-align: center;
@@ -2153,10 +2174,6 @@ body:has(.staging-banner) .sg-wrap {
   letter-spacing: 0.1em;
   color: rgba(20, 22, 27, 0.55);
   margin: 0 0 16px;
-}
-
-.sg-footer-made .star {
-  color: var(--sg-ink);
 }
 
 .sg-footer-nav {

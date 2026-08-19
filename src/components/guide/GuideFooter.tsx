@@ -37,11 +37,8 @@ function InstagramGlyph() {
 export default function GuideFooter() {
   return (
     <footer className="sg-footer">
-      <p className="sg-footer-made">
-        SALTGUIDE <span className="star">✳</span> MADE IN HASTINGS
-      </p>
+      <p className="sg-footer-made">Made in Hastings</p>
       <nav className="sg-footer-nav" aria-label="Footer">
-        <Link href={GUIDE_PATH.terms}>Terms and conditions</Link>
         <Link href={GUIDE_PATH.privacy}>Privacy policy</Link>
         <a
           href={INSTAGRAM_URL}
