@@ -80,6 +80,7 @@ export default function SaltGuideApp({
             </p>
           </>
         ) : null}
+        {page === "about" ? <h1 className="sg-h1">About.</h1> : null}
       </header>
 
       {showLoading ? (
@@ -101,13 +102,25 @@ export default function SaltGuideApp({
       ) : null}
 
       {page === "about" ? (
-        <div className="sg-soon-page">
-          <div className="emoji" aria-hidden>
-            👋
-          </div>
-          <h2 className="sg-h2">About.</h2>
-          <p>Who&apos;s behind Saltguide, and why we started it.</p>
-          <span className="sg-coming">COMING SOON ✳</span>
+        <div className="sg-policy">
+          <p>
+            Salt Guide and Pebbles List are made in St Leonards by people who
+            live here.
+          </p>
+          <p>
+            It started with founder Kat, a mum of two who could never keep track
+            of what was on. Pebbles List came first for families, Salt Guide
+            followed for everything else.
+          </p>
+          <p>
+            Today it is two platforms, a Sunday newsletter, and a growing team,
+            all pointed at the same thing: championing local businesses and
+            making it easy to discover what is happening on your doorstep.
+          </p>
+          <p>
+            If you have something to feature or an idea to partner on,{" "}
+            <a href="mailto:hello@saltguide.co.uk">get in touch</a>.
+          </p>
         </div>
       ) : null}
 
