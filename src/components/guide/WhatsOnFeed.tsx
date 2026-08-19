@@ -460,8 +460,12 @@ export default function WhatsOnFeed({ events }: Props) {
 
                 {i === 3 ? (
                   <div className="sg-nl-inline">
-                    <div className="t">Never miss a week.</div>
-                    <p>All of this in your inbox, every Sunday. Free.</p>
+                    <div className="t">The Sunday Email.</div>
+                    <p>
+                      What&apos;s worth doing in the week ahead, here and just
+                      beyond, plus new openings and bite-sized local news. Free,
+                      every Sunday at 7pm, join 740+ subscribers.
+                    </p>
                     <a
                       className="sg-nl-cta"
                       href={SUBSTACK_ABOUT_URL}
@@ -480,8 +484,12 @@ export default function WhatsOnFeed({ events }: Props) {
       ) : null}
 
       <div className="sg-nl">
-        <div className="t">Get this in your inbox.</div>
-        <p>The Sunday Email — the week ahead, every Sunday, free.</p>
+        <div className="t">The Sunday Email.</div>
+        <p>
+          What&apos;s worth doing in the week ahead, here and just beyond, plus
+          new openings and bite-sized local news. Free, every Sunday at 7pm,
+          join 740+ subscribers.
+        </p>
         <a
           className="sg-nl-cta"
           href={SUBSTACK_ABOUT_URL}

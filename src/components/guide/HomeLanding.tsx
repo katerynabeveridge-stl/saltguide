@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import {
   HOME_PLACE_TEASER_FALLBACK,
-  PEBBLES_URL,
   SUBSTACK_ABOUT_URL,
   SUBSTACK_URL,
   TYPE_LABEL,
@@ -328,17 +327,6 @@ export default function HomeLanding({ events, venues, links }: Props) {
         >
           SUBSCRIBE ↗
         </a>
-      </section>
-
-      <section className="sg-pebbles-home">
-        <div className="sg-pebbles-home-title">Got kids? 👋</div>
-        <p>
-          Our sister site{" "}
-          <a href={PEBBLES_URL} target="_blank" rel="noreferrer">
-            Pebbles List
-          </a>{" "}
-          has baby groups, classes and days out, bump to age 11.
-        </p>
       </section>
     </>
   );

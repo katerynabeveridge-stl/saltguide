@@ -8,4 +8,8 @@ export const isStaging =
   siteUrl === stagingUrl ||
   siteUrl.includes("staging.");
 
+/** Default meta / Open Graph description (share summary). */
+export const siteDescription =
+  "What's on, local guides, and a Sunday email with the best of Hastings & St Leonards.";
+
 export { productionUrl, stagingUrl };
