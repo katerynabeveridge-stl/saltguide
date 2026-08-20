@@ -287,7 +287,7 @@ export async function fetchGuideData(
 ): Promise<GuideData> {
   if (!supabase) {
     console.error(
-      "[guide] missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY at build time — listings and photos will be the static fallback. Set both in Cloudflare Pages Production (and Preview) env, then rebuild.",
+      "[guide] missing or invalid NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY at build time — listings and photos will be the static fallback. Set the full https URL and full anon JWT as Cloudflare Pages Build variables (Production and Preview), then rebuild.",
     );
     return fallbackGuideData();
   }

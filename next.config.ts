@@ -1,13 +1,14 @@
 import type { NextConfig } from "next";
+import {
+  hostedSupabaseEnvError,
+  inspectPublicSupabaseEnv,
+} from "./src/lib/supabase/publicEnv";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
 const hostedBuild = Boolean(process.env.CF_PAGES || process.env.CI);
+const { env: supabaseEnv, issue } = inspectPublicSupabaseEnv();
 
-if (hostedBuild && (!supabaseUrl || !supabaseAnonKey)) {
-  throw new Error(
-    "Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Static export inlines these at build time — set both in Cloudflare Pages → Settings → Environment variables for Production and Preview, then Retry deployment.",
-  );
+if (hostedBuild && (!supabaseEnv || issue)) {
+  throw new Error(hostedSupabaseEnvError(issue ?? "missing_url"));
 }
 
 const nextConfig: NextConfig = {
@@ -15,6 +16,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+  ...(supabaseEnv
+    ? {
+        env: {
+          NEXT_PUBLIC_SUPABASE_URL: supabaseEnv.url,
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: supabaseEnv.key,
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;

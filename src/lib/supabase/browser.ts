@@ -1,25 +1,20 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { resolvePublicSupabaseEnv } from "./publicEnv";
 
 let client: SupabaseClient | null | undefined;
-
-function isHttpUrl(value: string): boolean {
-  return /^https?:\/\//i.test(value);
-}
 
 /** Browser anon client. Never use the service role here. Never throw. */
 export function getBrowserSupabase(): SupabaseClient | null {
   if (client !== undefined) return client;
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
-
-  if (!url || !key || !isHttpUrl(url)) {
+  const env = resolvePublicSupabaseEnv();
+  if (!env) {
     client = null;
     return client;
   }
 
   try {
-    client = createClient(url, key);
+    client = createClient(env.url, env.key);
   } catch {
     client = null;
   }

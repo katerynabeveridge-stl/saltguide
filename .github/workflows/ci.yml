@@ -19,6 +19,8 @@ jobs:
 
       - run: npm ci
 
+      # Cloudflare Pages git builds do not see these GitHub secrets. www/staging
+      # listings need the same two names as Pages Build variables (Production + Preview).
       - name: Build
         run: npm run build
         env:
