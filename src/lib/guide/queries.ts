@@ -286,8 +286,8 @@ export async function fetchGuideData(
   supabase: SupabaseClient | null,
 ): Promise<GuideData> {
   if (!supabase) {
-    console.warn(
-      "[guide] missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    console.error(
+      "[guide] missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY at build time — listings and photos will be the static fallback. Set both in Cloudflare Pages Production (and Preview) env, then rebuild.",
     );
     return fallbackGuideData();
   }
@@ -297,8 +297,11 @@ export async function fetchGuideData(
     if (fromDb?.venues.length) {
       return fromDb;
     }
+    console.error(
+      "[guide] supabase returned no saltguide places; using static fallback (no photos)",
+    );
   } catch (err) {
-    console.warn(
+    console.error(
       "[guide] supabase fetch threw:",
       err instanceof Error ? err.message : err,
     );
