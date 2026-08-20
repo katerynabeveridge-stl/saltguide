@@ -1,12 +1,23 @@
 import type { Metadata } from "next";
-import GuideAppPage from "@/components/guide/GuideAppPage";
-import { siteDescription } from "@/lib/env";
 
 export const metadata: Metadata = {
-  title: "Saltguide — Hastings & St Leonards",
-  description: siteDescription,
+  robots: { index: false, follow: true },
+  alternates: { canonical: "/" },
 };
 
-export default function HomePage() {
-  return <GuideAppPage initialPage="home" />;
+/** Old /home URL: Cloudflare `_redirects` 301s this in production; this page covers static HTML. */
+export default function LegacyHomeRedirect() {
+  return (
+    <>
+      <meta httpEquiv="refresh" content="0;url=/" />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `location.replace("/");`,
+        }}
+      />
+      <p>
+        <a href="/">Continue to Salt Guide</a>
+      </p>
+    </>
+  );
 }
